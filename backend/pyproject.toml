@@ -69,6 +69,7 @@ module = [
     "app.api.operators",
     "app.api.profile",
     "app.api.uploads",
+    "app.api.whatsapp_webhook",
     "app.services.store",
     "app.services.extraction_pipeline",
     "app.services.ingestion_worker",

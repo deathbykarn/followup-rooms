@@ -1,7 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import clients, events, facts, health, operators, profile, uploads
+from app.api import (
+    clients,
+    events,
+    facts,
+    health,
+    operators,
+    profile,
+    uploads,
+    whatsapp_webhook,
+)
 
 
 def create_app() -> FastAPI:
@@ -26,6 +35,7 @@ def create_app() -> FastAPI:
     app.include_router(facts.router)
     app.include_router(profile.router)
     app.include_router(uploads.router)
+    app.include_router(whatsapp_webhook.router)
     return app
 
 
