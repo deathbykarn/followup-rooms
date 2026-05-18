@@ -8,7 +8,6 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 
-
 APP_SECRET = "ci-meta-secret"          # matches CI env in workflow + .env placeholder
 VERIFY_TOKEN = "ci-meta-verify"        # matches CI env
 
