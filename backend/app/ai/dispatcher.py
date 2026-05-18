@@ -63,3 +63,31 @@ class AgentDispatcher:
     def dispatch(self, role: LogicalRole, prompt: str, **kwargs: Any) -> dict[str, Any]:
         provider, model = self.resolve(role)
         return provider.call(model, prompt, **kwargs)
+
+    def structured_dispatch(
+        self,
+        role: LogicalRole,
+        system: str,
+        user_prompt: str,
+        response_model: type,
+        **kwargs: Any,
+    ) -> Any:
+        """
+        Structured-output dispatch: calls provider's structured_call.
+
+        Returns an instance of response_model. The provider must implement
+        structured_call (currently AnthropicProvider). Future providers
+        adding this method are picked up automatically by the role map.
+        """
+        provider, model = self.resolve(role)
+        if not hasattr(provider, "structured_call"):
+            raise NotImplementedError(
+                f"Provider for role {role} does not implement structured_call"
+            )
+        return provider.structured_call(
+            model=model,
+            system=system,
+            user_prompt=user_prompt,
+            response_model=response_model,
+            **kwargs,
+        )
