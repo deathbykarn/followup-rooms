@@ -97,7 +97,7 @@ followup-rooms/
 │   ├── scripts/
 │   └── verify/                     RLS / schema drift checks
 ├── backend/                        TBD — stack not yet locked
-├── web/                            TBD — stack not yet locked
+├── web/                            Next.js 16 + Tailwind 4 + shadcn/ui + @supabase/ssr
 ├── .claude/                        phase-plans, session-state, hooks, skills
 ├── .husky/pre-commit               Branch + symlink guards
 ├── .github/workflows/              CI / daily-impact email (future)
@@ -110,4 +110,30 @@ followup-rooms/
 
 ## Status
 
-**Phase: pre-Phase 0.** Doctrine and folder structure scaffolded. Stack not yet locked. No code yet. See `.claude/session-state.md` for what's next.
+**Phase: Phase 1 — Foundation complete (2026-05-18).**
+
+What's standing:
+- Deployable backend (FastAPI on Render) + frontend (Next.js 16 on Vercel) shells
+- Supabase schema: 7 tables + 1 view (`operators`, `clients`, `events`, `facts`, `room_attachments`, `attributions`, `visibility_promotions`, + `rooms_public` placeholder)
+- Forward-compatibility hooks baked in per design doc §8: append-only triggers (raw_text + attachment file identity), soft-delete + bi-temporal columns, per-principal attribution from Day 1, single `store()` write path, vendor-agnostic `AgentDispatcher`, visibility tiers
+- Auth: Supabase Auth + `@supabase/ssr` with cross-user session leak prevention (request-scoped factories)
+- First user flow: signup → email verify → log in → create client with required short_context → see client in dashboard
+- DESIGN.md + PRODUCT.md authored (Impeccable deferred to Phase 1.5)
+- Tests: 14 backend (pytest, all pass), 2 frontend unit (Vitest), 1 E2E stub (Playwright; runs against real Supabase locally)
+- CI: backend + web GitHub Actions workflows
+
+Deviations from plan documented in `docs/decisions/decision-ledger.md`:
+- Python 3.14.4 (not 3.12.7) — matches local + Render
+- Next.js 16 (not 15) — `create-next-app@latest` installs current; brings `middleware.ts → proxy.ts` rename
+- Tremor skipped — requires React 18, blocks Next.js 16's React 19; Phase 2 territory
+- shadcn `form` skipped — not in current Nova preset; Phase 1 uses raw `useState`
+- Dashboard at `/dashboard` (not `/`) — route conflict with landing page
+
+Next:
+- Plan 2 — Core KB Layer (extraction pipeline, ADD/UPDATE/DELETE/NOOP, profile regeneration)
+- See `.claude/session-state.md` for resume context
+
+References:
+- Design doc: `docs/superpowers/specs/2026-05-18-followroom-architecture-design.md`
+- Plan: `docs/superpowers/plans/2026-05-18-foundation.md`
+- Schema: `supabase/SCHEMA_REFERENCE.md`
