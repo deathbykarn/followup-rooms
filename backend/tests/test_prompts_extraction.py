@@ -22,3 +22,20 @@ def test_extraction_prompt_emphasizes_source_spans():
     p = build_extraction_prompt(event_id="x", raw_text="x", client_context="x")
     assert "verbatim" in p.lower() or "exact" in p.lower()
     assert "snippet" in p.lower() or "quote" in p.lower()
+
+
+def test_extraction_prompt_without_speaker_labels_omits_attribution_block():
+    p = build_extraction_prompt(event_id="x", raw_text="x", client_context="x")
+    assert "SPEAKER ATTRIBUTION" not in p
+
+
+def test_extraction_prompt_with_speaker_labels_injects_attribution_block():
+    p = build_extraction_prompt(
+        event_id="x",
+        raw_text="A: hi\nB: hello",
+        client_context="Sarah",
+        speaker_labels="Speaker A: 1240 words / Speaker B: 380 words",
+    )
+    assert "SPEAKER ATTRIBUTION" in p
+    assert "Speaker A: 1240 words" in p
+    assert "most words is usually the operator" in p

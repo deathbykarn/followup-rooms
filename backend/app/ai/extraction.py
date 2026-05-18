@@ -29,11 +29,13 @@ class ExtractionService:
         event_id: str,
         raw_text: str,
         client_context: str,
+        speaker_labels: str | None = None,
     ) -> ExtractionResult:
         user_prompt = build_extraction_prompt(
             event_id=event_id,
             raw_text=raw_text,
             client_context=client_context,
+            speaker_labels=speaker_labels,
         )
         return self._dispatcher.structured_dispatch(
             role=LogicalRole.EXTRACTOR,
