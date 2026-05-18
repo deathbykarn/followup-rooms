@@ -32,4 +32,6 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     """Cached settings instance; safe to call from any context."""
-    return Settings()
+    # pydantic-settings populates fields from env vars at instantiation,
+    # but mypy doesn't model that — fields are 'missing' from its POV.
+    return Settings()  # type: ignore[call-arg]

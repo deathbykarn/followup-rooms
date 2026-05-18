@@ -52,3 +52,33 @@ select = ["E", "F", "I", "B", "UP"]
 python_version = "3.14"
 strict = true
 ignore_missing_imports = true
+
+# supabase-py's PostgREST client returns loosely-typed JSON
+# (str | int | float | Sequence[JSON] | Mapping[str, JSON] | None) from
+# .execute().data, which collides with strict mode at every read site.
+# We relax strict checks in modules that wrap supabase responses — the
+# Pydantic models at the API boundary (FactResponse, ProfileResponse, etc.)
+# still validate shape at runtime. When we introduce a typed wrapper
+# around supabase reads (Phase 3 candidate), these overrides can shrink.
+[[tool.mypy.overrides]]
+module = [
+    "app.api.clients",
+    "app.api.facts",
+    "app.api.operators",
+    "app.api.profile",
+    "app.services.store",
+    "app.services.extraction_pipeline",
+    "app.ai.extraction",
+    "app.ai.profile",
+    "app.ai.providers.anthropic",
+]
+disallow_untyped_calls = false
+warn_return_any = false
+disable_error_code = [
+    "arg-type",
+    "index",
+    "call-overload",
+    "union-attr",
+    "type-arg",
+    "return-value",
+]
