@@ -6,6 +6,40 @@ Format: `## [SemVer] — YYYY-MM-DD`. Most recent first.
 
 ---
 
+## [0.3.0] — 2026-05-19
+
+**Ingestion — drop a transcript or voice memo, get a profile update.**
+
+What you can now do, end-to-end:
+
+- Open a client → Upload tab → drop a transcript file (`.txt` / `.vtt` / `.srt`) or an audio file (`.mp3` / `.m4a` / `.wav` / `.ogg` / `.webm`) → the system stores it, transcribes if audio, extracts structured facts, regenerates the profile. A status card walks you through Queued → Transcribing → Extracting → Done so you can leave the page and come back.
+- For multi-party transcripts (meetings, viewings), pick the **Transcript** option — AssemblyAI's diarization labels speakers and the extractor knows to prefer the client's own words over the operator's claims about the client when writing source spans.
+- For solo reflections (the voice memo you record walking back to the car), pick the **Voice memo** option — diarization is skipped (one speaker) and the prompt treats your words as the source.
+- When extraction finishes, the status card links straight to the Facts tab so you can accept/reject the new facts and see the updated profile.
+
+Under the hood:
+
+- AssemblyAI Universal-2 for transcription (October 2025 added mid-utterance code-switching — handles English / Mandarin / Singlish mixes cleanly). Wrapped in a `TranscriptionService` so swapping to Whisper / Deepgram is a constructor change.
+- Async pipeline: POST /uploads stores to Supabase Storage, inserts an `ingestion_jobs` row, schedules a FastAPI BackgroundTask. The job table IS the durability layer — if a worker dies mid-flight, the row stays at its last set state (a Plan 3.5 watchdog will surface stuck jobs for retry).
+- Text transcripts skip transcription; the worker downloads the bytes from Storage and goes straight to extraction.
+- Audio uploads use signed Supabase URLs to feed AssemblyAI — no streaming bytes through the backend (keeps memory low on Render).
+- `ExtractionPipeline` gained a new `extract_for_event()` entry so the ingestion worker can reuse Plan 2's match/persist/profile-regen path without re-inserting the event.
+- New migrations: `0011_ingestion_jobs` (state machine + RLS), `0012_ingestion_uploads_bucket` (Supabase Storage bucket with 100MB cap, mime allowlist, per-operator folder RLS).
+
+Testing the seam:
+
+- 88 backend pytest (31 new)
+- 10 web Vitest unit tests (4 new)
+- 3 Playwright E2E specs (1 new — `upload-extraction.spec.ts`; skip in CI, run locally with real keys)
+
+Known quirks:
+
+- AssemblyAI is US-only (no APAC region). Plan 3.5 will add a one-line PDPA disclosure to operator onboarding when the first external SG agent signs up.
+- AssemblyAI key needs to be in `backend/.env` as `ASSEMBLYAI_API_KEY`. Same `load_dotenv` precedence gotcha as `ANTHROPIC_API_KEY` — if your shell has the var exported with an old value, `.env` is ignored. `unset ASSEMBLYAI_API_KEY` before starting the backend, or rely on Render setting it in prod.
+- Multi-party audio diarization quality depends on recording conditions; speaker labels are A/B/C (no name mapping). Operator-vs-client attribution uses a "most words wins" heuristic in the prompt — works for typical viewings but may be wrong if the operator talks less.
+
+---
+
 ## [0.2.0] — 2026-05-18
 
 **Core Knowledge Base — operator can teach the system, the system synthesizes a profile.**
