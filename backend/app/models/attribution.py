@@ -3,7 +3,6 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-
 Surface = Literal[
     "web_dashboard", "whatsapp_webhook", "voice_upload",
     "file_drop", "manual_note", "system_cron",

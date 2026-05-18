@@ -3,7 +3,6 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-
 RelationshipType = Literal[
     "buyer", "seller", "landlord", "tenant", "investor",
     "commercial_landlord", "commercial_tenant", "referral_partner", "other",

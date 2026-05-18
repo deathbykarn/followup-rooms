@@ -2,7 +2,7 @@
 
 **IMPORTANT:** Read this file before writing ANY SQL migration.
 
-Last updated: 2026-05-18 (Foundation plan complete)
+Last updated: 2026-05-18 (Core KB Layer plan complete — Plan 2)
 
 ---
 
@@ -49,6 +49,9 @@ RLS: ENABLED. Operator sees only their own row. No DELETE policy.
 | status | TEXT | CHECK (new_lead/active_discussion/...) |
 | tags | TEXT[] | DEFAULT '{}' |
 | short_context | TEXT | NOT NULL, CHECK (length >= 20) — cold-start mitigation (design doc §5.7) |
+| internal_profile_md | TEXT | nullable — operator-only synthesized profile (migration 0010, Plan 2) |
+| client_facing_profile_md | TEXT | nullable — shareable profile, sensitive sections filtered out (Plan 2) |
+| profile_regenerated_at | TIMESTAMPTZ | nullable — last successful ProfileService run |
 | is_deleted | BOOLEAN | DEFAULT FALSE |
 | deleted_at | TIMESTAMPTZ | nullable |
 | transaction_time | TIMESTAMPTZ | bi-temporal |
@@ -235,3 +238,9 @@ Placeholder view. Returns 0 rows in Phase 1 (WHERE FALSE). Plan 6 populates with
 - Add `transaction_time` to tables that need bi-temporal querying
 - Wrap append-only fields in BEFORE UPDATE triggers (Pattern 21)
 - Apply RLS in a single dedicated migration after table creation (current pattern: migration 0008)
+
+---
+
+## Migration tracking
+
+`apply_migrations.py` records every applied filename in `public._migrations` (filename PK + applied_at). Re-runs are idempotent — only un-applied files execute. To force a re-run, delete the relevant row from `_migrations` first.

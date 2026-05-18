@@ -37,12 +37,17 @@ export default async function DashboardHome() {
       ) : (
         <ul className="space-y-3">
           {clients.map((c) => (
-            <li key={c.id} className="bg-white rounded-lg border p-4">
-              <h3 className="font-medium">{c.client_name}</h3>
-              <p className="text-sm text-gray-600 mt-1">{c.short_context}</p>
-              <p className="text-xs text-gray-500 mt-2">
-                Status: {c.status}
-              </p>
+            <li key={c.id}>
+              <Link
+                href={`/dashboard/clients/${c.id}`}
+                className="block bg-white rounded-lg border p-4 hover:border-gray-400 hover:shadow-sm transition"
+              >
+                <h3 className="font-medium">{c.client_name}</h3>
+                <p className="text-sm text-gray-600 mt-1">{c.short_context}</p>
+                <p className="text-xs text-gray-500 mt-2">
+                  Status: {c.status}
+                </p>
+              </Link>
             </li>
           ))}
         </ul>
