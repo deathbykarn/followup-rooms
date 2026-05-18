@@ -2,7 +2,7 @@
 
 **IMPORTANT:** Read this file before writing ANY SQL migration.
 
-Last updated: 2026-05-18 (Core KB Layer plan complete — Plan 2)
+Last updated: 2026-05-19 (Ingestion plan complete — Plan 3)
 
 ---
 
@@ -225,6 +225,50 @@ RLS: per-operator (SELECT + INSERT only).
 ## rooms_public (view)
 
 Placeholder view. Returns 0 rows in Phase 1 (WHERE FALSE). Plan 6 populates with a `rooms` table holding `public_slug` + `passcode_hash` + room metadata.
+
+---
+
+## ingestion_jobs
+
+| Column | Type | Notes |
+|--------|------|-------|
+| id | UUID | PK, DEFAULT gen_random_uuid() |
+| operator_id | UUID | NOT NULL, FK operators(id), ON DELETE CASCADE |
+| client_id | UUID | NOT NULL, FK clients(id), ON DELETE RESTRICT |
+| upload_type | TEXT | CHECK (transcript/voice_memo) |
+| storage_path | TEXT | NOT NULL — `<operator_id>/<job_id>/<filename>` |
+| original_filename | TEXT | NOT NULL |
+| mime_type | TEXT | NOT NULL |
+| size_bytes | BIGINT | CHECK (> 0) |
+| state | TEXT | CHECK (queued/transcribing/extracting/done/failed) — DEFAULT 'queued' |
+| error_message | TEXT | populated when state='failed' |
+| error_code | TEXT | CHECK (transcription_failed/extraction_failed/storage_failed/unknown) |
+| transcript_text | TEXT | populated after transcription (or download for text uploads) |
+| event_id | UUID | FK events(id) — populated after event creation |
+| transcription_metadata | JSONB | DEFAULT '{}' — provider/model/duration/language/speaker_count |
+| started_at | TIMESTAMPTZ | when worker began processing |
+| completed_at | TIMESTAMPTZ | when state transitioned to done or failed |
+| created_at | TIMESTAMPTZ | |
+| updated_at | TIMESTAMPTZ | auto-updated via trigger |
+
+Indexes:
+- `idx_ingestion_jobs_operator_recent` on `(operator_id, created_at DESC)`
+- `idx_ingestion_jobs_client_recent` on `(client_id, created_at DESC)`
+- `idx_ingestion_jobs_active` partial on `(state, created_at)` WHERE state IN ('queued', 'transcribing', 'extracting')
+
+RLS: per-operator (SELECT + INSERT + UPDATE). No DELETE policy — jobs persist as audit trail. State machine is walked by `IngestionWorker.run()` in a FastAPI BackgroundTask.
+
+---
+
+## Storage buckets
+
+### ingestion-uploads (migration 0012)
+
+- Private (`public = false`); 100MB file size limit
+- Allowed mime types: text/plain, text/vtt, application/x-subrip, audio/mpeg, audio/mp4, audio/x-m4a, audio/wav, audio/x-wav, audio/ogg, audio/webm, audio/aac
+- Path convention: `<operator_id>/<ingestion_job_id>/<original_filename>`
+- RLS on `storage.objects` (2 policies): SELECT + INSERT both check `(storage.foldername(name))[1] = auth.uid()::text`
+- No UPDATE/DELETE — uploads are append-only (Pattern 21). Hard delete via service-role cleanup tooling only (Phase 4+).
 
 ---
 

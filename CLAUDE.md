@@ -110,34 +110,36 @@ followup-rooms/
 
 ## Status
 
-**Phase: Phase 2 — Core KB Layer complete (2026-05-18).**
+**Phase: Phase 3 — Ingestion (transcript + voice) complete (2026-05-19).**
 
-What's standing (Plan 1 + Plan 2):
+What's standing (Plans 1 + 2 + 3):
 - Deployable backend (FastAPI on Render) + frontend (Next.js 16 on Vercel) shells
-- Supabase schema: 7 tables + 1 view + clients profile columns (10 migrations applied; `_migrations` tracking table for idempotent re-runs)
+- Supabase schema: 8 tables + 1 view + clients profile columns + ingestion_jobs (12 migrations applied; `_migrations` tracking table)
+- Storage bucket `ingestion-uploads` with per-operator RLS (100MB cap, text + audio mimes)
 - Forward-compatibility hooks per design doc §8 (append-only triggers, soft-delete + bi-temporal, per-principal attribution, `store()` write path, `AgentDispatcher`, visibility tiers)
 - Auth: Supabase Auth + `@supabase/ssr` with cross-user session leak prevention (request-scoped factories)
-- **Extraction pipeline (Plan 2):** POST /events → ExtractionService (Anthropic + instructor) → MatchingService (ADD/UPDATE/NOOP/DELETE) → fact persistence → ProfileService regenerates both `internal_profile_md` + `client_facing_profile_md` (sensitive-fact filter for client view)
-- **Operator dashboard:** client list → client detail with tabs (Overview / Add note / Facts / Profile); FactCard with Accept/Reject; ProfileViewer toggles internal vs client_facing + Regenerate
+- **Extraction pipeline (Plan 2):** POST /events → ExtractionService (Anthropic + instructor) → MatchingService (ADD/UPDATE/NOOP/DELETE) → fact persistence → ProfileService regenerates both `internal_profile_md` + `client_facing_profile_md`
+- **Ingestion pipeline (Plan 3):** POST /uploads (multipart) → Supabase Storage → BackgroundTask worker walks queued → transcribing (AssemblyAI Universal-2 + diarization) → extracting (reuses Plan 2 pipeline via new `extract_for_event` entry) → done. Text transcripts skip transcription; voice memos disable diarization
+- **Operator dashboard:** client list → client detail with tabs (Overview / Add note / Upload / Facts / Profile); FactCard with Accept/Reject; ProfileViewer toggles internal vs client_facing + Regenerate; UploadForm with react-dropzone + IngestionStatusCard polling state
 - DESIGN.md + PRODUCT.md authored (Impeccable deferred to Phase 1.5)
-- Tests: 57 backend (pytest, all pass), 6 frontend unit (Vitest), 2 E2E specs (Playwright; skip in CI, run locally with backend + real ANTHROPIC_API_KEY)
+- Tests: 88 backend (pytest), 10 frontend unit (Vitest), 3 E2E specs (Playwright; skip in CI, run locally with backend + real ANTHROPIC_API_KEY)
 - CI: backend + web GitHub Actions workflows
 
-Plan 2 deviations / decisions in `docs/decisions/decision-ledger.md`:
-- Extraction synchronous in POST /events (queue deferred to Phase 3 when volume justifies)
-- Internal vs client_facing profiles as 2 TEXT columns on clients (not a separate table)
-- Backend URL: `NEXT_PUBLIC_BACKEND_API_URL` (frontend calls FastAPI directly with Supabase JWT)
+Plan 3 decisions in `docs/decisions/decision-ledger.md`:
+- AssemblyAI Universal-2 for transcription (best diarization + code-switching for SG market); PDPA mitigation via onboarding disclosure (Plan 3.5)
+- FastAPI BackgroundTasks for async; ingestion_jobs table IS the durability layer (Arq+Redis deferred to scale signal)
+
+Plan 2 decisions (still active):
+- Sync extraction in POST /events; profile columns on clients (not separate table); NEXT_PUBLIC_BACKEND_API_URL for frontend→FastAPI calls
 
 Plan 1 deviations (still active):
-- Python 3.14.4 (not 3.12.7) — matches local + Render
-- Next.js 16 (not 15) — brings `middleware.ts → proxy.ts` rename
-- Tremor skipped — requires React 18; Phase 2 revisit deferred (no dashboards needed yet)
-- Dashboard at `/dashboard` (not `/`)
+- Python 3.14.4 (not 3.12.7); Next.js 16 (proxy.ts not middleware.ts); Tremor skipped (React 18); dashboard at `/dashboard`
 
 Next:
-- Plan 3 — Ingestion channels (WhatsApp forwarding with operator commit, transcript upload, voice memo upload)
+- Plan 4 — WhatsApp ingestion (Shape X forwarding with operator commit; Meta Cloud API + webhook + push notifications)
 
 References:
 - Design doc: `docs/superpowers/specs/2026-05-18-followroom-architecture-design.md`
-- Plans: `docs/superpowers/plans/2026-05-18-foundation.md`, `docs/superpowers/plans/2026-05-18-core-kb-layer.md`
+- Plans: foundation, core-kb-layer, ingestion-transcript-voice in `docs/superpowers/plans/`
+- Findings: `docs/findings/2026-05-18-assemblyai-validation.md`
 - Schema: `supabase/SCHEMA_REFERENCE.md`

@@ -10,6 +10,33 @@ Categories: `ARCH` (architecture), `PROD` (product), `DATA` (database), `UX` (us
 
 ## Active Decisions
 
+### [2026-05-19] AI: AssemblyAI Universal-2 as Phase 3 transcription provider
+
+**Context:** Plan 3 needs a transcription provider for voice memos and multi-party audio transcripts. SG real estate operators speak English, Mandarin, and Singlish — often code-switching mid-utterance. Need diarization for viewings (operator + buyer + spouse). Three viable options: AssemblyAI Universal-2, Deepgram Nova-3, OpenAI Whisper API (no native diarization).
+
+**Decision:** AssemblyAI Universal-2 with `speaker_labels=true` for transcript uploads, `speaker_labels=false` for voice memos. Wrapped in `TranscriptionService` (Pattern 20 — Vendor Agnostic) so swapping providers is a constructor change. Findings recorded in `docs/findings/2026-05-18-assemblyai-validation.md`.
+
+**Rationale:**
+- October 2025 release added automatic mid-utterance code-switching — strong fit for Singlish/English-Mandarin mixing in SG conversations.
+- Native speaker diarization (vs Whisper + PyAnnote post-process).
+- Pricing trivial for early validation (~$0.17/hr with diarization; $50 free credit ~ 185 hrs).
+- US-only data residency is a soft finding (same for Deepgram); mitigation = PDPA disclosure in operator onboarding when first external agent signs up. Plan 3.5 captures the follow-up.
+
+**Link:** `backend/app/ai/providers/assemblyai.py`; `docs/findings/2026-05-18-assemblyai-validation.md`
+
+### [2026-05-19] OPS: FastAPI BackgroundTasks for Plan 3 async ingestion (defer Arq/Redis to scale signal)
+
+**Context:** POST /uploads needs to return 202 immediately while transcription + extraction run async. Options: FastAPI BackgroundTasks (in-process, dies with worker), Arq/Celery + Redis (durable queue, more infra), Supabase Edge Functions (deno, cold starts, hard to share Python).
+
+**Decision:** FastAPI BackgroundTasks for Phase 3. Job state lives in `ingestion_jobs.state` — the table IS the durability layer. If a BackgroundTask dies mid-flight (Render restart, OOM), the row stays at its last set state; a future watchdog endpoint surfaces stuck jobs for operator retry (Plan 3.5).
+
+**Rationale:**
+- Single-Render-instance + 1-3 early-validation agents = the failure modes Arq solves don't exist yet.
+- The `_run_worker` factory creates a fresh `IngestionWorker` with a fresh service-role supabase client per task (matches request-scoped client pattern; no shared state issues).
+- Migration to Arq when (a) we hit 10+ agents, (b) transcripts > 10min frequently fail mid-flight, or (c) a multi-Render-instance deploy lands.
+
+**Link:** `backend/app/services/ingestion_worker.py`; `backend/app/api/uploads.py`
+
 ### [2026-05-18] AI: Phase 2 extraction synchronous in POST /events (deferred queue to Phase 3)
 
 **Context:** Plan 2 needed to choose between synchronous extraction (the POST /events handler calls Anthropic before returning) vs an async job queue. Synchronous keeps the architecture flat; async insulates the user from latency spikes and Anthropic outages.
