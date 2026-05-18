@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     # AI providers
     anthropic_api_key: str
     openai_api_key: str
+    assemblyai_api_key: str
 
     # Runtime
     env: str = "development"

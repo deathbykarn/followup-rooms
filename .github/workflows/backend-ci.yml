@@ -44,4 +44,5 @@ jobs:
           SUPABASE_DB_URL: postgresql://ci
           ANTHROPIC_API_KEY: ci-ant
           OPENAI_API_KEY: ci-oa
+          ASSEMBLYAI_API_KEY: ci-aai
         run: pytest -v --cov=app --cov-report=term-missing
