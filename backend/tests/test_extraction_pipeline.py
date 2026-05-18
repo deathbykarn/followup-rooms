@@ -126,17 +126,7 @@ def test_extract_for_event_skips_event_insert_and_forwards_speaker_labels():
     # The extractor must receive the speaker_labels passthrough.
     _, kwargs = fake_extraction.extract.call_args
     assert kwargs["speaker_labels"] == "Speaker A: 200 words / Speaker B: 80 words"
-    # And we never called .insert() on events (no new event row).
-    insert_targets = [c.args[0] for c in fake_supabase.table.call_args_list
-                      if c.kwargs.get("insert") or True]
-    # The two inserts that DO happen are facts (one ADD) — never events.
-    insert_calls_to_events = [
-        c for c in fake_supabase.table.call_args_list
-        if c.args == ("events",)
-        and fake_supabase.table.return_value.insert.called
-    ]
-    # Soft assertion: no event insert was triggered for this path.
-    # (We can't easily distinguish read vs write on the chained mock, so we
-    # rely on the absence of an event_id mutation downstream — verified by
-    # the returned event_id being the pre-existing one.)
-    assert insert_calls_to_events is not None  # placeholder; the strong check is the returned event_id above
+    # No event insert was triggered for this path — the strong check is
+    # that result.event_id matches the caller-provided id (verified above).
+    # The chained MagicMock can't distinguish read vs write per-table, so we
+    # rely on the round-trip of the pre-existing event_id as the contract.
