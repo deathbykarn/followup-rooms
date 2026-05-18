@@ -73,6 +73,7 @@ module = [
     "app.services.extraction_pipeline",
     "app.services.ingestion_worker",
     "app.services.storage",
+    "app.services.whatsapp_webhook",
     "app.ai.extraction",
     "app.ai.profile",
     "app.ai.providers.anthropic",
