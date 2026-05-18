@@ -1,0 +1,3 @@
+-- FollowRoom — consolidated schema view
+-- Generated from migrations/. Do not edit by hand.
+-- Empty until the first migration lands.

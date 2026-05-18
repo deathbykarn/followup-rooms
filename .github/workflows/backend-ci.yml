@@ -1,0 +1,47 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14.4"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install deps
+        run: |
+          pip install -e ".[dev]"
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Typecheck
+        run: mypy app
+
+      - name: Test
+        env:
+          SUPABASE_URL: https://ci.supabase.co
+          SUPABASE_ANON_KEY: ci-anon
+          SUPABASE_SERVICE_ROLE_KEY: ci-service
+          SUPABASE_DB_URL: postgresql://ci
+          ANTHROPIC_API_KEY: ci-ant
+          OPENAI_API_KEY: ci-oa
+        run: pytest -v --cov=app --cov-report=term-missing
