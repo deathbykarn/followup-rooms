@@ -7,6 +7,7 @@ from app.api import (
     facts,
     health,
     operators,
+    pending_forwards,
     profile,
     uploads,
     whatsapp_webhook,
@@ -36,6 +37,7 @@ def create_app() -> FastAPI:
     app.include_router(profile.router)
     app.include_router(uploads.router)
     app.include_router(whatsapp_webhook.router)
+    app.include_router(pending_forwards.router)
     return app
 
 

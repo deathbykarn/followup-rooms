@@ -70,6 +70,7 @@ module = [
     "app.api.profile",
     "app.api.uploads",
     "app.api.whatsapp_webhook",
+    "app.api.pending_forwards",
     "app.services.store",
     "app.services.extraction_pipeline",
     "app.services.ingestion_worker",
