@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 const TABS = [
   { href: "", label: "Overview" },
   { href: "/add-note", label: "Add note" },
+  { href: "/upload", label: "Upload" },
   { href: "/facts", label: "Facts" },
   { href: "/profile", label: "Profile" },
 ];
