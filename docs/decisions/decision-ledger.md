@@ -10,6 +10,26 @@ Categories: `ARCH` (architecture), `PROD` (product), `DATA` (database), `UX` (us
 
 ## Active Decisions
 
+### [2026-05-18] AI: Phase 2 extraction synchronous in POST /events (deferred queue to Phase 3)
+
+**Context:** Plan 2 needed to choose between synchronous extraction (the POST /events handler calls Anthropic before returning) vs an async job queue. Synchronous keeps the architecture flat; async insulates the user from latency spikes and Anthropic outages.
+
+**Decision:** Phase 2 ships synchronous. POST /events runs ExtractionPipeline (extract + match + persist + profile regen) inline; the response carries facts_added/updated/noop/deleted counters and profile_regenerated bool so the UI shows an immediate receipt. Phase 3 introduces a queue when volume (multiple WhatsApp events / transcripts per minute) or reliability concerns (Anthropic outages blocking the form) justify it.
+
+**Rationale:** Phase 1 volume is per-operator manual notes — latency budget (~3-8s extraction + 5-15s profile regen) is acceptable in exchange for the simpler debug path. The receipt UX also reinforces operator trust: they see exactly what the model did. Queueing now would force premature design of retry / dead-letter / poll-status patterns with no real workload to validate against.
+
+**Link:** `docs/superpowers/plans/2026-05-18-core-kb-layer.md` §ExtractionPipeline; `backend/app/services/extraction_pipeline.py`
+
+### [2026-05-18] DATA: Internal vs client_facing profiles as 2 TEXT columns on clients (not separate table)
+
+**Context:** Plan 2 needed to decide where to store the two profile markdown views (internal: operator-only, includes spouse/emotional/blocker facts; client_facing: filtered, shareable). Options: separate `client_profiles` table with a row per view; two TEXT columns on `clients`.
+
+**Decision:** Two TEXT columns on `clients` — `internal_profile_md`, `client_facing_profile_md`, plus `profile_regenerated_at`. Migration 0010. ProfileService writes both on every regenerate; SENSITIVE_FACT_TYPES filter at the service layer guarantees the client_facing view never contains spouse_family_factor / emotional_hesitation / decision_blocker.
+
+**Rationale:** profiles are 1:1 with clients and always regenerated together — a separate table adds JOIN cost with no flexibility win. The structural guard against leakage lives in code (SENSITIVE_FACT_TYPES) backed by tests, not schema. Phase 3 (agency tier) may add a third `agency_visible_profile_md` column or move to a separate table if profile fan-out grows.
+
+**Link:** `supabase/migrations/0010_clients_profile_columns.sql`; `backend/app/ai/profile.py`
+
 ### [2026-05-18] OPS: Python 3.14 (not 3.12) for backend runtime
 
 **Context:** Foundation plan originally pinned Python 3.12.7. During execution, implementer subagent reported BLOCKED — local machine only has Python 3.14.4 (no 3.12 installed). Pragmatic options: install 3.12 locally vs update plan to 3.14.

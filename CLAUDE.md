@@ -110,30 +110,34 @@ followup-rooms/
 
 ## Status
 
-**Phase: Phase 1 — Foundation complete (2026-05-18).**
+**Phase: Phase 2 — Core KB Layer complete (2026-05-18).**
 
-What's standing:
+What's standing (Plan 1 + Plan 2):
 - Deployable backend (FastAPI on Render) + frontend (Next.js 16 on Vercel) shells
-- Supabase schema: 7 tables + 1 view (`operators`, `clients`, `events`, `facts`, `room_attachments`, `attributions`, `visibility_promotions`, + `rooms_public` placeholder)
-- Forward-compatibility hooks baked in per design doc §8: append-only triggers (raw_text + attachment file identity), soft-delete + bi-temporal columns, per-principal attribution from Day 1, single `store()` write path, vendor-agnostic `AgentDispatcher`, visibility tiers
+- Supabase schema: 7 tables + 1 view + clients profile columns (10 migrations applied; `_migrations` tracking table for idempotent re-runs)
+- Forward-compatibility hooks per design doc §8 (append-only triggers, soft-delete + bi-temporal, per-principal attribution, `store()` write path, `AgentDispatcher`, visibility tiers)
 - Auth: Supabase Auth + `@supabase/ssr` with cross-user session leak prevention (request-scoped factories)
-- First user flow: signup → email verify → log in → create client with required short_context → see client in dashboard
+- **Extraction pipeline (Plan 2):** POST /events → ExtractionService (Anthropic + instructor) → MatchingService (ADD/UPDATE/NOOP/DELETE) → fact persistence → ProfileService regenerates both `internal_profile_md` + `client_facing_profile_md` (sensitive-fact filter for client view)
+- **Operator dashboard:** client list → client detail with tabs (Overview / Add note / Facts / Profile); FactCard with Accept/Reject; ProfileViewer toggles internal vs client_facing + Regenerate
 - DESIGN.md + PRODUCT.md authored (Impeccable deferred to Phase 1.5)
-- Tests: 14 backend (pytest, all pass), 2 frontend unit (Vitest), 1 E2E stub (Playwright; runs against real Supabase locally)
+- Tests: 57 backend (pytest, all pass), 6 frontend unit (Vitest), 2 E2E specs (Playwright; skip in CI, run locally with backend + real ANTHROPIC_API_KEY)
 - CI: backend + web GitHub Actions workflows
 
-Deviations from plan documented in `docs/decisions/decision-ledger.md`:
+Plan 2 deviations / decisions in `docs/decisions/decision-ledger.md`:
+- Extraction synchronous in POST /events (queue deferred to Phase 3 when volume justifies)
+- Internal vs client_facing profiles as 2 TEXT columns on clients (not a separate table)
+- Backend URL: `NEXT_PUBLIC_BACKEND_API_URL` (frontend calls FastAPI directly with Supabase JWT)
+
+Plan 1 deviations (still active):
 - Python 3.14.4 (not 3.12.7) — matches local + Render
-- Next.js 16 (not 15) — `create-next-app@latest` installs current; brings `middleware.ts → proxy.ts` rename
-- Tremor skipped — requires React 18, blocks Next.js 16's React 19; Phase 2 territory
-- shadcn `form` skipped — not in current Nova preset; Phase 1 uses raw `useState`
-- Dashboard at `/dashboard` (not `/`) — route conflict with landing page
+- Next.js 16 (not 15) — brings `middleware.ts → proxy.ts` rename
+- Tremor skipped — requires React 18; Phase 2 revisit deferred (no dashboards needed yet)
+- Dashboard at `/dashboard` (not `/`)
 
 Next:
-- Plan 2 — Core KB Layer (extraction pipeline, ADD/UPDATE/DELETE/NOOP, profile regeneration)
-- See `.claude/session-state.md` for resume context
+- Plan 3 — Ingestion channels (WhatsApp forwarding with operator commit, transcript upload, voice memo upload)
 
 References:
 - Design doc: `docs/superpowers/specs/2026-05-18-followroom-architecture-design.md`
-- Plan: `docs/superpowers/plans/2026-05-18-foundation.md`
+- Plans: `docs/superpowers/plans/2026-05-18-foundation.md`, `docs/superpowers/plans/2026-05-18-core-kb-layer.md`
 - Schema: `supabase/SCHEMA_REFERENCE.md`
