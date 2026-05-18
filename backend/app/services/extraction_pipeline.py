@@ -63,7 +63,10 @@ class ExtractionPipeline:
         source_type: str,
         raw_text: str,
     ) -> PipelineResult:
-        # 1. Insert event
+        """
+        Manual-note style: insert the event row inline, then run extraction.
+        Used by POST /events (Plan 2).
+        """
         event_insert = (
             self._db.table("events")
             .insert({
@@ -75,8 +78,27 @@ class ExtractionPipeline:
             .execute()
         )
         event_id = event_insert.data[0]["id"]
+        return self.extract_for_event(
+            operator_id=operator_id,
+            client_id=client_id,
+            event_id=event_id,
+            raw_text=raw_text,
+        )
 
-        # 2. Fetch client context for the prompt
+    def extract_for_event(
+        self,
+        operator_id: str,
+        client_id: str,
+        event_id: str,
+        raw_text: str,
+        speaker_labels: str | None = None,
+    ) -> PipelineResult:
+        """
+        Run extraction for an event the caller already inserted (Plan 3
+        ingestion worker path). `speaker_labels`, when provided, is a
+        formatted block prepended to the extraction prompt so Claude knows
+        which speaker is the operator vs the client.
+        """
         client_row = (
             self._db.table("clients")
             .select("client_name, short_context")
@@ -90,11 +112,11 @@ class ExtractionPipeline:
             else ""
         )
 
-        # 3. Extract facts
         extraction_result = self._extraction.extract(
             event_id=event_id,
             raw_text=raw_text,
             client_context=client_context,
+            speaker_labels=speaker_labels,
         )
 
         result = PipelineResult(
@@ -102,7 +124,6 @@ class ExtractionPipeline:
             extracted_facts=list(extraction_result.facts),
         )
 
-        # 4. Match + apply per fact
         for extracted in extraction_result.facts:
             existing = self._fetch_active_facts_of_type(client_id, extracted.type)
             decision = self._matching.decide(extracted, existing)
@@ -121,7 +142,6 @@ class ExtractionPipeline:
                 # Phase 2.5: mark prior fact superseded with deletion_reason
                 result.facts_deleted += 1
 
-        # 5. Regenerate profile if anything changed
         if result.facts_added or result.facts_updated or result.facts_deleted:
             self._regenerate_profile(client_id)
             result.profile_regenerated = True

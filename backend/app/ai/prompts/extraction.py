@@ -46,21 +46,45 @@ Hard rules:
 """
 
 
+SPEAKER_ATTRIBUTION_BLOCK = """
+SPEAKER ATTRIBUTION (multi-party transcript)
+The source text below is a transcript with speaker labels. Heuristic: the speaker with the most words is usually the operator (real estate agent — they ask the questions). Other speakers are the client and possibly the client's family members.
+
+When extracting facts about the CLIENT:
+- Prefer claims that come from the client's own speech (their own words about budget, preferences, family dynamics) over claims the operator makes ABOUT the client.
+- For source_spans, quote the client's words verbatim when available; fall back to the operator's words only when the client did not speak the fact themselves.
+- A `follow_up_promise` fact attributes to the operator (the operator made the promise); other fact types attribute to the client unless context makes clear otherwise.
+
+Speaker word counts (for the heuristic):
+{speaker_summary}
+"""
+
+
 def build_extraction_prompt(
     event_id: str,
     raw_text: str,
     client_context: str,
+    speaker_labels: str | None = None,
 ) -> str:
     """
     Build a single user-message prompt for the extractor.
 
+    `speaker_labels`, when provided, is a pre-formatted summary like
+    "Speaker A: 1240 words / Speaker B: 380 words" used by the
+    SPEAKER_ATTRIBUTION_BLOCK to hint operator-vs-client identity.
+
     Returns the prompt string. The caller wraps it with the SYSTEM
     message and the structured-output schema via instructor.
     """
+    attribution = (
+        SPEAKER_ATTRIBUTION_BLOCK.format(speaker_summary=speaker_labels)
+        if speaker_labels
+        else ""
+    )
     return f"""{FACT_TYPE_DESCRIPTIONS}
 
 {EXTRACTION_INSTRUCTIONS}
-
+{attribution}
 ---
 
 Client context (background — do NOT treat as source for facts; only the raw_text below is sourceable):
