@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import health
+from app.api import clients, health, operators
 
 
 def create_app() -> FastAPI:
@@ -11,7 +11,6 @@ def create_app() -> FastAPI:
         description="Phase 1 foundation API",
     )
 
-    # CORS — tightened in later tasks once we know the frontend origin
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["http://localhost:3000"],
@@ -21,6 +20,8 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(health.router)
+    app.include_router(operators.router)
+    app.include_router(clients.router)
     return app
 
 
