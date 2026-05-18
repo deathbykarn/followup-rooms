@@ -36,7 +36,10 @@ async def ingest_event(
     if payload.source_type != "manual_note":
         raise HTTPException(
             status_code=400,
-            detail=f"source_type '{payload.source_type}' not supported in Phase 2; only 'manual_note'",
+            detail=(
+                f"source_type '{payload.source_type}' not supported in Phase 2;"
+                " only 'manual_note'"
+            ),
         )
 
     pipeline = _build_pipeline()

@@ -10,7 +10,6 @@ Two views are PHYSICALLY SEPARATED (design doc §6.4 — Tier 3 safety):
 """
 from typing import Any, Literal
 
-
 ProfileView = Literal["internal", "client_facing"]
 
 

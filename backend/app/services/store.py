@@ -12,7 +12,6 @@ from supabase import Client
 
 from app.models.attribution import Attribution
 
-
 _VALID_ARTIFACT_TYPES = {
     "event", "fact", "room_attachment", "room_update_draft",
     "client", "operator",

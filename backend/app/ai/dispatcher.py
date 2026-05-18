@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from app.ai.providers.anthropic import AnthropicProvider
@@ -7,7 +7,7 @@ from app.ai.providers.base import Provider
 from app.ai.providers.openai import OpenAIProvider
 
 
-class LogicalRole(str, Enum):
+class LogicalRole(StrEnum):
     """
     Logical roles separate business logic from vendor coupling
     (Pattern 20 — Vendor Agnostic; design doc §8.5).

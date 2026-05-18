@@ -18,7 +18,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.config import get_settings  # noqa: E402
 
-
 TRACKING_TABLE_DDL = """
 CREATE TABLE IF NOT EXISTS public._migrations (
     filename TEXT PRIMARY KEY,

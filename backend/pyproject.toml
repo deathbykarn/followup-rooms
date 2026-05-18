@@ -40,6 +40,14 @@ target-version = "py314"
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
 
+[tool.ruff.lint.per-file-ignores]
+# Prompt templates contain long natural-language instructions where
+# breaking lines mid-sentence harms readability and risks subtle
+# tokenization changes. Tests use long mock chains / inline fixtures
+# that read better as single statements.
+"app/ai/prompts/*.py" = ["E501"]
+"tests/*.py" = ["E501"]
+
 [tool.mypy]
 python_version = "3.14"
 strict = true

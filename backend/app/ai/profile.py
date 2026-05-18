@@ -14,7 +14,6 @@ from pydantic import BaseModel
 from app.ai.dispatcher import AgentDispatcher, LogicalRole
 from app.ai.prompts.profile import PROFILE_SYSTEM, ProfileView, build_profile_prompt
 
-
 # Fact types that are NEVER visible in the client_facing profile
 SENSITIVE_FACT_TYPES = {
     "spouse_family_factor",

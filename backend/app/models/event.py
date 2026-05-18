@@ -3,7 +3,6 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-
 SourceType = Literal[
     "meeting_transcript",
     "voice_memo",

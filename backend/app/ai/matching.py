@@ -10,13 +10,13 @@ Phase 3 (Zettel link-graph) replaces string equality with semantic
 similarity over the link-graph + Haiku-as-judge for ambiguous cases.
 """
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from app.models.fact import ExtractedFact
 
 
-class MatchAction(str, Enum):
+class MatchAction(StrEnum):
     ADD = "add"
     UPDATE = "update"
     DELETE = "delete"
