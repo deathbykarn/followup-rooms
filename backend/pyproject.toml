@@ -68,6 +68,7 @@ module = [
     "app.api.facts",
     "app.api.operators",
     "app.api.profile",
+    "app.api.uploads",
     "app.services.store",
     "app.services.extraction_pipeline",
     "app.services.ingestion_worker",
