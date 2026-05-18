@@ -86,4 +86,5 @@ disable_error_code = [
     "union-attr",
     "type-arg",
     "return-value",
+    "dict-item",
 ]

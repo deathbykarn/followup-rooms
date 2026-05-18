@@ -9,7 +9,7 @@ GET  /uploads/{id}           — fetch a single job (poll target).
 GET  /uploads?client_id=...  — recent jobs for a client (status feed).
 """
 import logging
-from typing import Literal
+from typing import Annotated, Literal
 
 from fastapi import (
     APIRouter,
@@ -55,9 +55,9 @@ def _run_worker(job_id: str) -> None:
 @router.post("", status_code=status.HTTP_202_ACCEPTED, response_model=IngestionJobResponse)
 async def create_upload(
     background_tasks: BackgroundTasks,
-    file: UploadFile = File(...),
-    client_id: str = Form(...),
-    upload_type: Literal["transcript", "voice_memo"] = Form(...),
+    file: Annotated[UploadFile, File(...)],
+    client_id: Annotated[str, Form(...)],
+    upload_type: Annotated[Literal["transcript", "voice_memo"], Form(...)],
     operator_id: str = Depends(get_current_operator_id),
 ) -> IngestionJobResponse:
     content = await file.read()
