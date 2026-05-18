@@ -1,14 +1,10 @@
 import hashlib
 import hmac
-import json
 from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock
 
-import pytest
-
 from app.models.whatsapp import WhatsAppWebhookPayload
 from app.services.whatsapp_webhook import WebhookService
-
 
 APP_SECRET = "test-app-secret"
 

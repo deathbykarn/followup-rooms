@@ -10,7 +10,6 @@ from app.models.whatsapp import (
     WhatsAppWebhookPayload,
 )
 
-
 # Sample inbound payload matching Meta's documented schema for a
 # forwarded text message. Phone numbers are fake.
 SAMPLE_FORWARDED_TEXT = {

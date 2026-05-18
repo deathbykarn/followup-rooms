@@ -41,7 +41,8 @@ class WhatsAppInboundMessage(BaseModel):
     id: str
     from_: str = Field(alias="from")     # sender wa_id (E.164 digits, no '+')
     timestamp: str                       # Meta sends Unix seconds as a string
-    type: str                            # 'text', 'image', 'audio', 'video', 'document', 'reaction', etc.
+    # 'text', 'image', 'audio', 'video', 'document', 'reaction', etc.
+    type: str
     text: WhatsAppTextBody | None = None
     context: WhatsAppContext | None = None
 
