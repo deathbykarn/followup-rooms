@@ -158,7 +158,9 @@ async def list_pending(
     rows = resp.data or []
 
     # Resolve suggested_client_id → client_name in one batched query
-    suggested_ids = list({r.get("suggested_client_id") for r in rows if r.get("suggested_client_id")})
+    suggested_ids = list({
+        r.get("suggested_client_id") for r in rows if r.get("suggested_client_id")
+    })
     name_map: dict[str, str] = {}
     if suggested_ids:
         clients_resp = (

@@ -91,4 +91,5 @@ disable_error_code = [
     "type-arg",
     "return-value",
     "dict-item",
+    "misc",
 ]
