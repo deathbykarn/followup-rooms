@@ -1,8 +1,15 @@
-# DESIGN_SPEC.md — Client-Facing Room Visual Language
+# DESIGN_SPEC.md — FollowRoom Visual Language
 
-**Companion to:** `DESIGN.md` (brand voice + audience), `docs/superpowers/specs/2026-05-18-followroom-architecture-design.md` §6.8 (Room as Active Surface) + §11.15-16 (URL confidentiality + view tracking ethics), and the three mockups in `docs/design/mockups/`.
+**Companion to:** `DESIGN.md` (brand voice + audience), `docs/superpowers/specs/2026-05-18-followroom-architecture-design.md` §6.8 (Room as Active Surface) + §11.15-16 (URL confidentiality + view tracking ethics), and the mockups in `docs/design/mockups/`.
 
-**Purpose:** translate FollowRoom's brand voice into specific visual decisions for the client-facing room surface. This document is what lets us work backwards from the mockups into Plan 6's Next.js components.
+**Purpose:** translate FollowRoom's brand voice into specific visual decisions for both surfaces — the client-facing room AND the operator dashboard. This document is what lets us work backwards from the mockups into Next.js components (Plan 6 for client rooms; Plans 5/7/8 for dashboard evolution).
+
+**Two surfaces, shared tokens, different density:**
+
+- **Client-facing room** (mockups 01-03) — letter-like, single-session, mobile-first, "calm never urgent." Generous spacing.
+- **Operator dashboard** (mockup 04) — power-user workspace, density over whitespace, Linear/Superhuman pattern, command-palette ready. Compact spacing.
+
+Both surfaces use the **same color tokens and typography** below. They diverge in *layout density* and *information architecture*, not in visual identity.
 
 ---
 
@@ -261,12 +268,127 @@ For the receipt-thread component: take an array of `{text, source: {label, date}
 
 ---
 
-## Open questions for the operator preview surface
+## Open questions for the operator room preview surface
 
-Outside the scope of these three mockups (which are client-facing) but worth noting for Plan 6:
+Outside the scope of the three client-facing mockups (01-03) but worth noting for Plan 6:
 
 - How does the operator preview a room before publishing? Same layout, different chrome (an "Edit" / "Publish" bar)?
 - How does the operator approve a room update? Diff view? Side-by-side?
 - What does "revoke + grace screen" look like to a client who tries to access a revoked link? (Per §11.15)
 
-These are Plan 6 concerns. The three mockups in this folder demonstrate the *client* experience exclusively.
+These are Plan 6 concerns. Mockups 01-03 demonstrate the *client* experience exclusively; mockup 04 is the *operator dashboard*.
+
+---
+
+## Operator Dashboard — distinct pattern (mockup 04)
+
+The dashboard inherits all color tokens, typography choices, and brand identity from the client-room patterns above. What changes is **density** and **information architecture**. The dashboard is the operator's working surface — they live here, opening it dozens of times a day. The client room is a single-session letter. The two CANNOT be the same layout.
+
+### Dashboard-specific design priorities (from `DESIGN.md` Operator section)
+
+- **Density over whitespace** — Linear/Superhuman pattern. Multiple actionable items in a single viewport.
+- **Keyboard-navigable** — ⌘K command palette hint visible from top bar; designed for power users who don't reach for mouse.
+- **Adaptive** — works on phone for in-the-moment captures, on desktop for batch review. Same layout, same components; mobile narrows the topbar, stacks the stats row.
+- **FollowRoom brand visible** — unlike client rooms where the operator's brand leads, the dashboard is operator-facing so the FollowRoom mark sits at top-left of the topbar (small, with a gold accent dot).
+
+### Layout
+
+- **Max-width 960px** (vs 640px for client rooms) — operator needs to see more at a glance
+- **Sticky top bar** with backdrop blur — persistent context: brand, ⌘K hint, pending count, operator avatar
+- **Single column** still, but denser vertical rhythm (40px between sections vs 56-72px in client rooms)
+- **Mobile collapse** — topbar drops the ⌘K hint; stats row reflows from 4-column to 2-column
+
+### Dashboard-specific components
+
+**Top bar** — operator-facing, FollowRoom mark visible. Layout: brand + (spacer) + ⌘K hint chip + pending-count chip (gold left-border, links to pending tray) + operator avatar+name.
+
+**Day greeting** — serif headline that names the day's theme. Format: *"Good morning, Khaniff. [subtle gray] Three things would benefit from your eyes this week."* Subtle subhead in the same line, lighter color. Not generic ("Welcome back!"). Specific to what the system noticed.
+
+**Panel** — the dashboard's repeating layout unit. Each panel has:
+- Header row: serif panel title + uppercase meta on the right
+- Subtle hairline below header
+- Body: dense list of items (today actions, pending forwards, clients, activity)
+
+**Today list** — 3 items max. Each item: `[when, gold serif] [title, weight 500] [meta, muted]` + right-aligned "Open" link. The "when" is human-relative ("By Fri 5pm", "By Sun", "End of May"), not absolute timestamps.
+
+**Pending-forward strip** — single-card summary of unconfirmed forwards. Visual: large serif count + body text + right-aligned "Review" button with deep-teal border. Always present (even when 0); reads as ambient awareness rather than alarm.
+
+**Cross-relationship insight card** ("Across your book") — Stage 2 Hivemind preview. Each insight is a card with:
+- Eyebrow: `[uppercase muted label] [PREVIEW pill in gold]` — the pill makes the not-yet-shipped status explicit
+- Body: serif sentence with inline `<strong>` for the most actionable phrase
+- Meta: "based on..." source + deep-teal action link
+
+The PREVIEW pill is critical. When Stage 2 actually ships, we drop the pill but keep the visual. The dashboard renders the same component; only the data source changes.
+
+**Client list row** — dense, Linear-style. Grid: `[name with pulse dot] [stage label, uppercase muted] [last activity, tabular]`. Hover state expands subtle background to indicate clickability. Pulse dot color encodes activity state:
+- Gold filled — active this week
+- Deep teal — high-engagement client (multiple active threads)
+- Muted gray — standing/quiet relationship
+
+The pulse dot is the ONLY color-as-status indicator we use. Replaces red/green/yellow badges from generic CRMs.
+
+**Stage label** — uppercase, muted, 11px. Examples: "Discovery", "Active discussion", "Decision · Friday", "Standing relationship", "Awaiting". The "·" prefix (e.g., "Decision · Friday") subtly conveys urgency without using color. When a stage truly needs attention, use `--attention-warm` for the label color (warm rust, never red).
+
+**Activity feed** — compact list with `[when, tabular muted] [type pill, uppercase muted] [body with strong client name]`. Activity types: Forward, Room, Confirm, Upload, Room update. Reads as a journal, not a notifications panel.
+
+**Stats row** — 4-column footer with serif numbers + uppercase labels. Examples: "Active clients · 32", "Facts in memory · 847", "Events this week · 14", "Time saved vs manual · 3.2hr". Calm, non-vanity metrics that affirm progress without sales-coaching ("You're crushing it! 🚀" anti-pattern).
+
+### Density-vs-room comparison
+
+| Aspect | Client room (01-03) | Dashboard (04) |
+|--------|---------------------|----------------|
+| Max-width | 640px | 960px |
+| Section spacing | 56-72px | 40px |
+| Heading scale | 22-38px serif | 17-32px serif |
+| Items per viewport | 1-2 sections | 3-5 panels |
+| Hover states | Receipts only | Client rows, action items, links |
+| Sticky elements | None | Topbar with backdrop blur |
+| Brand visibility | "FollowRoom" tiny footer | "● FollowRoom" topbar left |
+| Color status indicators | None | Pulse dot (gold/deep/muted only) |
+| Tone | Letter | Workshop |
+
+### Dashboard anti-patterns (deliberately avoided in mockup 04)
+
+- Red/green/yellow status badges (we use pulse dot color only — gold/deep/muted)
+- "🎉 You're on fire!" engagement-bait copy
+- Sparkle ✨ "AI Insights" panels (we have "Across your book" — same idea, no AI-SaaS vocabulary)
+- Animated chart visualizations on load
+- Floating action buttons (FABs) — keyboard-first means we don't add tap-target overhead
+- Tabs / nested navigation — single scrollable surface still applies; the dashboard is just a denser version
+- Avatar stacks ("4 viewers online") — surveillance-flavored, doesn't fit operator workspace either
+
+### Translating dashboard to React (when Plan 7+ rebuilds the operator surface)
+
+The current `web/app/dashboard/page.tsx` is a starter; the mockup 04 pattern is where it grows toward. Component sketch:
+
+```
+<Dashboard>
+  <Topbar
+    brand="FollowRoom"
+    pendingCount={4}
+    operator={{ name, avatar }}
+  />
+  <DayGreeting operator={...} theme={...} />
+  <Panel title="This week" meta="3 items">
+    <TodayList items={...} />
+  </Panel>
+  <Panel title="WhatsApp forwards" meta="awaiting attribution">
+    <PendingForwardStrip count={4} suggestedClients={...} />
+  </Panel>
+  <Panel title="Across your book" meta="2 noticings this week">
+    <InsightCard preview={true} ... />
+    <InsightCard preview={true} ... />
+  </Panel>
+  <Panel title="Your clients" link="View all 32 →">
+    <ClientList clients={...} />
+  </Panel>
+  <Panel title="Recent activity" link="See all →">
+    <ActivityFeed items={...} />
+  </Panel>
+  <StatsRow stats={...} />
+</Dashboard>
+```
+
+Each panel renders `null` when its data is empty, except Today + Clients (always present, with their own empty-state messages: "Nothing on your plate this week — quiet days have value." / "Add your first client →").
+
+The `<InsightCard preview>` pattern lets us ship the Hivemind panel BEFORE the data source exists — the panel is on screen with hand-curated examples, the PREVIEW pill explains it. When Stage 2 lands, drop the pill, swap the data source. Component contract unchanged.

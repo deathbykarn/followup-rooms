@@ -116,6 +116,8 @@ These ten axioms are non-negotiable. Every PR must demonstrate compatibility wit
 
 ## 3. Three-Phase Layering
 
+> **Refinement (2026-05-19):** the Phase 2 / Phase 3 ordering below has been refined. The active sequencing is Karpathy → **Hivemind** (Stage 2) → **Zettel** (Stage 3), not Karpathy → Zettel → Hivemind as originally written here. Rationale: Hivemind delivers cross-vector insights at solo-operator scale (not just agency scale), which is higher leverage earlier. See `docs/architecture/lineos-evolution.md` for the narrative + trigger conditions. The §3.2 / §3.3 sub-sections below remain useful as conceptual reference for what each layer DOES; the ORDERING in the canonical sequence is now defined by the narrative doc.
+
 FollowRoom evolves through three substrate phases that double as commercial tiers. Each phase **adds** layers without **rewriting** earlier ones.
 
 ### 3.1 Phase 1 — Karpathy (Solo Real Estate Agent MVP)
