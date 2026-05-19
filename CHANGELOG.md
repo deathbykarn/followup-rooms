@@ -6,6 +6,46 @@ Format: `## [SemVer] — YYYY-MM-DD`. Most recent first.
 
 ---
 
+## [0.4.0] — 2026-05-19
+
+**WhatsApp ingestion — forward a client message, see it land in their KB.**
+
+What you can now do, end-to-end:
+
+- Link your WhatsApp once: dashboard → **Settings → WhatsApp** → generate a 6-digit code → send `/link <CODE>` from your WhatsApp to the FollowRoom number → settings flips to "Linked".
+- Forward any client message in WhatsApp to the FollowRoom number with a name caption (e.g., "Sarah Tan"). Within seconds, a pending forward appears in your dashboard's **Pending** tray (header badge shows the count).
+- The system suggests which client the forward is about, using a two-pass match: exact name/alias match first (95% confidence), then Haiku-disambiguation if there's ambiguity. You see the suggested client + confidence on the pending card.
+- Click **Confirm Sarah Tan** (or **Change** to pick a different client) → extraction runs against the forwarded text (with caption inlined as context) → new facts appear on the client's Facts tab.
+- Discard ignores the forward; no extraction runs, no client KB is touched.
+
+Under the hood:
+
+- `POST /whatsapp/webhook` verifies Meta's HMAC-SHA256 signature on every inbound, dedupes by `wa_message_id` (UNIQUE constraint at DB level — webhook retries are safe), handles the `/link CODE` handshake, inserts pending forwards, and pairs captions to forwards within a 60-second same-sender window.
+- ClientMatcher runs in a BackgroundTask after the webhook returns 200 — so Meta gets a fast ack while attribution suggestion happens asynchronously.
+- Operator commit is the canonical attribution authority — the system never auto-confirms (even at 95% confidence). Plan 2's "zero misattribution" rule preserved structurally.
+- Two new tables: `operator_whatsapp_links` (wa_id ↔ operator_id with `/link CODE` handshake fields) and `pending_forwards` (state machine + LLM suggestion + commit audit).
+- Backend deployed to **Render** (free tier; flag to upgrade before external onboarding because of 15-min spindown) at `https://followup-rooms-backend.onrender.com`.
+
+Known limitation (read this before celebrating):
+
+- **Real-world end-to-end smoke is gated on Meta Business Verification.** Meta test phone numbers are not addressable from arbitrary WhatsApp users on the consumer network — they only accept inbound from pre-registered test recipients, and appear as "Invite to WhatsApp" to ordinary users. Plan 4 ships with the full code path validated via unit + integration tests + a live webhook handshake against the deployed Render endpoint, but the actual "forward from your phone → see it in the tray" loop requires a production phone number, which requires Meta Business Verification (1-2 wk review with ACRA docs).
+- Plan 4.5 will kick off verification and unblock real-world testing. See `docs/findings/2026-05-19-meta-test-number-limitations.md` for the full debrief.
+
+Testing the seam:
+
+- 130 backend pytest (42 new for Plan 4)
+- 15 web Vitest unit tests (5 new for PendingForwardCard)
+- 4 Playwright E2E specs (1 new — `whatsapp-forward.spec.ts` uses an operator-session-inserted pending_forwards row as fixture, bypasses Meta delivery)
+
+Known quirks:
+
+- The System User access token we generated doesn't have WhatsApp asset scope (we skipped that step during setup). Plan 4 doesn't need it (inbound-only), but Plan 4.5 (outbound notifications + media download) will. Quick fix when we get there: add the WABA as an asset on the System User in Business Settings.
+- `OPENAI_API_KEY` is still required by `Settings` even though we never call OpenAI. Should be made optional; flagged as Plan 4.5 cleanup.
+- `requirements.txt` drifted from `pyproject.toml` between Plan 3 and Plan 4 deployment (missing `assemblyai` + `aiofiles`). Fixed; needs a CI check that fails on drift OR migration to `uv` as a single source.
+- Render free tier 15-min spindown caused at least one missed smoke attempt during this session. Upgrade to Starter ($7/mo) before any real external testing.
+
+---
+
 ## [0.3.0] — 2026-05-19
 
 **Ingestion — drop a transcript or voice memo, get a profile update.**
