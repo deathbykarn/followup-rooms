@@ -5,10 +5,13 @@
 ## What's in here
 
 - **`DESIGN_SPEC.md`** — the design decisions made visible in the mockups. Color tokens, typography, component patterns, state patterns, anti-patterns avoided. This is the surface we work backwards from when building Plan 6's React components.
-- **`mockups/`** — three standalone HTML files that demonstrate the design across three scenarios:
-  - `01-sarah-tan-discovery.html` — first-meeting room. Empty-state grace.
-  - `02-wendy-lim-negotiation.html` — active negotiation room. Calm restraint at high stakes.
-  - `03-david-chen-feature-showcase.html` — long-term client with full feature utilization.
+- **`mockups/`** — standalone HTML files demonstrating the visual language across both surfaces:
+  - Client-facing rooms (Plan 6 target):
+    - `01-sarah-tan-discovery.html` — first-meeting room. Empty-state grace.
+    - `02-wendy-lim-negotiation.html` — active negotiation room. Calm restraint at high stakes.
+    - `03-david-chen-feature-showcase.html` — long-term client with full feature utilization.
+  - Operator dashboard (Plans 5/7/8 target):
+    - `04-operator-dashboard.html` — daily working surface. Density, ⌘K-ready, Linear/Superhuman pattern. Includes a `PREVIEW`-flagged Hivemind panel that anchors the Stage 2 visual ahead of implementation.
 
 ## How to view
 
