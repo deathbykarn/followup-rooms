@@ -47,10 +47,28 @@ Status legend: `□ pending` · `◐ in progress` · `■ shipped` · `⊘ defer
 | 2 | Core KB Layer — extraction → facts → profile | `v0.2.0` | ■ shipped 2026-05-18 | `docs/superpowers/plans/2026-05-18-core-kb-layer.md` |
 | 3 | Ingestion: transcript + voice upload | `v0.3.0` | ■ shipped 2026-05-19 | `docs/superpowers/plans/2026-05-18-ingestion-transcript-voice.md` |
 | 4 | WhatsApp Shape X ingestion (inbound) | `v0.4.0` | ■ shipped 2026-05-19 (smoke gated on Meta Business Verification) | `docs/superpowers/plans/2026-05-19-whatsapp-ingestion.md` |
+| 4.2 | Visual design for client-facing rooms — HTML mockups + DESIGN_SPEC | — | ■ shipped 2026-05-19 | `docs/design/` |
 | 4.5 | WhatsApp Plan 4 follow-ups + ops debt | — | □ queued | TBD |
 | 5 | File drop / room attachments | — | □ queued | TBD |
-| 6 | Client-facing room (slug + PIN) + room update approval | — | □ queued | TBD |
+| 6 | Client-facing room (slug + PIN) + room update approval | — | □ queued (anchored to `docs/design/` mockups + DESIGN_SPEC) | TBD |
 | 7+ | Suggested reply, review queue, vertical templates, integrations | — | □ queued | TBD |
+
+---
+
+## Plan 4.2 — Visual design for client-facing rooms (shipped)
+
+**Why this plan was inserted before Plan 5/6:** the client-facing room is the headline-pitch surface. Building it as code first risks losing design quality; we wanted the design language locked before any React component decisions. Standalone HTML mockups let us see the design emerge from the spec without entangling production code, then work backwards into Plan 6 component decomposition.
+
+**What shipped:**
+- `docs/design/DESIGN_SPEC.md` — typography, color tokens, layout system, component patterns, state patterns, anti-patterns
+- `docs/design/mockups/01-sarah-tan-discovery.html` — empty-state grace
+- `docs/design/mockups/02-wendy-lim-negotiation.html` — calm restraint at high stakes (active condo sale)
+- `docs/design/mockups/03-david-chen-feature-showcase.html` — long-term client with full feature utilization
+- `docs/design/README.md` — index and update protocol
+
+**Four emphases the mockups demonstrate:** (1) receipts woven into prose not bulleted as data; (2) empty-state grace so sparse rooms feel intentional; (3) calm restraint at high stakes — no badges, no urgency theater; (4) operator voice visibly distinct from extracted memory.
+
+**How this feeds Plan 6:** Component decomposition sketched in DESIGN_SPEC.md §"Translating to Plan 6 React components". Color tokens map directly to Tailwind theme extensions. Each section in a mockup → a React component that renders `null` when its data is empty.
 
 ---
 
