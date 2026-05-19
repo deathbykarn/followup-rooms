@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wendy's room — Khaniff Lau</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-page: #FBFAF6;
+      --bg-card: #FFFFFF;
+      --bg-muted: #F5F2EB;
+      --text-primary: #1A1815;
+      --text-secondary: #5C574E;
+      --text-muted: #9B9489;
+      --border-subtle: #E8E3D9;
+      --accent-gold: #9B7B3B;
+      --accent-deep: #1F4F4A;
+      --attention-warm: #9B5B3B;
+      --serif: 'Newsreader', Georgia, serif;
+      --sans: 'Inter', -apple-system, system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .room {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 24px 96px;
+    }
+    .operator-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .operator-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent-deep);
+      color: #FBFAF6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .operator-name {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      line-height: 1.2;
+    }
+    .operator-tagline {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .room-title {
+      font-family: var(--serif);
+      font-size: 38px;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      margin: 56px 0 8px;
+      line-height: 1.1;
+    }
+    .room-subtitle {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+    section.block { margin-top: 56px; }
+    .section-heading {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      margin: 0 0 20px;
+    }
+    .operator-note {
+      background: var(--bg-muted);
+      border-left: 2px solid var(--accent-gold);
+      padding: 22px 24px;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.7;
+    }
+    .operator-note p { margin: 0 0 14px; }
+    .operator-note p:last-child { margin-bottom: 0; }
+
+    /* Pending action — calm, gold-bordered, no badges */
+    .action-card {
+      display: flex;
+      gap: 14px;
+      padding: 18px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-left: 2px solid var(--accent-gold);
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 12px;
+      transition: border-color 0.15s;
+    }
+    .action-card:hover { border-color: var(--accent-gold); border-left-color: var(--accent-gold); }
+    .action-icon {
+      color: var(--accent-gold);
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    .action-body { flex: 1; min-width: 0; }
+    .action-title {
+      font-weight: 500;
+      font-size: 16px;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+    .action-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .action-meta strong {
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+    .action-link {
+      color: var(--accent-deep);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-deep);
+      padding-bottom: 1px;
+      align-self: flex-start;
+      flex-shrink: 0;
+    }
+
+    /* Offers — comparative without flash */
+    .offer {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .offer:last-child { border-bottom: none; }
+    .offer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+    .offer-buyer {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .offer-amount {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .offer-detail {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .offer-tag {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 8px;
+    }
+
+    /* Comparable table — minimal */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 15px;
+    }
+    .comp-table th, .comp-table td {
+      text-align: left;
+      padding: 12px 8px 12px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .comp-table th {
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .comp-table td.psf {
+      color: var(--text-secondary);
+      font-feature-settings: 'tnum';
+    }
+    .comp-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 14px;
+      font-style: italic;
+    }
+
+    /* Viewings — quiet list */
+    .viewing-list { list-style: none; padding: 0; margin: 0; }
+    .viewing-item {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      gap: 16px;
+      align-items: baseline;
+    }
+    .viewing-item:last-child { border-bottom: none; }
+    .viewing-date {
+      font-family: var(--serif);
+      font-size: 15px;
+      color: var(--accent-gold);
+      width: 80px;
+      flex-shrink: 0;
+    }
+    .viewing-body { flex: 1; }
+    .viewing-name { font-weight: 500; }
+    .viewing-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .viewing-past .viewing-date,
+    .viewing-past .viewing-name { color: var(--text-muted); }
+    .viewing-past .viewing-name { font-weight: 400; }
+
+    .receipt {
+      color: var(--text-primary);
+      border-bottom: 1px dotted var(--text-muted);
+      cursor: help;
+      text-decoration: none;
+    }
+    .receipt:hover { border-bottom-color: var(--accent-gold); }
+    @media (hover: none) {
+      .receipt::after {
+        content: " · " attr(data-source);
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+      .receipt { border-bottom: none; }
+    }
+
+    .footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .footer .tended { color: var(--text-secondary); }
+    .footer .attribution {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    @media (max-width: 480px) {
+      .room { padding: 24px 20px 80px; }
+      .room-title { font-size: 32px; margin-top: 48px; }
+      section.block { margin-top: 48px; }
+      .offer-header { flex-direction: column; gap: 4px; }
+      .action-card { flex-wrap: wrap; }
+      .action-link { width: 100%; padding-top: 8px; }
+      .comp-table { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="room">
+
+    <header class="operator-header">
+      <div class="operator-avatar" aria-hidden="true">KL</div>
+      <div>
+        <div class="operator-name">Khaniff Lau</div>
+        <div class="operator-tagline">Your advisor for the Marina One sale</div>
+      </div>
+    </header>
+
+    <h1 class="room-title">Wendy's room</h1>
+    <p class="room-subtitle">Marina One #28-04 · sale in progress · week of 19 May.</p>
+
+    <!-- Operator note — calm "here's where we are this week" -->
+    <section class="block" aria-labelledby="note-heading">
+      <h2 id="note-heading" class="section-heading">Where we are this week</h2>
+      <div class="operator-note">
+        <p>
+          Wendy — two solid offers came in over the weekend. Both buyers
+          viewed twice and have financing in order, so neither is a tyre-kicker.
+        </p>
+        <p>
+          The higher offer is conditional on a 14-day extension to complete
+          their HDB sale, so the question for you is whether the extra $70k
+          is worth the wait. I've drafted my recommendation alongside the
+          OTP — we should discuss before Friday.
+        </p>
+        <p>
+          Next room update goes out Friday evening after the offer deadline,
+          so you'll see the final state of play before the weekend.
+        </p>
+      </div>
+    </section>
+
+    <!-- Pending actions — calm, no badges -->
+    <section class="block" aria-labelledby="actions-heading">
+      <h2 id="actions-heading" class="section-heading">Needs your attention</h2>
+
+      <div class="action-card">
+        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="4" y="3" width="16" height="18" rx="1.5" /><path d="M8 8h8M8 12h8M8 16h5" />
+        </svg>
+        <div class="action-body">
+          <div class="action-title">Review OTP draft with my recommendation</div>
+          <div class="action-meta"><strong>By Friday 5pm</strong> · I'll incorporate your changes before sending to the higher offer</div>
+        </div>
+        <a class="action-link" href="#">Open</a>
+      </div>
+
+      <div class="action-card">
+        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
+        </svg>
+        <div class="action-body">
+          <div class="action-title">Confirm preferred completion window</div>
+          <div class="action-meta"><strong>Before Friday</strong> · Affects how I phrase the counter to the lower offer</div>
+        </div>
+        <a class="action-link" href="#">Open</a>
+      </div>
+
+      <div class="action-card">
+        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" />
+        </svg>
+        <div class="action-body">
+          <div class="action-title">Decide on lawyer for completion</div>
+          <div class="action-meta">No deadline yet · I can recommend two firms we've worked with</div>
+        </div>
+        <a class="action-link" href="#">Open</a>
+      </div>
+    </section>
+
+    <!-- Offers received -->
+    <section class="block" aria-labelledby="offers-heading">
+      <h2 id="offers-heading" class="section-heading">Offers received</h2>
+
+      <div class="offer">
+        <div class="offer-header">
+          <div class="offer-buyer">Buyer A · Singapore PR couple</div>
+          <div class="offer-amount">S$2,920,000</div>
+        </div>
+        <p class="offer-detail">
+          Offer received
+          <a class="receipt" data-source="WhatsApp from buyer's agent, 17 May">Saturday morning</a>,
+          conditional on a 14-day extension to complete their HDB sale.
+          Financing pre-approved with DBS.
+        </p>
+        <span class="offer-tag">Higher · conditional</span>
+      </div>
+
+      <div class="offer">
+        <div class="offer-header">
+          <div class="offer-buyer">Buyer B · Foreign buyer (Hong Kong)</div>
+          <div class="offer-amount">S$2,850,000</div>
+        </div>
+        <p class="offer-detail">
+          Offer received
+          <a class="receipt" data-source="forwarded by buyer's agent, 18 May">Sunday evening</a>,
+          unconditional. Buyer is ABSD-paying and ready to exercise OTP within 7 days.
+        </p>
+        <span class="offer-tag">Lower · clean</span>
+      </div>
+    </section>
+
+    <!-- Comparable units sold — minimal table -->
+    <section class="block" aria-labelledby="comp-heading">
+      <h2 id="comp-heading" class="section-heading">Comparable units sold</h2>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th scope="col">Unit</th>
+            <th scope="col">Sold</th>
+            <th scope="col">Price</th>
+            <th scope="col" class="psf">PSF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Marina One #22-08 · 2BR</td>
+            <td>Mar 2026</td>
+            <td>S$2,810,000</td>
+            <td class="psf">$2,650</td>
+          </tr>
+          <tr>
+            <td>Marina One #25-12 · 2BR</td>
+            <td>Feb 2026</td>
+            <td>S$2,895,000</td>
+            <td class="psf">$2,720</td>
+          </tr>
+          <tr>
+            <td>V on Shenton #31-05 · 2BR</td>
+            <td>Jan 2026</td>
+            <td>S$2,650,000</td>
+            <td class="psf">$2,485</td>
+          </tr>
+          <tr>
+            <td>Wallich Residence #38-02 · 2BR</td>
+            <td>Apr 2026</td>
+            <td>S$3,150,000</td>
+            <td class="psf">$2,890</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="comp-note">
+        Both current offers sit comfortably within the recent transaction band.
+        Buyer A's $2.92M is at the higher end; reasonable given your high-floor stack premium.
+      </p>
+    </section>
+
+    <!-- Viewings -->
+    <section class="block" aria-labelledby="viewings-heading">
+      <h2 id="viewings-heading" class="section-heading">Viewings this fortnight</h2>
+      <ul class="viewing-list">
+        <li class="viewing-item">
+          <div class="viewing-date">Sat 24 May</div>
+          <div class="viewing-body">
+            <div class="viewing-name">Repeat viewing · Buyer A's spouse</div>
+            <div class="viewing-meta">2:30pm · already pre-arranged, your unit will be staged</div>
+          </div>
+        </li>
+        <li class="viewing-item viewing-past">
+          <div class="viewing-date">Sun 18 May</div>
+          <div class="viewing-body">
+            <div class="viewing-name">Buyer B · second viewing</div>
+            <div class="viewing-meta">Completed</div>
+          </div>
+        </li>
+        <li class="viewing-item viewing-past">
+          <div class="viewing-date">Sat 17 May</div>
+          <div class="viewing-body">
+            <div class="viewing-name">Buyer A · second viewing</div>
+            <div class="viewing-meta">Completed</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <div class="tended">Next room update Friday evening.</div>
+      <div class="attribution">FollowRoom</div>
+    </footer>
+
+  </main>
+</body>
+</html>

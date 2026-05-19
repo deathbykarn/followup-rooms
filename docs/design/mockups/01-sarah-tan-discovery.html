@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sarah's room — Khaniff Lau</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-page: #FBFAF6;
+      --bg-card: #FFFFFF;
+      --bg-muted: #F5F2EB;
+      --text-primary: #1A1815;
+      --text-secondary: #5C574E;
+      --text-muted: #9B9489;
+      --border-subtle: #E8E3D9;
+      --accent-gold: #9B7B3B;
+      --accent-deep: #1F4F4A;
+      --attention-warm: #9B5B3B;
+      --serif: 'Newsreader', Georgia, serif;
+      --sans: 'Inter', -apple-system, system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .room {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 24px 96px;
+    }
+    .operator-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .operator-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent-deep);
+      color: #FBFAF6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      flex-shrink: 0;
+    }
+    .operator-name {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      line-height: 1.2;
+    }
+    .operator-tagline {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .room-title {
+      font-family: var(--serif);
+      font-size: 38px;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      margin: 56px 0 8px;
+      line-height: 1.1;
+    }
+    .room-subtitle {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+    section.block {
+      margin-top: 56px;
+    }
+    .section-heading {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      margin: 0 0 20px;
+    }
+    .operator-note {
+      background: var(--bg-muted);
+      border-left: 2px solid var(--accent-gold);
+      padding: 22px 24px;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.7;
+    }
+    .operator-note p { margin: 0 0 14px; }
+    .operator-note p:last-child { margin-bottom: 0; }
+    .receipt {
+      color: var(--text-primary);
+      border-bottom: 1px dotted var(--text-muted);
+      cursor: help;
+      text-decoration: none;
+      transition: border-color 0.15s;
+    }
+    .receipt:hover { border-bottom-color: var(--accent-gold); }
+    .receipt::after {
+      content: " · " attr(data-source);
+      color: var(--text-muted);
+      font-size: 13px;
+      border-bottom: none;
+      display: none;
+    }
+    @media (hover: none) {
+      .receipt::after { display: inline; }
+      .receipt { border-bottom: none; }
+    }
+    .next-list { list-style: none; padding: 0; margin: 0; }
+    .next-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .next-item:last-child { border-bottom: none; }
+    .next-num {
+      font-family: var(--serif);
+      font-size: 17px;
+      color: var(--accent-gold);
+      width: 20px;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+    .next-body { flex: 1; }
+    .next-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .reach-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 24px;
+    }
+    .reach-quiet {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin: 0 0 16px;
+      line-height: 1.6;
+    }
+    .reach-action {
+      display: inline-block;
+      color: var(--accent-deep);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      border-bottom: 1px solid var(--accent-deep);
+      padding-bottom: 1px;
+    }
+    .footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .footer .tended {
+      color: var(--text-secondary);
+    }
+    .footer .attribution {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    @media (max-width: 480px) {
+      .room { padding: 24px 20px 80px; }
+      .room-title { font-size: 32px; margin-top: 48px; }
+      section.block { margin-top: 48px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="room">
+
+    <!-- Operator brand header — operator first, FollowRoom silent -->
+    <header class="operator-header">
+      <div class="operator-avatar" aria-hidden="true">KL</div>
+      <div>
+        <div class="operator-name">Khaniff Lau</div>
+        <div class="operator-tagline">Your advisor for Marine Parade and East Coast</div>
+      </div>
+    </header>
+
+    <!-- Room title — client's perspective -->
+    <h1 class="room-title">Sarah's room</h1>
+    <p class="room-subtitle">A quiet record of what we've discussed, and where we're heading next.</p>
+
+    <!-- Operator note — what Khaniff wrote, in his voice -->
+    <section class="block" aria-labelledby="note-heading">
+      <h2 id="note-heading" class="section-heading">From our conversation today</h2>
+      <div class="operator-note">
+        <p>
+          Sarah — really enjoyed our chat at the showflat this morning. You've thought
+          about this move more carefully than most clients I work with, which makes my
+          job a lot easier.
+        </p>
+        <p>
+          A few things stood out: the proximity to your parents matters more than any
+          single feature of a unit, the $1.8M ceiling is firm (and I respect that),
+          and you and your husband are aligned on the location but not yet on the
+          timing. That's normal at this stage.
+        </p>
+        <p>
+          I've started putting together a shortlist of units in Marine Parade Central
+          and the adjacent stack. I'll send you the first three by the weekend so you
+          can look through them with your husband over a quiet evening.
+        </p>
+      </div>
+    </section>
+
+    <!-- Memory section — extracted facts as receipt-thread prose -->
+    <section class="block" aria-labelledby="memory-heading">
+      <h2 id="memory-heading" class="section-heading">What we noted</h2>
+      <p>
+        You're looking for a
+        <a class="receipt" data-source="from our conversation on 19 May">3-bedroom HDB upgrade close to your parents in Marine Parade</a>,
+        with a firm budget ceiling of
+        <a class="receipt" data-source="confirmed today">$1.8M</a>.
+      </p>
+      <p>
+        Ideal move-in is
+        <a class="receipt" data-source="mentioned today">around Q3 of this year</a>,
+        though your husband would prefer a slower decision if rates move
+        further in the next few months.
+      </p>
+      <p>
+        Property features that matter most:
+        <a class="receipt" data-source="mentioned today">corner units, higher floor, lease above 80 years</a>.
+        Walking distance to your parents was your first sentence — I noted
+        that.
+      </p>
+    </section>
+
+    <!-- Next steps — calm imperative, not urgent -->
+    <section class="block" aria-labelledby="next-heading">
+      <h2 id="next-heading" class="section-heading">Where we are next</h2>
+      <ul class="next-list">
+        <li class="next-item">
+          <span class="next-num">1.</span>
+          <div class="next-body">
+            <div>I'll send a shortlist of three Marine Parade units for you to review with your husband.</div>
+            <div class="next-meta">By this weekend</div>
+          </div>
+        </li>
+        <li class="next-item">
+          <span class="next-num">2.</span>
+          <div class="next-body">
+            <div>You'll come back with the two units you'd most like to view in person.</div>
+            <div class="next-meta">Whenever you're both ready — no rush</div>
+          </div>
+        </li>
+        <li class="next-item">
+          <span class="next-num">3.</span>
+          <div class="next-body">
+            <div>We'll plan a viewing morning together — usually a Saturday works best.</div>
+            <div class="next-meta">After your shortlist</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Reach card — quiet reassurance, single action -->
+    <section class="block" aria-labelledby="reach-heading">
+      <h2 id="reach-heading" class="section-heading">Anytime you need me</h2>
+      <div class="reach-card">
+        <p class="reach-quiet">
+          If something comes up between now and the shortlist — a question, a
+          property you saw, a change in timing — just message me directly.
+          You don't need to wait for our next meeting.
+        </p>
+        <a class="reach-action" href="https://wa.me/6591234567">WhatsApp Khaniff →</a>
+      </div>
+    </section>
+
+    <!-- Footer — operator first, FollowRoom subtle -->
+    <footer class="footer">
+      <div class="tended">I'll add more to this room as we go.</div>
+      <div class="attribution">FollowRoom</div>
+    </footer>
+
+  </main>
+</body>
+</html>

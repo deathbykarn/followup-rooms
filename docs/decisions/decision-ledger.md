@@ -10,6 +10,27 @@ Categories: `ARCH` (architecture), `PROD` (product), `DATA` (database), `UX` (us
 
 ## Active Decisions
 
+### [2026-05-19] DESIGN: Client-facing room design via standalone HTML mockups + DESIGN_SPEC before Plan 6 code
+
+**Context:** Plan 6 (client-facing rooms) is the headline-pitch surface. Going straight from spec to React components would entangle design exploration with implementation — designs would be biased toward whatever component primitives we have, not what the spec demands. Three options: live Next.js preview routes, Figma mockups, standalone HTML mockups + a design spec doc.
+
+**Decision:** Standalone HTML mockups in `docs/design/mockups/` + a `DESIGN_SPEC.md` capturing decisions. Three scenarios built: discovery (Sarah Tan), active negotiation (Wendy Lim Marina One condo sale), feature showcase (David Chen + family, long-term relationship). When Plan 6 builds the React components, we work backwards from the approved HTML.
+
+**Rationale:**
+- HTML is portable (open in any browser, no build) and self-contained (no dependency on our React app's state)
+- Forces design decisions to be explicit before any component code locks them in
+- Doubles as the source of truth for Plan 6 visual review — design changes happen in HTML first, then propagate to React
+- Decouples the "is this design right" question from the "is this React component well-structured" question
+- Cheaper to iterate on visual decisions in HTML than in production code
+
+**Four emphases locked in via the mockups** (anchor for Plan 6 implementation):
+1. Receipts woven into conversational prose, not bulleted as data
+2. Empty-state grace — sparse rooms feel intentional
+3. Calm restraint at high stakes — no badges, no urgency theater
+4. Operator voice visibly distinct from extracted memory
+
+**Link:** `docs/design/DESIGN_SPEC.md`; `docs/design/mockups/`; `ROADMAP.md` §Plan 4.2
+
 ### [2026-05-19] OPS: Meta WhatsApp Cloud API directly + test number for Plan 4 (defer Business Verification)
 
 **Context:** Plan 4 needs a WhatsApp ingestion channel for forwarded client messages. Options: Meta Cloud API directly (free test number; production needs Business Verification 1-2 wk lead time), Twilio Sandbox (bidirectional immediately but adds vendor + per-msg cost), Twilio purchased number (same Twilio dependency).
