@@ -2,7 +2,7 @@
 
 **IMPORTANT:** Read this file before writing ANY SQL migration.
 
-Last updated: 2026-05-19 (Ingestion plan complete — Plan 3)
+Last updated: 2026-05-19 (WhatsApp ingestion plan complete — Plan 4)
 
 ---
 
@@ -269,6 +269,59 @@ RLS: per-operator (SELECT + INSERT + UPDATE). No DELETE policy — jobs persist 
 - Path convention: `<operator_id>/<ingestion_job_id>/<original_filename>`
 - RLS on `storage.objects` (2 policies): SELECT + INSERT both check `(storage.foldername(name))[1] = auth.uid()::text`
 - No UPDATE/DELETE — uploads are append-only (Pattern 21). Hard delete via service-role cleanup tooling only (Phase 4+).
+
+---
+
+## operator_whatsapp_links
+
+| Column | Type | Notes |
+|--------|------|-------|
+| id | UUID | PK, DEFAULT gen_random_uuid() |
+| operator_id | UUID | NOT NULL, FK operators(id), ON DELETE CASCADE |
+| wa_id | TEXT | UNIQUE, nullable until `/link CODE` completes — E.164 digits-only (e.g., `6591234567`) |
+| link_code | TEXT | 6-digit code shown in dashboard during onboarding; nulled after handshake |
+| link_code_expires_at | TIMESTAMPTZ | 30 min from issuance |
+| linked_at | TIMESTAMPTZ | when `/link CODE` arrived |
+| is_active | BOOLEAN | DEFAULT TRUE — soft-deactivate instead of delete |
+| created_at | TIMESTAMPTZ | |
+| updated_at | TIMESTAMPTZ | auto-updated via trigger |
+
+Indexes:
+- `idx_operator_whatsapp_links_one_per_operator` UNIQUE on `(operator_id) WHERE is_active`
+- `idx_operator_whatsapp_links_pending_codes` partial on `(link_code) WHERE link_code IS NOT NULL AND linked_at IS NULL`
+
+RLS: per-operator (SELECT + INSERT + UPDATE). No DELETE policy. Webhook bypasses RLS via service-role (must resolve operator from wa_id before any auth context exists).
+
+---
+
+## pending_forwards
+
+| Column | Type | Notes |
+|--------|------|-------|
+| id | UUID | PK, DEFAULT gen_random_uuid() |
+| operator_id | UUID | NOT NULL, FK operators(id) |
+| wa_message_id | TEXT | UNIQUE — Meta's message id, dedupe key |
+| sender_wa_id | TEXT | NOT NULL — operator's wa_id (who forwarded) |
+| forwarded_text | TEXT | NOT NULL — content of the forwarded message |
+| caption_text | TEXT | nullable — operator's caption (paired with forward within 60s) |
+| wa_timestamp | TIMESTAMPTZ | NOT NULL — Meta's reported timestamp |
+| raw_payload | JSONB | NOT NULL — full webhook chunk for audit |
+| suggested_client_id | UUID | nullable, FK clients(id) — ClientMatcher async fills in |
+| suggested_confidence | REAL | CHECK (NULL or 0-1) |
+| state | TEXT | CHECK (pending/confirmed/discarded/expired) — DEFAULT 'pending' |
+| committed_client_id | UUID | FK clients(id) — populated on confirm |
+| committed_event_id | UUID | FK events(id) — populated on confirm |
+| committed_at | TIMESTAMPTZ | |
+| discarded_reason | TEXT | |
+| created_at | TIMESTAMPTZ | |
+| updated_at | TIMESTAMPTZ | auto-updated via trigger |
+
+Indexes:
+- `idx_pending_forwards_operator_pending` partial on `(operator_id, created_at DESC) WHERE state = 'pending'` — tray query
+- `idx_pending_forwards_operator_recent` on `(operator_id, created_at DESC)`
+- `idx_pending_forwards_caption_pairing` partial on `(sender_wa_id, created_at DESC) WHERE caption_text IS NULL AND state = 'pending'`
+
+RLS: per-operator (SELECT + INSERT + UPDATE). No DELETE policy — audit trail preserved. Webhook bypasses RLS via service-role.
 
 ---
 

@@ -110,36 +110,48 @@ followup-rooms/
 
 ## Status
 
-**Phase: Phase 3 — Ingestion (transcript + voice) complete (2026-05-19).**
+**Phase: Phase 4 — WhatsApp Shape X ingestion complete (2026-05-19, smoke gated on Business Verification).**
 
-What's standing (Plans 1 + 2 + 3):
-- Deployable backend (FastAPI on Render) + frontend (Next.js 16 on Vercel) shells
-- Supabase schema: 8 tables + 1 view + clients profile columns + ingestion_jobs (12 migrations applied; `_migrations` tracking table)
+What's standing (Plans 1 + 2 + 3 + 4):
+- Deployable backend (FastAPI on Render — live at `followup-rooms-backend.onrender.com`) + frontend (Next.js 16 on Vercel) shells
+- Supabase schema: 10 tables + 1 view + clients profile columns (14 migrations applied; `_migrations` tracking table)
 - Storage bucket `ingestion-uploads` with per-operator RLS (100MB cap, text + audio mimes)
 - Forward-compatibility hooks per design doc §8 (append-only triggers, soft-delete + bi-temporal, per-principal attribution, `store()` write path, `AgentDispatcher`, visibility tiers)
 - Auth: Supabase Auth + `@supabase/ssr` with cross-user session leak prevention (request-scoped factories)
-- **Extraction pipeline (Plan 2):** POST /events → ExtractionService (Anthropic + instructor) → MatchingService (ADD/UPDATE/NOOP/DELETE) → fact persistence → ProfileService regenerates both `internal_profile_md` + `client_facing_profile_md`
-- **Ingestion pipeline (Plan 3):** POST /uploads (multipart) → Supabase Storage → BackgroundTask worker walks queued → transcribing (AssemblyAI Universal-2 + diarization) → extracting (reuses Plan 2 pipeline via new `extract_for_event` entry) → done. Text transcripts skip transcription; voice memos disable diarization
-- **Operator dashboard:** client list → client detail with tabs (Overview / Add note / Upload / Facts / Profile); FactCard with Accept/Reject; ProfileViewer toggles internal vs client_facing + Regenerate; UploadForm with react-dropzone + IngestionStatusCard polling state
+- **Extraction pipeline (Plan 2):** POST /events → ExtractionService (Anthropic + instructor) → MatchingService (ADD/UPDATE/NOOP/DELETE) → fact persistence → ProfileService regenerates both profile views
+- **Ingestion pipeline (Plan 3):** POST /uploads (multipart) → Supabase Storage → BackgroundTask worker walks queued → transcribing (AssemblyAI Universal-2 + diarization) → extracting → done
+- **WhatsApp ingestion (Plan 4):** Meta Cloud API webhook at `/whatsapp/webhook` → HMAC-SHA256 signature verify → dedup by wa_message_id → `/link CODE` handshake (ties wa_id ↔ operator_id) → forwarded text inserts pending_forwards row → caption pairing within 60s → ClientMatcher (fuzzy + Haiku) BackgroundTask suggests client → operator confirms in dashboard tray → Plan 2 extraction runs
+- **Operator dashboard:** client list → client detail tabs (Overview / Add note / Upload / Facts / Profile); FactCard Accept/Reject; ProfileViewer internal/client_facing toggle + Regenerate; UploadForm + IngestionStatusCard polling; WhatsApp Settings with `/link CODE` UI; Pending forwards tray with header badge + 10s polling
 - DESIGN.md + PRODUCT.md authored (Impeccable deferred to Phase 1.5)
-- Tests: 88 backend (pytest), 10 frontend unit (Vitest), 3 E2E specs (Playwright; skip in CI, run locally with backend + real ANTHROPIC_API_KEY)
+- Tests: 130 backend (pytest), 15 frontend unit (Vitest), 4 E2E specs (Playwright; skip in CI)
 - CI: backend + web GitHub Actions workflows
+- **Backend deployed to Render** (free tier; flagged to upgrade to Starter before external onboarding)
 
-Plan 3 decisions in `docs/decisions/decision-ledger.md`:
-- AssemblyAI Universal-2 for transcription (best diarization + code-switching for SG market); PDPA mitigation via onboarding disclosure (Plan 3.5)
-- FastAPI BackgroundTasks for async; ingestion_jobs table IS the durability layer (Arq+Redis deferred to scale signal)
+Plan 4 decisions in `docs/decisions/decision-ledger.md`:
+- Meta Cloud API directly (defer Twilio + Business Verification); test number for dev
+- `/link CODE` inbound-only operator linking (avoids outbound dependency)
+- Caption pairing via second-message-within-60s heuristic
+
+Plan 4 limitation (gated on Business Verification):
+- Live end-to-end smoke not validated — Meta test numbers can't receive from arbitrary WhatsApp users on the consumer network (test recipients must be pre-registered, and they appear as "Invite to WhatsApp" to ordinary users)
+- Code path is validated via unit + integration tests + manual webhook handshake against the live Render endpoint
+- See `docs/findings/2026-05-19-meta-test-number-limitations.md`
+
+Plan 3 decisions (still active):
+- AssemblyAI Universal-2 for transcription; FastAPI BackgroundTasks for async
 
 Plan 2 decisions (still active):
-- Sync extraction in POST /events; profile columns on clients (not separate table); NEXT_PUBLIC_BACKEND_API_URL for frontend→FastAPI calls
+- Sync extraction in POST /events; profile columns on clients; NEXT_PUBLIC_BACKEND_API_URL for frontend→FastAPI
 
 Plan 1 deviations (still active):
-- Python 3.14.4 (not 3.12.7); Next.js 16 (proxy.ts not middleware.ts); Tremor skipped (React 18); dashboard at `/dashboard`
+- Python 3.14.4 (not 3.12.7); Next.js 16 (proxy.ts not middleware.ts); Tremor skipped; dashboard at `/dashboard`
 
 Next:
-- Plan 4 — WhatsApp ingestion (Shape X forwarding with operator commit; Meta Cloud API + webhook + push notifications)
+- Plan 4.5 — Business Verification kickoff + outbound notifications + voice/image/document handling + WABA-scoped permanent token
+- Plan 5 — File drop / room attachments (per design doc §5.5)
 
 References:
 - Design doc: `docs/superpowers/specs/2026-05-18-followroom-architecture-design.md`
-- Plans: foundation, core-kb-layer, ingestion-transcript-voice in `docs/superpowers/plans/`
-- Findings: `docs/findings/2026-05-18-assemblyai-validation.md`
+- Plans: foundation, core-kb-layer, ingestion-transcript-voice, whatsapp-ingestion in `docs/superpowers/plans/`
+- Findings: `docs/findings/2026-05-18-assemblyai-validation.md`, `docs/findings/2026-05-19-meta-test-number-limitations.md`
 - Schema: `supabase/SCHEMA_REFERENCE.md`
