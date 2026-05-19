@@ -10,6 +10,48 @@ Categories: `ARCH` (architecture), `PROD` (product), `DATA` (database), `UX` (us
 
 ## Active Decisions
 
+### [2026-05-19] OPS: Meta WhatsApp Cloud API directly + test number for Plan 4 (defer Business Verification)
+
+**Context:** Plan 4 needs a WhatsApp ingestion channel for forwarded client messages. Options: Meta Cloud API directly (free test number; production needs Business Verification 1-2 wk lead time), Twilio Sandbox (bidirectional immediately but adds vendor + per-msg cost), Twilio purchased number (same Twilio dependency).
+
+**Decision:** Meta Cloud API directly, test number for Plan 4 inbound development, defer Business Verification to whenever first external SG agent is ready to test. Webhook signature via HMAC-SHA256 of raw body with app secret; operator linking via `/link CODE` inbound handshake (no outbound dependency).
+
+**Rationale:**
+- Same vendor we'll use at scale — no Twilio migration debt
+- Test number is free and unlimited inbound *from registered test recipients*; sufficient for dev validation
+- Verification deferred = unblock Plan 4 ship without 1-2 wk wait
+
+**Subtle discovered limitation** (docs/findings/2026-05-19-meta-test-number-limitations.md): test numbers are NOT addressable from arbitrary WhatsApp users on the consumer network. Inbound from real WhatsApp accounts requires a verified production number. Plan 4 ships with the code path validated via unit + integration tests; live end-to-end smoke is gated on Business Verification.
+
+**Link:** `backend/app/services/whatsapp_webhook.py`; `backend/app/api/whatsapp_webhook.py`; `docs/findings/2026-05-19-meta-test-number-limitations.md`
+
+### [2026-05-19] UX: Operator WhatsApp linking via `/link CODE` inbound-only handshake
+
+**Context:** Operator's wa_id needs to be tied to their FollowRoom account so inbound forwards route correctly. Options: outbound verification code (we send a 6-digit code via WhatsApp to operator's number), inbound `/link CODE` (operator types code in their own WhatsApp + sends to FollowRoom number), email link, no link required (assume one operator per WhatsApp number globally).
+
+**Decision:** Inbound `/link CODE`. Dashboard generates a 6-digit code with 30-min TTL; operator sends `/link 482917` from their WhatsApp to FollowRoom's number; our webhook matches the code, ties `wa_id ↔ operator_id`, nulls the code.
+
+**Rationale:**
+- Avoids outbound dependency — Plan 4 is inbound-only on Meta test number where outbound to >5 recipients is blocked anyway
+- Inverts the normal "we send you a code" pattern, but no worse UX once explained ("type this message in WhatsApp")
+- Code-on-display + DB-side expiry + nullify-on-use protects against brute force / replay
+- Operator can re-link to a different number anytime via regenerate flow
+
+**Link:** `backend/app/services/whatsapp_webhook.py` (_complete_link); `backend/app/api/pending_forwards.py` (issue_link_code); `web/components/whatsapp/link-instructions.tsx`
+
+### [2026-05-19] AI: Caption pairing via second-message-within-60s heuristic
+
+**Context:** When operator forwards a client message with a caption (e.g., "Sarah Tan"), Meta delivers TWO separate webhook events: the forwarded text first, then the operator's caption as a regular text follow-up. Need to associate them.
+
+**Decision:** Webhook handler treats any non-forwarded text from a linked wa_id within 60 seconds of an unpaired pending_forward (caption_text IS NULL) as the caption for that pending row. Updates caption_text on the most recent unpaired row. Escape hatch: if pairing fails (operator delays caption), the forward shows in tray without a caption and the operator can still confirm via Pick client dropdown.
+
+**Rationale:**
+- 60s window is generous enough for typing-then-sending while tight enough to avoid stale matches
+- Most-recent-unpaired-from-same-sender is a deterministic match rule (no ambiguity if operator forwards multiple at once)
+- Phase 4.5 may add operator-facing re-association if real usage shows the heuristic fails frequently
+
+**Link:** `backend/app/services/whatsapp_webhook.py` (_try_pair_caption)
+
 ### [2026-05-19] AI: AssemblyAI Universal-2 as Phase 3 transcription provider
 
 **Context:** Plan 3 needs a transcription provider for voice memos and multi-party audio transcripts. SG real estate operators speak English, Mandarin, and Singlish — often code-switching mid-utterance. Need diarization for viewings (operator + buyer + spouse). Three viable options: AssemblyAI Universal-2, Deepgram Nova-3, OpenAI Whisper API (no native diarization).

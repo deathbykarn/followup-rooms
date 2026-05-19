@@ -45,4 +45,9 @@ jobs:
           ANTHROPIC_API_KEY: ci-ant
           OPENAI_API_KEY: ci-oa
           ASSEMBLYAI_API_KEY: ci-aai
+          META_WHATSAPP_APP_SECRET: ci-meta-secret
+          META_WHATSAPP_VERIFY_TOKEN: ci-meta-verify
+          META_WHATSAPP_PHONE_NUMBER_ID: ci-phone-id
+          META_WHATSAPP_ACCESS_TOKEN: ci-meta-token
+          FOLLOWROOM_WHATSAPP_NUMBER: "+15551234567"
         run: pytest -v --cov=app --cov-report=term-missing

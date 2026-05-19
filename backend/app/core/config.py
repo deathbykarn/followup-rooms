@@ -24,6 +24,13 @@ class Settings(BaseSettings):
     openai_api_key: str
     assemblyai_api_key: str
 
+    # WhatsApp (Meta Cloud API, Plan 4)
+    meta_whatsapp_app_secret: str           # used to verify webhook HMAC (X-Hub-Signature-256)
+    meta_whatsapp_verify_token: str         # operator-chosen string for Meta's webhook handshake
+    meta_whatsapp_phone_number_id: str      # test phone number ID from Meta dashboard
+    meta_whatsapp_access_token: str         # System user permanent token
+    followroom_whatsapp_number: str         # display E.164, e.g., '+15551234567'
+
     # Runtime
     env: str = "development"
     log_level: str = "INFO"
