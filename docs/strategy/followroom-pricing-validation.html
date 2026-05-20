@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FollowRoom — Pricing &amp; Business Validation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#F3EEE3; --paper-warm:#F8F4EA; --paper-deep:#EAE3D2;
+    --ink:#18150F; --ink-soft:#322C22; --ink-mid:#4E4636; --muted:#7A6F58;
+    --rule:#CFC4AB; --rule-soft:#DDD4BD;
+    --sage:#3B5345; --sage-soft:#5A7060; --clay:#9A6A45; --gold:#B8923E;
+    --good:#3B5345; --warn:#9A6A45; --neg:#A24530;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink-soft);font-family:'Newsreader',Georgia,serif;font-size:1.1rem;line-height:1.62;-webkit-font-smoothing:antialiased;font-feature-settings:'kern' 1,'liga' 1;position:relative;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:-10%;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.06 0 0 0 0 0.03 0 0 0 0.15 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.5;mix-blend-mode:multiply;}
+  main{position:relative;z-index:2;}
+  .display{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 460;line-height:.95;letter-spacing:-.025em;color:var(--ink);}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--sage);}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  p{max-width:42em;} em{font-style:italic;} strong{font-weight:600;color:var(--ink);}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4.5rem);}
+  section{padding:clamp(4rem,9vh,7rem) 0;border-bottom:1px solid var(--rule-soft);}
+  section:last-of-type{border-bottom:none;}
+  .section-head{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:baseline;margin-bottom:3rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.1em;color:var(--clay);font-weight:600;}
+  .section-title{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 40,'opsz' 60,'wght' 450;font-size:clamp(1.4rem,2.4vw,1.85rem);color:var(--ink);letter-spacing:-.01em;line-height:1.1;}
+  .section-tag{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+
+  /* COVER */
+  .cover{min-height:90vh;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(2.5rem,5vh,4rem) 0;border-bottom:2px solid var(--ink);}
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;}
+  .brand-mark{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 30,'opsz' 48,'wght' 500;font-size:1.05rem;letter-spacing:.03em;color:var(--ink);}
+  .brand-mark .dot{color:var(--clay);}
+  .stamp{border:1.5px solid var(--sage);color:var(--sage);padding:.4rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;}
+  .cover-center{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(2rem,6vh,4rem) 0;}
+  .cover-eyebrow{margin-bottom:1.6rem;}
+  .cover-title{font-size:clamp(2.6rem,7.5vw,5.6rem);margin-bottom:1.5rem;color:var(--ink);max-width:14ch;}
+  .cover-sub{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 80,'wght' 320;font-style:italic;font-size:clamp(1.3rem,2.2vw,1.75rem);line-height:1.3;max-width:26em;color:var(--ink-soft);}
+  .cover-bottom{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2rem;padding-top:1.8rem;border-top:1px solid var(--rule);}
+  .cover-bottom .label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+  .cover-bottom .value{font-family:'Fraunces',Georgia,serif;font-variation-settings:'opsz' 36,'wght' 420;font-size:1rem;color:var(--ink);line-height:1.3;}
+
+  .lead{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 60,'wght' 350;font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.42;color:var(--ink);max-width:32em;margin-bottom:2rem;}
+  .lead em{color:var(--clay);font-style:italic;}
+  .callout{margin-top:2rem;padding:1.6rem 1.9rem;background:var(--paper-warm);border-left:3px solid var(--clay);font-size:1.02rem;line-height:1.55;}
+  .callout strong{color:var(--clay);}
+
+  /* COHORT LADDER */
+  .ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule);margin-top:1rem;}
+  .rung{padding:2rem 1.9rem 2.25rem;border-right:1px solid var(--rule);background:var(--paper-warm);}
+  .rung:last-child{border-right:none;}
+  .rung.featured{background:var(--sage);color:var(--paper-warm);}
+  .rung.featured .r-name,.rung.featured .r-price,.rung.featured .r-price .cur{color:var(--paper-warm);}
+  .rung.featured .r-when{color:var(--gold);}
+  .rung.featured .r-detail{color:rgba(248,244,234,.82);}
+  .rung.featured .r-detail li::before{color:var(--gold);}
+  .r-when{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--clay);margin-bottom:.8rem;}
+  .r-name{font-family:'Fraunces',serif;font-variation-settings:'opsz' 60,'wght' 480;font-size:1.7rem;color:var(--ink);line-height:1;margin-bottom:.6rem;}
+  .r-price{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 40,'opsz' 96,'wght' 380;font-size:2.6rem;color:var(--ink);line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin-bottom:1rem;}
+  .r-price .cur{font-size:.5em;opacity:.6;vertical-align:top;margin-right:.05em;}
+  .r-price .per{font-family:'JetBrains Mono',monospace;font-size:.32em;letter-spacing:.05em;color:var(--muted);margin-left:.3em;}
+  .rung.featured .r-price .per{color:rgba(248,244,234,.6);}
+  .r-detail{list-style:none;padding:0;font-size:.92rem;line-height:1.5;}
+  .r-detail li{padding-left:1.1em;position:relative;margin-bottom:.45rem;color:var(--ink-mid);}
+  .rung.featured .r-detail li{color:rgba(248,244,234,.82);}
+  .r-detail li::before{content:"–";position:absolute;left:0;color:var(--clay);font-weight:600;}
+
+  /* GENERIC TABLE */
+  .tbl{width:100%;border-collapse:collapse;margin-top:1rem;font-variant-numeric:tabular-nums;}
+  .tbl caption{text-align:left;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-bottom:.8rem;}
+  .tbl th,.tbl td{text-align:left;padding:.75rem 1rem;border-bottom:1px solid var(--rule-soft);font-size:.95rem;}
+  .tbl thead th{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);font-weight:500;}
+  .tbl td.n,.tbl th.n{text-align:right;font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  .tbl tr.total td{border-top:1.5px solid var(--ink);border-bottom:none;font-weight:600;color:var(--ink);}
+  .tbl tr.total td .mono{font-weight:600;}
+  .tbl td .item{color:var(--ink-soft);}
+  .tbl td .sub{display:block;font-size:.8rem;color:var(--muted);font-style:italic;margin-top:.15rem;line-height:1.35;}
+  .tbl tbody tr:hover{background:var(--paper-warm);}
+  .pos{color:var(--good);font-weight:600;}
+  .negv{color:var(--neg);font-weight:600;}
+
+  .table-pair{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+  .table-pair h4{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sage);margin-bottom:.4rem;}
+  .table-pair .sublabel{font-size:.9rem;color:var(--muted);font-style:italic;margin-bottom:.5rem;}
+
+  /* BIG NUMBERS */
+  .bignums{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:2rem 0;}
+  .bignum{padding:1.6rem 1.6rem 1.6rem 0;border-right:1px solid var(--rule);}
+  .bignum:last-child{border-right:none;}
+  .bignum .bl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+  .bignum .bv{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 40,'opsz' 96,'wght' 380;font-size:clamp(2rem,3.2vw,2.7rem);color:var(--ink);line-height:.95;letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin-bottom:.4rem;}
+  .bignum .bv .cur{font-size:.5em;opacity:.55;vertical-align:top;margin-right:.05em;}
+  .bignum .bv .sm{font-size:.42em;opacity:.55;font-style:italic;margin-left:.15em;}
+  .bignum .bn{font-size:.84rem;color:var(--ink-mid);line-height:1.45;}
+
+  /* CHART */
+  .chart-wrap{background:var(--paper-warm);border:1px solid var(--rule);padding:clamp(1rem,2.5vw,2rem);margin-top:1.5rem;}
+  .chart-wrap svg{width:100%;height:auto;display:block;}
+  .legend{margin-top:1.2rem;display:flex;flex-wrap:wrap;gap:1.5rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .legend .sw{display:inline-block;width:24px;height:3px;vertical-align:middle;margin-right:.5rem;}
+
+  .note-list{margin-top:1.5rem;list-style:none;padding:0;}
+  .note-list li{padding:.9rem 0 .9rem 2rem;border-bottom:1px solid var(--rule-soft);position:relative;font-size:.97rem;line-height:1.55;max-width:48em;}
+  .note-list li::before{content:"§";position:absolute;left:0;color:var(--clay);font-family:'JetBrains Mono',monospace;font-size:.85rem;top:1rem;}
+  .note-list li strong{color:var(--ink);}
+
+  footer{padding:3rem 0 5rem;border-top:1px solid var(--rule);font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--muted);line-height:1.7;}
+  footer .foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule-soft);margin-bottom:1.4rem;}
+  footer p{max-width:58em;font-size:.76rem;}
+
+  @media (max-width:880px){
+    .ladder{grid-template-columns:1fr;} .rung{border-right:none;border-bottom:1px solid var(--rule);}
+    .table-pair{grid-template-columns:1fr;gap:2rem;}
+    .bignum{border-right:none;}
+    .tbl th,.tbl td{padding:.6rem .5rem;font-size:.86rem;}
+    section{padding:3.5rem 0;}
+  }
+  @media print{body{background:#fff;}body::before{display:none;}.rung.featured{background:#eee;color:#000;}section{break-inside:avoid;}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .cover-title,.cover-sub,.cover-eyebrow,.cover-bottom{animation:rise 1s ease-out backwards;}
+  .cover-eyebrow{animation-delay:.1s;}.cover-title{animation-delay:.25s;}.cover-sub{animation-delay:.45s;}.cover-bottom{animation-delay:.65s;}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- COVER -->
+  <section class="cover wrap">
+    <div class="cover-top">
+      <div class="brand-mark">FollowRoom<span class="dot">·</span></div>
+      <div class="stamp">Pricing &amp; Validation · Internal</div>
+    </div>
+    <div class="cover-center">
+      <div class="cover-eyebrow eyebrow">Business model · v0.1 · 2026-05-20</div>
+      <h1 class="display cover-title">The money, honestly.</h1>
+      <p class="cover-sub">A cohort pricing ladder, the full cost of every dollar, what a 5&ndash;10 agent pilot actually costs you, and the road to breakeven and $20K/month profit &mdash; shown both with and without paying yourself.</p>
+    </div>
+    <div class="cover-bottom">
+      <div><div class="label">Model</div><div class="value">Cohort ladder<br>Beta → Founder → Pro</div></div>
+      <div><div class="label">Gross margin</div><div class="value">~93% per seat</div></div>
+      <div><div class="label">Pilot cost (6mo, 10 agents)</div><div class="value">&lt; $1,100 in infra+ops</div></div>
+      <div><div class="label">$20K profit</div><div class="value">~250 seats<br>(blended, w/ draw)</div></div>
+    </div>
+  </section>
+
+  <!-- 01 COHORT LADDER -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">The cohort ladder.</h2>
+      <span class="section-tag">Pricing</span>
+    </div>
+
+    <p class="lead">Pricing is a <em>time ladder</em>, not a feature grid. Everyone gets the same product. What changes is the price you lock in by joining early. Reward the believers; let the standard rate rise behind them.</p>
+
+    <div class="ladder">
+      <div class="rung">
+        <div class="r-when">Phase 1 · months 0&ndash;3</div>
+        <div class="r-name">Beta</div>
+        <div class="r-price"><span class="cur">$</span>0<span class="per">free</span></div>
+        <ul class="r-detail">
+          <li>Pilot cohort, ~5&ndash;10 agents (KW wedge)</li>
+          <li>Free access in exchange for feedback + a case-study reference</li>
+          <li>Time-boxed (~3 months)</li>
+          <li>No card required to start</li>
+          <li>Converts to the Founder price when beta ends</li>
+        </ul>
+      </div>
+      <div class="rung featured">
+        <div class="r-when">Unlocked from beta · locked 12 months</div>
+        <div class="r-name">Founder</div>
+        <div class="r-price"><span class="cur">$</span>99<span class="per">/ mo</span></div>
+        <ul class="r-detail">
+          <li>Beta members + early signups (cohort capped, ~first 50 paying)</li>
+          <li>Price locked for 12 months &mdash; a third below standard</li>
+          <li>Full product, no feature gating</li>
+          <li>Loyalty moat: they joined cheapest, they stay longest</li>
+          <li>Rolls to Pro rate after the 12-month lock</li>
+        </ul>
+      </div>
+      <div class="rung">
+        <div class="r-when">Standard · everyone after</div>
+        <div class="r-name">Pro</div>
+        <div class="r-price"><span class="cur">$</span>149<span class="per">/ mo</span></div>
+        <ul class="r-detail">
+          <li>The going rate once the Founder cohort fills</li>
+          <li>Anchored against the ~$3,000/mo PA cost (≈5% of it)</li>
+          <li>Sits mid-band of the validated $100&ndash;$200 range</li>
+          <li>Team / Agency multi-seat tiers layer on later</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Why this shape.</strong> Free beta removes every reason not to try. The Founder lock converts gratitude into a 12-month commitment at a price that still clears 90% margin. Pro lets the standard rate climb without ever re-pricing the believers. The discount is real and time-bound &mdash; honest scarcity, not theatrics.
+    </div>
+  </section>
+
+  <!-- 02 COST STRUCTURE -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">What every dollar costs to deliver.</h2>
+      <span class="section-tag">Cost structure</span>
+    </div>
+
+    <p class="lead">Two cost buckets: <em>fixed infrastructure</em> (paid whether you have 1 customer or 100) and <em>variable ops</em> (paid per active seat). Both are small. The numbers below are conservative &mdash; real cost runs lower.</p>
+
+    <div class="table-pair">
+      <div>
+        <h4>Fixed infrastructure — Lean (beta)</h4>
+        <div class="sublabel">What runs the pilot. Free tiers where they hold.</div>
+        <table class="tbl">
+          <tbody>
+            <tr><td><span class="item">Render Starter — backend</span></td><td class="n mono">$7</td></tr>
+            <tr><td><span class="item">Vercel Pro — frontend (commercial)</span></td><td class="n mono">$20</td></tr>
+            <tr><td><span class="item">Supabase Free — DB / auth / storage</span></td><td class="n mono">$0</td></tr>
+            <tr><td><span class="item">Domain (amortised)</span></td><td class="n mono">$2</td></tr>
+            <tr><td><span class="item">Email forwarding (Cloudflare)</span></td><td class="n mono">$0</td></tr>
+            <tr><td><span class="item">Monitoring (free tier)</span></td><td class="n mono">$0</td></tr>
+            <tr class="total"><td><span class="item">Total fixed / month</span></td><td class="n mono">~$29</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h4>Fixed infrastructure — Production</h4>
+        <div class="sublabel">Post-beta: backups, no spindown, reliability.</div>
+        <table class="tbl">
+          <tbody>
+            <tr><td><span class="item">Render Standard — backend</span></td><td class="n mono">$25</td></tr>
+            <tr><td><span class="item">Vercel Pro — frontend</span></td><td class="n mono">$20</td></tr>
+            <tr><td><span class="item">Supabase Pro — backups, 8GB, no pause</span></td><td class="n mono">$25</td></tr>
+            <tr><td><span class="item">Domain (amortised)</span></td><td class="n mono">$2</td></tr>
+            <tr><td><span class="item">Google Workspace email</span></td><td class="n mono">$6</td></tr>
+            <tr><td><span class="item">Monitoring (free tier scales a while)</span></td><td class="n mono">$0</td></tr>
+            <tr class="total"><td><span class="item">Total fixed / month</span></td><td class="n mono">~$78</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:2.5rem;">
+      <table class="tbl">
+        <caption>Variable ops cost — per active seat / month</caption>
+        <thead><tr><th>Component</th><th>What it covers</th><th class="n">$ / seat</th></tr></thead>
+        <tbody>
+          <tr><td><span class="item">Anthropic (Sonnet)</span></td><td>Fact extraction + client matching + profile regeneration, with prompt caching</td><td class="n mono">$5.00</td></tr>
+          <tr><td><span class="item">AssemblyAI Universal-2</span></td><td>~4 hrs of diarised transcription per seat / month</td><td class="n mono">$2.60</td></tr>
+          <tr><td><span class="item">Supabase storage + bandwidth</span></td><td>Audio files, rows, served pages</td><td class="n mono">$1.00</td></tr>
+          <tr><td><span class="item">WhatsApp Cloud API</span></td><td>Outbound &ldquo;you have N pending&rdquo; nudges (inbound is free)</td><td class="n mono">$0.50</td></tr>
+          <tr><td><span class="item">Buffer</span></td><td>Retries, headroom, cache misses</td><td class="n mono">$0.90</td></tr>
+          <tr class="total"><td><span class="item">Total variable / seat</span></td><td></td><td class="n mono">~$10.00</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>Conservative on purpose.</strong> Real per-seat ops likely lands at $4&ndash;$7 once caching settles and most agents do fewer than 4 transcription-hours a month. We model $10 so every downstream number has slack. At Pro $149, even $10 ops is a <strong>93% gross margin</strong>.</div>
+    </div>
+  </section>
+
+  <!-- 03 PILOT BURN -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">What the pilot actually costs you.</h2>
+      <span class="section-tag">5–10 agents · 3–6 months</span>
+    </div>
+
+    <p class="lead">Beta is free, so the pilot earns nothing &mdash; it's pure outlay. The headline: <em>the product is almost free to run</em>. The only number that matters is whether you pay yourself.</p>
+
+    <div class="table-pair">
+      <div>
+        <h4>Cash outlay — WITHOUT founder draw</h4>
+        <div class="sublabel">True out-of-pocket. What it costs to keep the lights on.</div>
+        <table class="tbl">
+          <thead><tr><th>Scenario</th><th class="n">/ mo</th><th class="n">3 mo</th><th class="n">6 mo</th></tr></thead>
+          <tbody>
+            <tr><td>5 agents · lean infra</td><td class="n mono">$79</td><td class="n mono">$237</td><td class="n mono">$474</td></tr>
+            <tr><td>5 agents · production</td><td class="n mono">$128</td><td class="n mono">$384</td><td class="n mono">$768</td></tr>
+            <tr><td>10 agents · lean infra</td><td class="n mono">$129</td><td class="n mono">$387</td><td class="n mono">$774</td></tr>
+            <tr class="total"><td>10 agents · production</td><td class="n mono">$178</td><td class="n mono">$534</td><td class="n mono">$1,068</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:.86rem;color:var(--muted);margin-top:.8rem;font-style:italic;max-width:none;">+ one-time setup ~$340 (Pte Ltd incorporation ~$315, domain ~$24). Meta Business Verification is free.</p>
+      </div>
+      <div>
+        <h4>Cash outlay — WITH founder draw</h4>
+        <div class="sublabel">If you pay yourself $10,000/mo during the pilot.</div>
+        <table class="tbl">
+          <thead><tr><th>Scenario</th><th class="n">/ mo</th><th class="n">3 mo</th><th class="n">6 mo</th></tr></thead>
+          <tbody>
+            <tr><td>5 agents · production</td><td class="n mono">$10,128</td><td class="n mono">$30,384</td><td class="n mono">$60,768</td></tr>
+            <tr class="total"><td>10 agents · production</td><td class="n mono">$10,178</td><td class="n mono">$30,534</td><td class="n mono">$61,068</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:.86rem;color:var(--muted);margin-top:.8rem;font-style:italic;max-width:none;">The founder draw is 98%+ of the total. Serving 10 pilot agents costs ~$178/mo; paying yourself costs $10,000/mo.</p>
+      </div>
+    </div>
+
+    <div class="bignums">
+      <div class="bignum"><div class="bl">Pilot infra+ops, worst case</div><div class="bv"><span class="cur">$</span>1,068</div><div class="bn">10 agents, production infra, full 6 months. The most you'd spend running the product.</div></div>
+      <div class="bignum"><div class="bl">All-in incl. setup</div><div class="bv">&lt;<span class="cur">$</span>1.5K</div><div class="bn">Add company incorporation + domain. Under $1,500 to validate the whole thesis.</div></div>
+      <div class="bignum"><div class="bl">The real cost</div><div class="bv">Your time</div><div class="bn">With a draw, ~$30K&ndash;$61K over 3&ndash;6 months &mdash; almost entirely your salary, not the product.</div></div>
+    </div>
+
+    <div class="callout"><strong>Read this twice.</strong> You can run a 5&ndash;10 agent pilot for six months for the price of a nice dinner per month. The decision to pilot is not a money decision &mdash; it's a time decision. The honest cost of the pilot is your own opportunity cost, which the founder-draw column makes visible.</div>
+  </section>
+
+  <!-- 04 BREAKEVEN -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Breakeven — two ways.</h2>
+      <span class="section-tag">Where it pays for itself</span>
+    </div>
+
+    <p class="lead">Contribution per seat is ARPU minus the $10 ops cost. Because that contribution is so high, the answer to &ldquo;when does it pay for itself&rdquo; depends almost entirely on <em>whether your salary is a cost or the reward</em>.</p>
+
+    <div class="table-pair">
+      <div>
+        <h4>WITHOUT founder draw</h4>
+        <div class="sublabel">Cover fixed infra ($78/mo) only.</div>
+        <table class="tbl">
+          <thead><tr><th>ARPU</th><th class="n">Contribution / seat</th><th class="n">Breakeven</th></tr></thead>
+          <tbody>
+            <tr><td>Founder $99</td><td class="n mono">$89</td><td class="n mono">1 seat</td></tr>
+            <tr><td>Blended $130</td><td class="n mono">$120</td><td class="n mono">1 seat</td></tr>
+            <tr class="total"><td>Pro $149</td><td class="n mono">$139</td><td class="n mono">1 seat</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:.86rem;color:var(--muted);margin-top:.8rem;font-style:italic;max-width:none;">A single paying customer covers all infrastructure. You are structurally cash-positive the moment beta ends and the first Founder pays.</p>
+      </div>
+      <div>
+        <h4>WITH founder draw</h4>
+        <div class="sublabel">Cover $10,000 draw + $78 infra = $10,078/mo.</div>
+        <table class="tbl">
+          <thead><tr><th>ARPU</th><th class="n">Contribution / seat</th><th class="n">Breakeven</th></tr></thead>
+          <tbody>
+            <tr><td>Founder $99</td><td class="n mono">$89</td><td class="n mono">114 seats</td></tr>
+            <tr><td>Blended $130</td><td class="n mono">$120</td><td class="n mono">84 seats</td></tr>
+            <tr class="total"><td>Pro $149</td><td class="n mono">$139</td><td class="n mono">73 seats</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:.86rem;color:var(--muted);margin-top:.8rem;font-style:italic;max-width:none;">To pay yourself a full $10K/mo and break even, you need 73&ndash;114 paying seats depending on how Founder-heavy the book is.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 $20K PROFIT -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">The road to $20K/month profit.</h2>
+      <span class="section-tag">The target</span>
+    </div>
+
+    <div class="table-pair">
+      <div>
+        <h4>WITHOUT founder draw</h4>
+        <div class="sublabel">$20K profit = your take-home. Cover $20,078/mo.</div>
+        <table class="tbl">
+          <thead><tr><th>ARPU</th><th class="n">Contribution</th><th class="n">Seats for $20K</th></tr></thead>
+          <tbody>
+            <tr><td>Founder $99</td><td class="n mono">$89</td><td class="n mono">226</td></tr>
+            <tr><td>Blended $130</td><td class="n mono">$120</td><td class="n mono">167</td></tr>
+            <tr class="total"><td>Pro $149</td><td class="n mono">$139</td><td class="n mono">145</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h4>WITH founder draw</h4>
+        <div class="sublabel">$20K profit on top of $10K salary. Cover $30,078/mo.</div>
+        <table class="tbl">
+          <thead><tr><th>ARPU</th><th class="n">Contribution</th><th class="n">Seats for $20K</th></tr></thead>
+          <tbody>
+            <tr><td>Founder $99</td><td class="n mono">$89</td><td class="n mono">338</td></tr>
+            <tr><td>Blended $130</td><td class="n mono">$120</td><td class="n mono">251</td></tr>
+            <tr class="total"><td>Pro $149</td><td class="n mono">$139</td><td class="n mono">216</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="bignums">
+      <div class="bignum"><div class="bl">$20K take-home (no draw)</div><div class="bv">145&ndash;226<span class="sm">seats</span></div><div class="bn">If you treat profit as your income, you need this many paying customers.</div></div>
+      <div class="bignum"><div class="bl">$20K profit + $10K salary</div><div class="bv">216&ndash;338<span class="sm">seats</span></div><div class="bn">If you pay yourself $10K and want $20K profit on top.</div></div>
+      <div class="bignum"><div class="bl">As % of SG agents</div><div class="bv">~0.8<span class="sm">%</span></div><div class="bn">250 seats is under 1% of SG's 31,500 registered salespersons. Comfortably inside reach.</div></div>
+    </div>
+  </section>
+
+  <!-- 06 JOURNEY -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2 class="section-title">The journey, month by month.</h2>
+      <span class="section-tag">Trajectory</span>
+    </div>
+
+    <p class="lead">A realistic-not-optimistic path. The lower line is your net <em>after</em> paying yourself $10K/mo; the upper line is net if you don't draw a salary. The gap between them is exactly $10,000.</p>
+
+    <div class="chart-wrap">
+      <svg viewBox="0 0 1100 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Net profit trajectory with and without founder draw">
+        <defs>
+          <linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3B5345" stop-opacity="0.16"/>
+            <stop offset="100%" stop-color="#3B5345" stop-opacity="0"/>
+          </linearGradient>
+          <pattern id="g" width="100" height="48" patternUnits="userSpaceOnUse"><path d="M100 0 L0 0 0 48" fill="none" stroke="#CFC4AB" stroke-width="0.5" opacity="0.5"/></pattern>
+        </defs>
+        <!-- plot area y: 40 (top) .. 390 (bottom). value range -15k .. +75k -->
+        <rect x="90" y="40" width="970" height="350" fill="url(#g)"/>
+
+        <!-- zero line (value 0). scale: 90k span over 350px => 3.889 px/k. zero at 75k from top => y=40+(75/90)*350=331.9 -->
+        <line x1="90" y1="332" x2="1060" y2="332" stroke="#18150F" stroke-width="1.2" opacity="0.8"/>
+        <text x="84" y="336" font-family="JetBrains Mono,monospace" font-size="10" fill="#18150F" text-anchor="end" font-weight="600">$0</text>
+
+        <!-- $20k profit line: y = 40 + ((75-20)/90)*350 = 40+213.9=253.9 -->
+        <line x1="90" y1="254" x2="1060" y2="254" stroke="#9A6A45" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.7"/>
+        <text x="1055" y="247" font-family="JetBrains Mono,monospace" font-size="10" fill="#9A6A45" text-anchor="end" font-weight="600">$20K / month profit</text>
+
+        <!-- Y ticks -->
+        <g font-family="JetBrains Mono,monospace" font-size="10" fill="#7A6F58" text-anchor="end">
+          <text x="84" y="63">$75K</text>
+          <text x="84" y="141">$55K</text>
+          <text x="84" y="219">$35K</text>
+          <text x="84" y="297">$15K</text>
+          <text x="84" y="375">-$5K</text>
+        </g>
+        <!-- X ticks -->
+        <g font-family="JetBrains Mono,monospace" font-size="10" fill="#7A6F58" text-anchor="middle">
+          <text x="90" y="410">M0</text><text x="252" y="410">M6</text><text x="414" y="410">M12</text><text x="576" y="410">M18</text><text x="738" y="410">M24</text><text x="900" y="410">M30</text><text x="1060" y="410">M36</text>
+        </g>
+
+        <!-- phase bands -->
+        <rect x="90" y="40" width="162" height="350" fill="#9A6A45" opacity="0.04"/>
+        <rect x="252" y="40" width="486" height="350" fill="#3B5345" opacity="0.04"/>
+        <rect x="738" y="40" width="322" height="350" fill="#18150F" opacity="0.03"/>
+        <text x="171" y="58" font-family="JetBrains Mono,monospace" font-size="9" fill="#9A6A45" text-anchor="middle" letter-spacing="2">BETA→FOUNDER</text>
+        <text x="495" y="58" font-family="JetBrains Mono,monospace" font-size="9" fill="#3B5345" text-anchor="middle" letter-spacing="2">FOUNDER→PRO</text>
+        <text x="899" y="58" font-family="JetBrains Mono,monospace" font-size="9" fill="#18150F" text-anchor="middle" letter-spacing="2">EXPANSION</text>
+
+        <!-- data; x = 90 + (month/36)*970 ; y = 40 + ((75 - value_k)/90)*350 -->
+        <!-- no-draw net: M0 -0.13, M6 +1.26, M12 +5.92, M18 +17.17, M24 +31.17, M30 ~50, M36 71.38 -->
+        <!-- y: M0 332.5, M6 327.1, M12 308.9, M18 264.9, M24 210.4, M30 137.2, M36 57.9 -->
+        <path d="M90 332.5 L252 327.1 L414 308.9 L576 264.9 L738 210.4 L899 137.2 L1060 57.9" fill="none" stroke="#3B5345" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- with-draw net (= no-draw - 10k): M0 -10.13, M6 -8.74, M12 -4.08, M18 +7.17, M24 +21.17, M30 ~40, M36 61.38 -->
+        <!-- y: M0 371.4, M6 366.0, M12 347.9, M18 303.9, M24 249.4, M30 176.1, M36 96.8 -->
+        <path d="M90 371.4 L252 366.0 L414 347.9 L576 303.9 L738 249.4 L899 176.1 L1060 96.8" fill="none" stroke="#9A6A45" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 0"/>
+
+        <!-- markers on with-draw line -->
+        <g font-family="JetBrains Mono,monospace" font-size="10">
+          <circle cx="414" cy="347.9" r="4" fill="#9A6A45"/>
+          <circle cx="576" cy="303.9" r="4" fill="#9A6A45"/>
+          <circle cx="738" cy="249.4" r="6" fill="#9A6A45" stroke="#F8F4EA" stroke-width="2"/>
+          <text x="730" y="240" fill="#9A6A45" text-anchor="end" font-weight="700">$20K profit · ~250 seats · M24</text>
+        </g>
+        <!-- marker on no-draw line where it crosses 0 (already above 0 at M0); mark M24 -->
+        <g font-family="JetBrains Mono,monospace" font-size="10">
+          <circle cx="738" cy="210.4" r="5" fill="#3B5345" stroke="#F8F4EA" stroke-width="1.5"/>
+          <text x="746" y="205" fill="#3B5345" font-weight="600">$31K take-home (no draw)</text>
+        </g>
+      </svg>
+      <div class="legend">
+        <span><span class="sw" style="background:#3B5345;"></span>Net, no founder draw (profit = your income)</span>
+        <span><span class="sw" style="background:#9A6A45;"></span>Net, after $10K/mo founder draw</span>
+        <span><span class="sw" style="background:#9A6A45;height:0;border-top:2px dashed #9A6A45;"></span>$20K profit target</span>
+      </div>
+    </div>
+
+    <table class="tbl" style="margin-top:2.5rem;">
+      <caption>Month-by-month — seats, pricing mix, MRR, and net both ways</caption>
+      <thead><tr><th>Month</th><th>Phase</th><th class="n">Seats</th><th class="n">Avg price</th><th class="n">MRR</th><th class="n">Net (no draw)</th><th class="n">Net (w/ $10K draw)</th></tr></thead>
+      <tbody>
+        <tr><td>M0&ndash;3</td><td>Beta (free)</td><td class="n mono">5&ndash;10</td><td class="n mono">$0</td><td class="n mono">$0</td><td class="n mono negv">&minus;$130</td><td class="n mono negv">&minus;$10,130</td></tr>
+        <tr><td>M6</td><td>Founder</td><td class="n mono">15</td><td class="n mono">$99</td><td class="n mono">$1,485</td><td class="n mono pos">+$1,257</td><td class="n mono negv">&minus;$8,743</td></tr>
+        <tr><td>M12</td><td>Founder + Pro</td><td class="n mono">60</td><td class="n mono">$110</td><td class="n mono">$6,600</td><td class="n mono pos">+$5,922</td><td class="n mono negv">&minus;$4,078</td></tr>
+        <tr><td>M18</td><td>Scaling</td><td class="n mono">150</td><td class="n mono">$125</td><td class="n mono">$18,750</td><td class="n mono pos">+$17,172</td><td class="n mono pos">+$7,172</td></tr>
+        <tr class="total"><td>M24</td><td>Mature</td><td class="n mono">250</td><td class="n mono">$135</td><td class="n mono">$33,750</td><td class="n mono pos">+$31,172</td><td class="n mono pos">+$21,172</td></tr>
+        <tr><td>M36</td><td>Expansion</td><td class="n mono">550</td><td class="n mono">$140</td><td class="n mono">$77,000</td><td class="n mono pos">+$71,380</td><td class="n mono pos">+$61,380</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 07 ASSUMPTIONS -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Assumptions &amp; sensitivities.</h2>
+      <span class="section-tag">Read before trusting</span>
+    </div>
+
+    <p class="lead">Every number above rests on these. Change one and tell me &mdash; the model moves predictably.</p>
+
+    <ul class="note-list">
+      <li><strong>Founder draw = $10,000/mo.</strong> The single biggest swing factor. At $5K draw, breakeven roughly halves (~42 seats blended) and $20K profit lands ~3 months earlier. At $0 draw, you're profitable from the first paying customer.</li>
+      <li><strong>Ops = $10/seat, modelled conservative.</strong> Real cost likely $4&ndash;$7. If it holds at $6, contribution per Pro seat rises to $143 and every seat-count target drops ~3%.</li>
+      <li><strong>Pricing is a hypothesis, not validated.</strong> Suresh gave a $100&ndash;$200 band; Scott named no price. $99 Founder / $149 Pro are reasoned placements. The beta exists partly to discover the real number &mdash; expect to move it.</li>
+      <li><strong>Seat trajectory assumes the wave works.</strong> 250 seats by M24 = ~0.8% of SG's registered agents, riding the KW-then-PropNex cluster dynamics. If adoption is half as fast, $20K profit slips to ~M30 &mdash; still a sound single-founder business.</li>
+      <li><strong>Blended ARPU drifts up over time.</strong> Early book is Founder-heavy ($99&ndash;$110); as 12-month locks expire and new Pro joins, the blend climbs toward $135&ndash;$149. The journey table bakes this in.</li>
+      <li><strong>Production infra holds to ~$78/mo well past 250 seats.</strong> Render/Vercel/Supabase scale gently; the next step-up (dedicated DB, queue infra) only matters around 500+ active seats and is folded into the M36 line.</li>
+      <li><strong>Beta is genuinely free and time-boxed (~3 months).</strong> If beta runs longer, the only added cost is infra+ops (cheap) &mdash; but the revenue clock starts later, pushing every milestone right by the overrun.</li>
+      <li><strong>One-time setup ~$340</strong> (Pte Ltd + domain) is excluded from the monthly tables. Meta Business Verification is free but gates the pilot start &mdash; submit early.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-row">
+        <span>FollowRoom · Pricing &amp; Business Validation · v0.1</span>
+        <span>khaniff@gmail.com · 2026-05-20</span>
+      </div>
+      <p>Cost estimates from public pricing (Render, Vercel, Supabase, Anthropic, AssemblyAI) as of May 2026, USD. Pricing structure per the cohort-ladder decision (Beta free → Founder $99 locked 12 months → Pro $149). Companion to <em>followroom-positioning.html</em>, <em>followroom-thesis-brief.html</em>, and <em>followroom-investor-brief.html</em>. All projections illustrative; the beta is the validation instrument. Numbers reconcile with the thesis/investor briefs (which used a blended $135 ARPU and $10K founder draw → 216&ndash;245 seats for $20K profit).</p>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>

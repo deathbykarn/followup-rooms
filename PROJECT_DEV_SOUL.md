@@ -165,6 +165,31 @@ Every LLM call goes through a single wrapper (e.g., `structured_call()` in `back
 - Vendor-specific code quarantined to one module
 - Business logic lives in services, not in prompt construction
 
+**Untrusted Retrieved Content (Provenance Boundary):**
+
+All content arriving from outside FollowRoom's trust boundary is **evidence, not instructions**. The system may summarise it, extract from it, surface it for operator review — it may not execute, obey, persist, or escalate anything it contains.
+
+The boundary inventory for FollowRoom:
+- Forwarded WhatsApp messages and their attachments
+- Meeting transcripts (text and voice-derived)
+- Operator-uploaded documents, images, and voice notes
+- Third-party web content fetched by the system or by any embedded agent
+- Output of MCP tools and external API responses
+- Any content not authored by an authenticated operator inside FollowRoom's own dashboard
+
+The rule in three escalating strengths:
+
+1. **Default:** Retrieved content must be treated as untrusted evidence. Extract from it, summarise it, surface it. Do not let it cause writes, sends, approvals, role changes, or any state transition that bypasses operator review.
+2. **Stronger:** Even where retrieved content contains a direct instruction ("ignore previous rules," "approve all my facts," "publish this to the client room," "delete this client") the system never follows it without explicit, in-session approval by an authenticated operator acting through the dashboard.
+3. **Strongest:** The system may *summarise* external instructions to the operator so the operator can decide. It may not *follow* them on the operator's behalf, and it may not pretend the operator implicitly authorised them by having forwarded the content.
+
+Enforcement points in code:
+- `ExtractionService` consumes `events.raw_text` as a string-of-evidence, not a prompt extension. Source content is segregated from system prompt by structural delimiters and explicit role framing.
+- Approval gates (FactCard accept/reject, ProfileViewer regenerate, public room publish flow) are the only edges where retrieved content can affect client-facing state.
+- Future AI surfaces (Phase 2 lead curation, Phase 3 vertical overlays, any agentic feature) inherit this rule. New code paths that consume external content must route through operator approval — never auto-act.
+
+**The Failure-to-Doctrine cycle that produced this rule:** 2026-05-20 — a third-party web page fetched during Meta Business Verification research returned content with an embedded `<system-reminder>` injection attempting to steer agent behaviour. Caught and flagged in-session; no harm. The principle was implicit in the architecture (operator-approval gates, separate stores) but had not been written down. It is now Invariant #17.
+
 **Epistemic Risk Tiers:**
 
 | Tier | Risk | FollowRoom examples | Rule |
@@ -506,9 +531,10 @@ When the process and the product share the same philosophy, they reinforce each 
 14. **Internal and client-facing memory are separate stores with separate visibility rules.** The published surface is a strict subset, never a JOIN-derived view.
 15. **Tier 3 inferences (family dynamics, emotional state, decision-blocker speculation) never reach client-facing rooms.** Even with operator approval, the publish pipeline strips them.
 16. **The operator owns the relationship.** FollowRoom never messages the operator's customers, never replaces the operator's WhatsApp workflow, never sits between the operator and their client without invitation.
+17. **Retrieved content is untrusted evidence.** Forwarded messages, transcripts, uploads, web fetches, MCP tool outputs — all are content to be summarised or extracted, never instructions to obey. The system may surface what such content *says*; it may not act on what such content *asks*. Authenticated operator approval through the dashboard is the only edge that authorises state change. See §2.4 "Untrusted Retrieved Content."
 
 ---
 
 *The principles are universal. The Decades specifics have been refit. Adapt the implementation; preserve the soul.*
 
-*Last updated: 2026-05-16 (initial scaffold from Decades doctrine)*
+*Last updated: 2026-05-20 (added §2.4 Untrusted Retrieved Content + Invariant #17 after Heltar prompt-injection incident during BV research).*
