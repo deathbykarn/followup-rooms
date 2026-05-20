@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FollowRoom — Investment Package</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EEE3;--paper-warm:#F8F4EA;--paper-deep:#EAE3D2;
+    --ink:#18150F;--ink-soft:#322C22;--ink-mid:#4E4636;--muted:#7A6F58;
+    --rule:#CFC4AB;--rule-soft:#DDD4BD;
+    --sage:#3B5345;--clay:#9A6A45;--gold:#B8923E;--good:#3B5345;--neg:#A24530;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink-soft);font-family:'Newsreader',Georgia,serif;font-size:1.08rem;line-height:1.6;-webkit-font-smoothing:antialiased;font-feature-settings:'kern' 1,'liga' 1;position:relative;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:-10%;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.06 0 0 0 0 0.03 0 0 0 0.15 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.5;mix-blend-mode:multiply;}
+  main{position:relative;z-index:2;}
+  .display{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 460;line-height:.95;letter-spacing:-.025em;color:var(--ink);}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--clay);}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  p{max-width:42em;}em{font-style:italic;}strong{font-weight:600;color:var(--ink);}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4.5rem);}
+  section{padding:clamp(3.5rem,8vh,6rem) 0;border-bottom:1px solid var(--rule-soft);}
+  section:last-of-type{border-bottom:none;}
+  .section-head{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:baseline;margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.1em;color:var(--clay);font-weight:600;}
+  .section-title{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 40,'opsz' 60,'wght' 450;font-size:clamp(1.4rem,2.4vw,1.9rem);color:var(--ink);letter-spacing:-.01em;line-height:1.1;}
+  .section-tag{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+  .lead{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 60,'wght' 350;font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.4;color:var(--ink);max-width:33em;margin-bottom:2rem;}
+  .lead em{color:var(--clay);font-style:italic;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}.two-col p{max-width:none;}.two-col p+p{margin-top:1rem;}
+  .callout{margin-top:1.5rem;padding:1.5rem 1.8rem;background:var(--paper-warm);border-left:3px solid var(--clay);font-size:1rem;line-height:1.55;}
+  .callout strong{color:var(--clay);}
+
+  /* COVER */
+  .cover{min-height:98vh;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(2.5rem,5vh,4rem) 0;border-bottom:2px solid var(--ink);background:radial-gradient(ellipse at 85% 12%,rgba(184,146,62,.1),transparent 55%);}
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;}
+  .brand-mark{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 30,'opsz' 48,'wght' 500;font-size:1.05rem;letter-spacing:.03em;color:var(--ink);}
+  .brand-mark .dot{color:var(--clay);}
+  .stamp{border:1.5px solid var(--clay);color:var(--clay);padding:.4rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;}
+  .cover-center{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(2rem,5vh,4rem) 0;}
+  .cover-eyebrow{margin-bottom:1.5rem;}
+  .cover-title{font-size:clamp(2.6rem,7vw,5.4rem);margin-bottom:1.5rem;color:var(--ink);max-width:16ch;}
+  .cover-title .em{font-family:'Fraunces';font-style:italic;font-variation-settings:'opsz' 144,'wght' 360;color:var(--clay);}
+  .cover-sub{font-size:clamp(1.05rem,1.6vw,1.25rem);line-height:1.5;color:var(--ink-mid);max-width:46ch;}
+  .cover-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;padding-top:1.8rem;border-top:1px solid var(--rule);}
+  .cs{padding:1.3rem 1.3rem 1.3rem 0;border-right:1px solid var(--rule);}
+  .cs:last-child{border-right:none;}
+  .cs .v{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 40,'opsz' 96,'wght' 420;font-size:1.85rem;color:var(--ink);line-height:1;letter-spacing:-.03em;margin-bottom:.3rem;font-variant-numeric:tabular-nums;}
+  .cs .v .cur{font-size:.5em;opacity:.6;vertical-align:top;}.cs .v .sm{font-size:.42em;opacity:.55;font-style:italic;margin-left:.1em;}
+  .cs .l{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);line-height:1.4;}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.2rem;margin-top:1rem;}
+  .card{background:var(--paper-warm);border:1px solid var(--rule);padding:1.6rem;}
+  .card .ci{font-family:'Fraunces',serif;font-style:italic;font-size:1.7rem;color:var(--clay);line-height:1;margin-bottom:.7rem;}
+  .card h4{font-family:'Fraunces',serif;font-variation-settings:'opsz' 48,'wght' 480;font-size:1.15rem;color:var(--ink);margin-bottom:.5rem;line-height:1.2;}
+  .card p{font-size:.92rem;line-height:1.5;color:var(--ink-mid);max-width:none;}
+
+  .quote-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem;}
+  .quote{background:var(--paper-warm);border:1px solid var(--rule);padding:1.8rem;}
+  .quote .qt{font-family:'Fraunces',serif;font-style:italic;font-variation-settings:'opsz' 60,'wght' 350;font-size:1.3rem;line-height:1.3;color:var(--ink);margin-bottom:1rem;}
+  .quote .qa{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.5;}
+  .quote .qa b{color:var(--clay);font-weight:600;}
+
+  /* big numbers */
+  .bignums{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:1.5rem 0;}
+  .bn{padding:1.5rem 1.5rem 1.5rem 0;border-right:1px solid var(--rule);}
+  .bn:last-child{border-right:none;}
+  .bn .v{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 40,'opsz' 96,'wght' 420;font-size:clamp(2rem,3.2vw,2.6rem);color:var(--ink);line-height:.95;letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin-bottom:.4rem;}
+  .bn .v .cur{font-size:.5em;opacity:.55;vertical-align:top;}.bn .v .sm{font-size:.42em;opacity:.55;font-style:italic;}
+  .bn .l{font-size:.84rem;color:var(--ink-mid);line-height:1.45;}
+
+  /* ask band */
+  .ask{background:var(--ink);color:var(--paper-warm);padding:clamp(3.5rem,8vh,6rem) 0;position:relative;overflow:hidden;}
+  .ask::before{content:"";position:absolute;top:-20%;right:-10%;width:55%;height:140%;background:radial-gradient(ellipse at center,rgba(184,146,62,.16),transparent 60%);pointer-events:none;}
+  .ask .wrap{position:relative;z-index:2;}
+  .ask .section-head{border-color:rgba(248,244,234,.2);}
+  .ask .section-num{color:var(--gold);}.ask .section-title{color:var(--paper-warm);}.ask .section-tag{color:rgba(248,244,234,.55);}
+  .ask-headline{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 60,'opsz' 144,'wght' 420;font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.05;color:var(--paper-warm);letter-spacing:-.025em;margin-bottom:1rem;}
+  .ask-headline em{font-style:italic;color:var(--gold);font-variation-settings:'wght' 360;}
+  .ask-sub{font-size:1.05rem;color:rgba(248,244,234,.78);max-width:40em;margin-bottom:2.5rem;line-height:1.55;}
+  .ask-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(248,244,234,.2);border-bottom:1px solid rgba(248,244,234,.2);margin-bottom:2.5rem;}
+  .ag{padding:1.5rem 1.5rem 1.5rem 0;border-right:1px solid rgba(248,244,234,.2);}
+  .ag:last-child{border-right:none;}
+  .ag .al{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+  .ag .av{font-family:'Fraunces',serif;font-variation-settings:'opsz' 60,'wght' 460;font-size:1.5rem;color:var(--paper-warm);line-height:1;letter-spacing:-.02em;margin-bottom:.35rem;}
+  .ag .an{font-size:.82rem;color:rgba(248,244,234,.7);line-height:1.45;}
+  .uof{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+  .uof h4{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+  .bar{display:flex;align-items:center;gap:.9rem;margin-bottom:.8rem;font-size:.9rem;color:rgba(248,244,234,.9);}
+  .bar .bl{flex:0 0 42%;}
+  .bar .bt{flex:1;height:6px;background:rgba(248,244,234,.1);border-radius:100px;overflow:hidden;}
+  .bar .bf{height:100%;background:var(--gold);border-radius:100px;}
+  .bar .bp{flex:0 0 3em;text-align:right;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--gold);}
+  .miles{list-style:none;padding:0;}
+  .miles li{display:grid;grid-template-columns:4.5em 1fr;gap:1rem;padding-bottom:.7rem;margin-bottom:.7rem;border-bottom:1px solid rgba(248,244,234,.12);font-size:.9rem;color:rgba(248,244,234,.85);line-height:1.4;}
+  .miles li:last-child{border-bottom:none;}
+  .miles .mt{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;font-weight:600;}
+
+  /* returns */
+  .returns{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:.5rem;}
+  .ret{background:var(--paper-warm);border:1px solid var(--rule);padding:1.7rem;position:relative;}
+  .ret.base{border-color:var(--clay);border-width:1.5px;}
+  .ret.base::after{content:"Base";position:absolute;top:1rem;right:1rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--clay);border:1px solid var(--clay);padding:.2rem .5rem;border-radius:100px;}
+  .ret .rl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+  .ret.base .rl{color:var(--clay);}
+  .ret .rm{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 40,'opsz' 96,'wght' 440;font-size:3rem;color:var(--ink);line-height:.9;letter-spacing:-.04em;margin-bottom:.7rem;font-variant-numeric:tabular-nums;}
+  .ret .rm .sm{font-size:.4em;opacity:.55;font-style:italic;}
+  .ret h4{font-family:'Fraunces',serif;font-variation-settings:'opsz' 36,'wght' 540;font-size:1rem;color:var(--ink);margin-bottom:.5rem;}
+  .ret p{font-size:.86rem;color:var(--ink-mid);line-height:1.5;}
+
+  /* team snapshot */
+  .team-snap{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem;}
+  .ts{background:var(--paper-warm);border:1px solid var(--rule);padding:1.6rem;}
+  .ts .tr{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);margin-bottom:.5rem;}
+  .ts .tn{font-family:'Fraunces',serif;font-variation-settings:'opsz' 48,'wght' 480;font-size:1.3rem;color:var(--ink);line-height:1.05;margin-bottom:.3rem;}
+  .ts .ta{font-size:.85rem;color:var(--muted);font-style:italic;line-height:1.4;margin-bottom:.6rem;}
+  .ts .td{font-size:.86rem;color:var(--ink-mid);line-height:1.5;}
+
+  .risk-mini{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 2.5rem;margin-top:1rem;}
+  .rmini{font-size:.92rem;line-height:1.5;color:var(--ink-mid);}
+  .rmini b{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--clay);display:block;margin-bottom:.25rem;}
+  .rmini strong{color:var(--good);}
+
+  .cta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:1rem;}
+  .cta .cl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--clay);margin-bottom:.6rem;}
+  .cta .cv{font-family:'Fraunces',serif;font-variation-settings:'opsz' 48,'wght' 500;font-size:1.3rem;color:var(--ink);margin-bottom:.4rem;line-height:1.15;}
+  .cta .cd{font-size:.88rem;color:var(--ink-mid);line-height:1.5;}
+
+  footer{padding:3rem 0 5rem;border-top:1px solid var(--rule);font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--muted);line-height:1.7;}
+  footer .foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule-soft);margin-bottom:1.4rem;}
+  footer p{max-width:60em;font-size:.75rem;}
+
+  @media (max-width:880px){
+    .two-col,.quote-row,.uof,.returns,.team-snap,.risk-mini,.cta-grid{grid-template-columns:1fr;}
+    .ask-grid{grid-template-columns:1fr 1fr;}
+    .bn,.cs,.ag{border-right:none;}
+    section{padding:3rem 0;}
+  }
+  @media print{body{background:#fff;}body::before{display:none;}.ask{background:#eee;}.ask *{color:#000 !important;}section{break-inside:avoid;}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .cover-title,.cover-sub,.cover-eyebrow,.cover-stats{animation:rise 1s ease-out backwards;}
+  .cover-eyebrow{animation-delay:.1s;}.cover-title{animation-delay:.25s;}.cover-sub{animation-delay:.45s;}.cover-stats{animation-delay:.65s;}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- COVER -->
+  <section class="cover wrap">
+    <div class="cover-top">
+      <div class="brand-mark">FollowRoom<span class="dot">·</span></div>
+      <div class="stamp">Investment Package · Pre-seed</div>
+    </div>
+    <div class="cover-center">
+      <div class="cover-eyebrow eyebrow">The offering · Singapore · 2026</div>
+      <h1 class="display cover-title">Built, validated, and <span class="em">days from revenue.</span></h1>
+      <p class="cover-sub">FollowRoom is the memory layer for relationship-driven sales. We're raising $350K to ship the pilot and reach $20K/month profit by month 24 &mdash; on a product that already works, validated by the people who'd use and sell it.</p>
+    </div>
+    <div class="cover-stats">
+      <div class="cs"><div class="v"><span class="cur">$</span>350K</div><div class="l">Raising · SAFE</div></div>
+      <div class="cs"><div class="v"><span class="cur">$</span>3M</div><div class="l">Post-money cap</div></div>
+      <div class="cs"><div class="v">93<span class="sm">%</span></div><div class="l">Gross margin</div></div>
+      <div class="cs"><div class="v">M24</div><div class="l">$20K/mo profit target</div></div>
+      <div class="cs"><div class="v">2 / 2</div><div class="l">Independent validations</div></div>
+    </div>
+  </section>
+
+  <!-- 01 OPPORTUNITY -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">01</span><h2 class="section-title">The opportunity.</h2><span class="section-tag">Context first</span></div>
+    <p class="lead">Relationship-driven salespeople win or lose on what they remember between meetings &mdash; and nothing they have captures it. FollowRoom is the <em>memory layer</em> that does, built to fit how they already work.</p>
+    <div class="two-col">
+      <div><p>A property agent juggles 50&ndash;200 live relationships across WhatsApp, voice notes, and viewings. Deals close when the client felt remembered; they die in the gaps when the texture slips. CRMs demand data entry and miss the texture. A $3,000/month assistant forgets too.</p>
+      <p>FollowRoom turns forwarded messages and recorded meetings into a living, client-specific memory &mdash; every detail linked to its source &mdash; and a polished, co-branded room the agent shares with the client. Silent by design: it never messages the client; nothing reaches them without the operator's approval.</p></div>
+      <div><p>The wedge is Singapore real estate (31,500 registered agents); the ceiling is the ~500K relationship-sales operators across SG, Australia, Hong Kong and the Gulf who share the same shape.</p>
+      <p>The product is <strong>already built</strong>. Two qualified industry figures independently validated it &mdash; one designed the product, one designed the go-to-market. We are days, not quarters, from a paying pilot. This document is the offering; the full <strong>business plan</strong> is its foundation.</p></div>
+    </div>
+  </section>
+
+  <!-- 02 WHY NOW / WHY FOUNDER -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Why now, why this founder.</h2><span class="section-tag">Timing &amp; fit</span></div>
+    <div class="cards">
+      <div class="card"><div class="ci">i.</div><h4>The tech crossed the line</h4><p>WhatsApp's Cloud API matured; diarised transcription fell below $1/hour; LLM extraction with caching dropped to a few dollars per seat. The category was impossible to build affordably two years ago.</p></div>
+      <div class="card"><div class="ci">ii.</div><h4>The buyer is ready</h4><p>Singapore real estate's &ldquo;agents as entrepreneurs&rdquo; turn &mdash; led by Keller Williams' 2025 launch &mdash; primed the market for relationship-first, branding-led tooling over the old numbers game.</p></div>
+      <div class="card"><div class="ci">iii.</div><h4>Founder-market fit</h4><p>A former real estate operator with an active SG agency network &mdash; the warm relationships the pilot is built on &mdash; who can also build the product. The validation calls came from his own network.</p></div>
+    </div>
+  </section>
+
+  <!-- 03 TRACTION -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Traction &amp; validation.</h2><span class="section-tag">The signal</span></div>
+    <p class="lead">Two qualified strangers, asked cold, each designed a different half of FollowRoom &mdash; and both halves matched what's already in the codebase.</p>
+    <div class="quote-row">
+      <div class="quote"><div class="qt">&ldquo;You're simplifying Salesforce&hellip; I give it to you.&rdquo;</div><div class="qa"><b>Scott Ng</b><br>12-yr veteran realtor, Keller Williams SG<br>Lead beta user · designed the product on the call</div></div>
+      <div class="quote"><div class="qt">&ldquo;Don't sell it as AI &mdash; sell it as the assistant. People pay for that.&rdquo;</div><div class="qa"><b>Suresh Superamaniam</b><br>Director, Design &amp; Marketing Comms, Showsuite<br>Advisor (in discussions) · designed the go-to-market</div></div>
+    </div>
+    <div class="bignums">
+      <div class="bn"><div class="v">Live</div><div class="l">WhatsApp ingestion + transcription + AI extraction, deployed</div></div>
+      <div class="bn"><div class="v">130</div><div class="l">Backend tests · CI on every change</div></div>
+      <div class="bn"><div class="v">Plans 1&ndash;4</div><div class="l">Shipped. Pilot gated only on free Meta verification</div></div>
+      <div class="bn"><div class="v">5&ndash;10</div><div class="l">Pilot agents targeted via the KW cluster</div></div>
+    </div>
+  </section>
+
+  <!-- 04 THE NUMBERS -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">04</span><h2 class="section-title">The numbers that matter.</h2><span class="section-tag">Economics</span></div>
+    <p class="lead">Software margins, and a profitable path that <em>doesn't require a venture-scale outcome</em> to return capital.</p>
+    <div class="bignums">
+      <div class="bn"><div class="v">93<span class="sm">%</span></div><div class="l">Gross margin per seat ($149 price, ~$10 ops)</div></div>
+      <div class="bn"><div class="v">~250</div><div class="l">Seats for $20K/mo profit (under 1% of SG agents)</div></div>
+      <div class="bn"><div class="v">&lt;<span class="cur">$</span>1.5K</div><div class="l">Total cost to run the entire validation pilot</div></div>
+      <div class="bn"><div class="v">18<span class="sm">mo</span></div><div class="l">Runway this round buys, to profitability</div></div>
+    </div>
+    <div class="callout"><strong>Pricing.</strong> A cohort ladder &mdash; free Beta, then a Founder rate ($99/mo locked 12 months) for early adopters, then a $149 standard. Pricing is a validated-band hypothesis ($100&ndash;$200 from the market), to be confirmed in the beta. Full cost and pricing model in the companion pricing &amp; validation document; the journey to $20K/month is charted there with and without a founder draw.</div>
+  </section>
+
+  <!-- 05 THE ASK -->
+  <section class="ask">
+    <div class="wrap">
+      <div class="section-head"><span class="section-num">05</span><h2 class="section-title">The ask.</h2><span class="section-tag">$350K · 18 months · 5 milestones</span></div>
+      <h2 class="ask-headline">$350K buys <em>the runway to profitability</em>, not the runway to fundraise again.</h2>
+      <p class="ask-sub">A SAFE at a $3M post-money cap. This round funds the pilot, the first growth cluster, and reaches $20K/month profit by month 24. No Series A is assumed; growth thereafter is on cashflow, with optional growth capital only if Phase 3 expansion warrants it.</p>
+      <div class="ask-grid">
+        <div class="ag"><div class="al">Round</div><div class="av">$350,000</div><div class="an">SAFE · MFN · open to angel syndication</div></div>
+        <div class="ag"><div class="al">Cap</div><div class="av">$3M post</div><div class="an">$350K ≈ 11.7% on conversion</div></div>
+        <div class="ag"><div class="al">Runway</div><div class="av">18 months</div><div class="an">Through founder-draw breakeven</div></div>
+        <div class="ag"><div class="al">Profit target</div><div class="av">Month 24</div><div class="an">$20K/mo · follow-on optional</div></div>
+      </div>
+      <div class="uof">
+        <div>
+          <h4>Use of funds · 18 months</h4>
+          <div class="bar"><span class="bl">Founder runway</span><span class="bt"><span class="bf" style="width:51%"></span></span><span class="bp">51%</span></div>
+          <div class="bar"><span class="bl">First hire (CS/sales, M6+)</span><span class="bt"><span class="bf" style="width:17%"></span></span><span class="bp">17%</span></div>
+          <div class="bar"><span class="bl">Go-to-market tests</span><span class="bt"><span class="bf" style="width:10%"></span></span><span class="bp">10%</span></div>
+          <div class="bar"><span class="bl">AI + infra buffer</span><span class="bt"><span class="bf" style="width:8%"></span></span><span class="bp">8%</span></div>
+          <div class="bar"><span class="bl">Legal, compliance, BV</span><span class="bt"><span class="bf" style="width:6%"></span></span><span class="bp">6%</span></div>
+          <div class="bar"><span class="bl">Contingency</span><span class="bt"><span class="bf" style="width:8%"></span></span><span class="bp">8%</span></div>
+        </div>
+        <div>
+          <h4>Milestones this round funds</h4>
+          <ul class="miles">
+            <li><span class="mt">M1</span><span>Meta Business Verification cleared &middot; outbound + media unlocked</span></li>
+            <li><span class="mt">M6</span><span>20 paying seats &middot; $3K MRR &middot; KW case study</span></li>
+            <li><span class="mt">M12</span><span>60 seats &middot; $9K MRR &middot; lead curation &middot; first PropNex top performer</span></li>
+            <li><span class="mt">M18</span><span>150 seats &middot; $22.5K MRR &middot; founder-draw breakeven</span></li>
+            <li><span class="mt">M24</span><span>250 seats &middot; <strong>$20K/mo profit</strong> &middot; follow-on optional</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 RETURNS -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Return profile.</h2><span class="section-tag">Three honest scenarios</span></div>
+    <p class="lead">At a $3M cap, $350K converts to ~11.7%. Cash-on-cash scenarios <em>before</em> any dilution from an optional later growth round:</p>
+    <div class="returns">
+      <div class="ret"><div class="rl">Floor</div><div class="rm">3&ndash;5<span class="sm">&times;</span></div><h4>Profitable focused company</h4><p>SG real estate only. $20K&ndash;$40K/mo profit by year 3. Capital returned via dividend recap or buyout over 4&ndash;6 years.</p></div>
+      <div class="ret base"><div class="rl">Base</div><div class="rm">15&ndash;30<span class="sm">&times;</span></div><h4>Strategic acquisition, year 5</h4><p>SG + two verticals + AU corridor. $5M&ndash;$15M ARR. Acquired by a CRM/proptech/regional player at 4&ndash;8&times; ARR.</p></div>
+      <div class="ret"><div class="rl">Bull</div><div class="rm">50<span class="sm">&times;+</span></div><h4>Operator-tooling platform</h4><p>Full cross-vertical, cross-geo. $30M+ ARR by year 7. Growth equity (optional, founder-controlled) or $200M+ exit.</p></div>
+    </div>
+  </section>
+
+  <!-- 07 TEAM -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Team &amp; advisors.</h2><span class="section-tag">Who's behind it</span></div>
+    <div class="team-snap">
+      <div class="ts"><div class="tr">Founder &amp; CEO</div><div class="tn">Khaniff Lau</div><div class="ta">Singapore · full-time</div><div class="td">Former real estate operator with an active SG agency network; background in BD, sales, and software. Building solo; first hire funded post-pilot.</div></div>
+      <div class="ts"><div class="tr">Advisor (in discussions)</div><div class="tn">Suresh Superamaniam</div><div class="ta">Director, Design &amp; Marketing Communications, Showsuite Pte Ltd</div><div class="td">Proptech GTM, SG agency-distribution knowledge, and a marketing/lead-gen lens directly relevant to FollowRoom's go-to-market.</div></div>
+      <div class="ts"><div class="tr">Lead beta user</div><div class="tn">Scott Ng</div><div class="ta">12-yr veteran realtor, Keller Williams SG</div><div class="td">Validated the product in detail; design partner #1 and the bridge into the KW Singapore cluster.</div></div>
+    </div>
+  </section>
+
+  <!-- 08 RISKS -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">08</span><h2 class="section-title">Risks.</h2><span class="section-tag">Named, with mitigations</span></div>
+    <div class="risk-mini">
+      <div class="rmini"><b>Adoption ≠ endorsement</b>The beta measures weekly active use + willingness-to-pay before any scale. <strong>Designed-against.</strong></div>
+      <div class="rmini"><b>Median-user activation</b>Lead beta user is an outlier; pilot includes less tech-forward agents; onboarding must work unaided. <strong>Designed-against.</strong></div>
+      <div class="rmini"><b>Meta dependency</b>Channel-agnostic at the boundary; Telegram + email forwarding parity is a small lift. <strong>Designed-against.</strong></div>
+      <div class="rmini"><b>Unvalidated pricing</b>$99/$149 is a band hypothesis; the beta is the price-discovery instrument. <strong>Designed-against.</strong></div>
+      <div class="rmini"><b>Single-founder bandwidth</b>Solo to M6; first revenue funds first hire; Phase 1 is operationally light. <strong>Designed-against.</strong></div>
+      <div class="rmini"><b>Data &amp; trust liability</b>PDPA exposure handled by trust architecture + operator-responsibility framing. <strong>Designed-against.</strong></div>
+    </div>
+    <div class="callout"><strong>Full transparency.</strong> A deeper internal risk register &mdash; including the founder-psychology traps &mdash; is maintained and available in the data room on request. We'd rather you see it than not.</div>
+  </section>
+
+  <!-- 09 CONTACT -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">09</span><h2 class="section-title">Next steps.</h2><span class="section-tag">Let's talk</span></div>
+    <p class="lead">Closing the round in the next eight weeks. Angel checks $25K&ndash;$150K welcome.</p>
+    <div class="cta-grid">
+      <div class="cta"><div class="cl">Contact</div><div class="cv">khaniff@gmail.com</div><div class="cd">Direct line. Replied within 24 hours.</div></div>
+      <div class="cta"><div class="cl">Next step</div><div class="cv">30-minute call</div><div class="cd">Live demo, the business plan, and references to Scott + Suresh on request.</div></div>
+      <div class="cta"><div class="cl">Data room</div><div class="cv">On request</div><div class="cd">Codebase, full financial model, internal risk register, design-partner pipeline.</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-row"><span>FollowRoom · Investment Package · v1.0 · Confidential</span><span>khaniff@gmail.com · 2026-05-20</span></div>
+      <p>Built on <em>followroom-business-plan.html</em> (the foundation). Companion: <em>followroom-pricing-validation.html</em> (full model), <em>followroom-positioning.html</em> (brand). Supersedes the earlier <em>followroom-investor-brief.html</em>. Suresh Superamaniam is described by his official Showsuite title; the advisory relationship is in discussions, not finalised. Scott Ng is the lead beta user; his endorsement is of the product direction, with a paid pilot to be confirmed. $99/$149 pricing and all financial projections are illustrative hypotheses to be validated in the beta, not guarantees. SAFE terms indicative and subject to definitive documents.</p>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>

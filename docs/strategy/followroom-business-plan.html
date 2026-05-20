@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FollowRoom — Business Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EEE3;--paper-warm:#F8F4EA;--paper-deep:#EAE3D2;
+    --ink:#18150F;--ink-soft:#322C22;--ink-mid:#4E4636;--muted:#7A6F58;
+    --rule:#CFC4AB;--rule-soft:#DDD4BD;
+    --sage:#3B5345;--sage-soft:#5A7060;--clay:#9A6A45;--gold:#B8923E;
+    --good:#3B5345;--neg:#A24530;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink-soft);font-family:'Newsreader',Georgia,serif;font-size:1.08rem;line-height:1.62;-webkit-font-smoothing:antialiased;font-feature-settings:'kern' 1,'liga' 1;position:relative;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:-10%;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.06 0 0 0 0 0.03 0 0 0 0.15 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.5;mix-blend-mode:multiply;}
+  main{position:relative;z-index:2;}
+  .display{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 450;line-height:.95;letter-spacing:-.025em;color:var(--ink);}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--sage);}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  p{max-width:42em;}em{font-style:italic;}strong{font-weight:600;color:var(--ink);}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4.5rem);}
+  section{padding:clamp(3.5rem,8vh,6rem) 0;border-bottom:1px solid var(--rule-soft);}
+  section:last-of-type{border-bottom:none;}
+  .section-head{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:baseline;margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.1em;color:var(--clay);font-weight:600;}
+  .section-title{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 40,'opsz' 60,'wght' 450;font-size:clamp(1.4rem,2.4vw,1.9rem);color:var(--ink);letter-spacing:-.01em;line-height:1.1;}
+  .section-tag{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+  .lead{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 60,'wght' 350;font-size:clamp(1.3rem,2vw,1.55rem);line-height:1.42;color:var(--ink);max-width:34em;margin-bottom:2rem;}
+  .lead em{color:var(--clay);font-style:italic;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+  .two-col p{max-width:none;}.two-col p+p{margin-top:1rem;}
+  .body-block p{margin-bottom:1.1rem;}
+  .callout{margin-top:1.5rem;padding:1.5rem 1.8rem;background:var(--paper-warm);border-left:3px solid var(--clay);font-size:1rem;line-height:1.55;}
+  .callout strong{color:var(--clay);}
+
+  /* COVER */
+  .cover{min-height:96vh;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(2.5rem,5vh,4rem) 0;border-bottom:2px solid var(--ink);}
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;}
+  .brand-mark{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 30,'opsz' 48,'wght' 500;font-size:1.05rem;letter-spacing:.03em;color:var(--ink);}
+  .brand-mark .dot{color:var(--clay);}
+  .stamp{border:1.5px solid var(--sage);color:var(--sage);padding:.4rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;}
+  .cover-center{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(2rem,5vh,4rem) 0;}
+  .cover-eyebrow{margin-bottom:1.5rem;}
+  .cover-title{font-size:clamp(3rem,9vw,7rem);margin-bottom:1.5rem;color:var(--ink);}
+  .cover-sub{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 80,'wght' 320;font-style:italic;font-size:clamp(1.3rem,2.2vw,1.8rem);line-height:1.3;max-width:26em;color:var(--ink-soft);}
+  .cover-bottom{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.8rem;padding-top:1.8rem;border-top:1px solid var(--rule);}
+  .cover-bottom .label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+  .cover-bottom .value{font-family:'Fraunces',Georgia,serif;font-variation-settings:'opsz' 36,'wght' 420;font-size:.98rem;color:var(--ink);line-height:1.3;}
+
+  /* TOC */
+  .toc{background:var(--paper-warm);border:1px solid var(--rule);padding:2rem 2.25rem;margin-top:1rem;}
+  .toc h3{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--clay);margin-bottom:1.2rem;}
+  .toc ol{list-style:none;padding:0;columns:2;column-gap:3rem;}
+  .toc li{padding:.4rem 0;border-bottom:1px dotted var(--rule);font-size:.95rem;break-inside:avoid;}
+  .toc li a{color:var(--ink-soft);text-decoration:none;display:flex;justify-content:space-between;gap:1rem;}
+  .toc li a:hover{color:var(--clay);}
+  .toc li .tn{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--clay);}
+
+  /* EXEC SUMMARY emphasis */
+  .exec{background:var(--sage);color:var(--paper-warm);padding:clamp(3.5rem,8vh,6rem) 0;}
+  .exec .section-head{border-color:rgba(248,244,234,.2);}
+  .exec .section-num{color:var(--gold);}
+  .exec .section-title{color:var(--paper-warm);}
+  .exec .section-tag{color:rgba(248,244,234,.55);}
+  .exec .lead{color:var(--paper-warm);}
+  .exec .lead em{color:var(--gold);}
+  .exec p{color:rgba(248,244,234,.88);}
+  .exec strong{color:var(--paper-warm);}
+  .exec .callout{background:rgba(248,244,234,.06);border-left-color:var(--gold);color:rgba(248,244,234,.9);}
+  .exec .callout strong{color:var(--gold);}
+  .exec-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;border-top:1px solid rgba(248,244,234,.2);border-bottom:1px solid rgba(248,244,234,.2);margin:2rem 0;}
+  .exec-stat{padding:1.4rem 1.4rem 1.4rem 0;border-right:1px solid rgba(248,244,234,.2);}
+  .exec-stat:last-child{border-right:none;}
+  .exec-stat .v{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 40,'opsz' 96,'wght' 400;font-size:1.9rem;color:var(--paper-warm);line-height:1;letter-spacing:-.03em;margin-bottom:.35rem;font-variant-numeric:tabular-nums;}
+  .exec-stat .v .cur{font-size:.5em;opacity:.6;vertical-align:top;}
+  .exec-stat .l{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,244,234,.6);line-height:1.4;}
+
+  /* cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:1rem;}
+  .card{background:var(--paper-warm);border:1px solid var(--rule);padding:1.6rem 1.6rem 1.8rem;}
+  .card .ci{font-family:'Fraunces',serif;font-style:italic;font-variation-settings:'opsz' 60,'wght' 400;font-size:1.8rem;color:var(--clay);line-height:1;margin-bottom:.7rem;}
+  .card h4{font-family:'Fraunces',serif;font-variation-settings:'opsz' 48,'wght' 480;font-size:1.2rem;color:var(--ink);margin-bottom:.5rem;line-height:1.15;}
+  .card p{font-size:.93rem;line-height:1.5;color:var(--ink-mid);max-width:none;}
+
+  /* market band */
+  .market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem;}
+  .market-card{background:var(--paper-warm);border:1px solid var(--rule);padding:1.6rem;}
+  .market-card.featured{background:var(--ink);color:var(--paper-warm);border-color:var(--ink);}
+  .market-card.featured .ml{color:var(--gold);}.market-card.featured .mv{color:var(--paper-warm);}.market-card.featured .mn{color:rgba(248,244,234,.72);}
+  .ml{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;}
+  .mv{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 40,'opsz' 96,'wght' 420;font-size:clamp(2rem,3.2vw,2.6rem);color:var(--ink);line-height:1;letter-spacing:-.04em;margin-bottom:.7rem;font-variant-numeric:tabular-nums;}
+  .mv .sm{font-size:.42em;opacity:.55;font-style:italic;margin-left:.12em;}
+  .mn{font-size:.86rem;line-height:1.5;color:var(--ink-mid);}
+
+  /* phases */
+  .phase{display:grid;grid-template-columns:.5fr 1.5fr;gap:2.5rem;padding:2rem 0;border-top:1px solid var(--rule-soft);}
+  .phase:first-of-type{border-top:none;padding-top:0;}
+  .phase-tag{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--clay);margin-bottom:.6rem;}
+  .phase-name{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 50,'opsz' 60,'wght' 460;font-size:1.5rem;color:var(--ink);line-height:1.05;letter-spacing:-.015em;}
+  .phase-name em{color:var(--clay);font-style:italic;}
+  .phase-when{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--muted);margin-top:.6rem;letter-spacing:.08em;}
+  .phase-body p{margin-bottom:.7rem;}
+  .phase-body p:last-child{margin-bottom:0;}
+
+  /* table */
+  .tbl{width:100%;border-collapse:collapse;margin-top:1rem;font-variant-numeric:tabular-nums;}
+  .tbl caption{text-align:left;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-bottom:.8rem;}
+  .tbl th,.tbl td{text-align:left;padding:.7rem .9rem;border-bottom:1px solid var(--rule-soft);font-size:.93rem;}
+  .tbl thead th{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);font-weight:500;}
+  .tbl td.n,.tbl th.n{text-align:right;font-family:'JetBrains Mono',monospace;}
+  .tbl tr.total td{border-top:1.5px solid var(--ink);font-weight:600;color:var(--ink);}
+  .tbl tbody tr:hover{background:var(--paper-warm);}
+  .pos{color:var(--good);font-weight:600;}.negv{color:var(--neg);font-weight:600;}
+
+  /* team */
+  .team{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--rule);margin-top:1rem;}
+  .member{display:grid;grid-template-columns:.6fr 1.4fr;gap:2.5rem;padding:2rem 0;border-bottom:1px solid var(--rule);}
+  .member .m-role{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--clay);margin-bottom:.6rem;}
+  .member .m-name{font-family:'Fraunces',serif;font-variation-settings:'opsz' 60,'wght' 480;font-size:1.7rem;color:var(--ink);line-height:1.05;margin-bottom:.4rem;}
+  .member .m-aff{font-size:.92rem;color:var(--muted);font-style:italic;line-height:1.4;}
+  .member .m-bio p{font-size:.97rem;line-height:1.55;margin-bottom:.7rem;}
+  .member .m-bio p:last-child{margin-bottom:0;}
+  .member .m-status{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);border:1px solid var(--sage);padding:.2rem .55rem;border-radius:2px;margin-top:.7rem;}
+
+  /* chart */
+  .chart-wrap{background:var(--paper-warm);border:1px solid var(--rule);padding:clamp(1rem,2.5vw,2rem);margin-top:1.5rem;}
+  .chart-wrap svg{width:100%;height:auto;display:block;}
+  .legend{margin-top:1.2rem;display:flex;flex-wrap:wrap;gap:1.5rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .legend .sw{display:inline-block;width:22px;height:3px;vertical-align:middle;margin-right:.5rem;}
+
+  .risk-row{display:grid;grid-template-columns:.8fr 1.2fr;gap:1.5rem;padding:1.1rem 0;border-bottom:1px solid var(--rule-soft);}
+  .risk-row .rk{font-family:'Fraunces',serif;font-variation-settings:'opsz' 36,'wght' 540;font-size:1rem;color:var(--ink);line-height:1.2;}
+  .risk-row .rk .b{display:block;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);margin-bottom:.3rem;}
+  .risk-row .rm{font-size:.92rem;line-height:1.5;color:var(--ink-mid);}
+  .risk-row .rm strong{color:var(--good);}
+
+  footer{padding:3rem 0 5rem;border-top:1px solid var(--rule);font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--muted);line-height:1.7;}
+  footer .foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule-soft);margin-bottom:1.4rem;}
+  footer p{max-width:60em;font-size:.75rem;}
+
+  @media (max-width:880px){
+    .two-col,.market-grid{grid-template-columns:1fr;}
+    .phase,.member{grid-template-columns:1fr;gap:1rem;}
+    .toc ol{columns:1;}
+    .risk-row{grid-template-columns:1fr;gap:.5rem;}
+    section{padding:3rem 0;}
+  }
+  @media print{body{background:#fff;}body::before{display:none;}.exec,.market-card.featured{background:#eee;color:#000;}.exec *,.market-card.featured *{color:#000 !important;}section{break-inside:avoid;}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .cover-title,.cover-sub,.cover-eyebrow,.cover-bottom{animation:rise 1s ease-out backwards;}
+  .cover-eyebrow{animation-delay:.1s;}.cover-title{animation-delay:.25s;}.cover-sub{animation-delay:.45s;}.cover-bottom{animation-delay:.65s;}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- COVER -->
+  <section class="cover wrap">
+    <div class="cover-top">
+      <div class="brand-mark">FollowRoom<span class="dot">·</span></div>
+      <div class="stamp">Business Plan · v1.0 · Confidential</div>
+    </div>
+    <div class="cover-center">
+      <div class="cover-eyebrow eyebrow">Business Plan · Singapore · 2026</div>
+      <h1 class="display cover-title">FollowRoom</h1>
+      <p class="cover-sub">The memory layer for relationship-driven sales. A complete plan for the business, the market, the model, and the road to a profitable, defensible company &mdash; and the foundation for the accompanying investment package.</p>
+    </div>
+    <div class="cover-bottom">
+      <div><div class="label">Stage</div><div class="value">Pre-seed · product built</div></div>
+      <div><div class="label">First market</div><div class="value">SG real estate</div></div>
+      <div><div class="label">Model</div><div class="value">SaaS · ~93% margin</div></div>
+      <div><div class="label">Raising</div><div class="value">$350K SAFE</div></div>
+      <div><div class="label">Prepared by</div><div class="value">Khaniff Lau</div></div>
+    </div>
+  </section>
+
+  <!-- TOC -->
+  <section class="wrap">
+    <div class="toc">
+      <h3>Contents</h3>
+      <ol>
+        <li><a href="#s1"><span>Executive summary</span><span class="tn">01</span></a></li>
+        <li><a href="#s2"><span>The problem</span><span class="tn">02</span></a></li>
+        <li><a href="#s3"><span>The solution &amp; product</span><span class="tn">03</span></a></li>
+        <li><a href="#s4"><span>Market opportunity</span><span class="tn">04</span></a></li>
+        <li><a href="#s5"><span>Validation &amp; traction</span><span class="tn">05</span></a></li>
+        <li><a href="#s6"><span>Business model &amp; pricing</span><span class="tn">06</span></a></li>
+        <li><a href="#s7"><span>Go-to-market</span><span class="tn">07</span></a></li>
+        <li><a href="#s8"><span>Competition &amp; moats</span><span class="tn">08</span></a></li>
+        <li><a href="#s9"><span>Team &amp; advisors</span><span class="tn">09</span></a></li>
+        <li><a href="#s10"><span>Product roadmap &amp; operations</span><span class="tn">10</span></a></li>
+        <li><a href="#s11"><span>Financial plan</span><span class="tn">11</span></a></li>
+        <li><a href="#s12"><span>Risks &amp; mitigations</span><span class="tn">12</span></a></li>
+        <li><a href="#s13"><span>The ask</span><span class="tn">13</span></a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 01 EXEC SUMMARY -->
+  <section class="exec" id="s1">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2 class="section-title">Executive summary.</h2>
+        <span class="section-tag">The whole story, briefly</span>
+      </div>
+
+      <p class="lead">Relationship-driven salespeople win or lose on what they remember between meetings. FollowRoom is the <em>memory layer</em> that makes sure they never forget &mdash; built, validated, and days from its first paying pilot.</p>
+
+      <div class="two-col">
+        <div class="body-block">
+          <p>A property agent manages dozens of live relationships across WhatsApp, voice notes, and viewings. The deals that close are the ones where the client felt <strong>remembered</strong> &mdash; the wife's preference for Marine Parade because her parents are nearby; the hesitation about repayments after bonus season. That texture lives in the agent's head and three chat apps, and the moment it slips, so does the trust. A $3,000-a-month assistant still can't replay last month's viewing on demand.</p>
+          <p>FollowRoom turns the messages an agent forwards and the meetings they record into a living, client-specific memory &mdash; every detail linked to its source &mdash; and a polished, co-branded room the agent can share with the client. <strong>The operator owns the relationship. We own the memory.</strong> The product is silent by design: it never messages the client, and nothing reaches them without the operator's approval.</p>
+        </div>
+        <div class="body-block">
+          <p>The product is already built &mdash; live backend, WhatsApp ingestion, transcription, and AI extraction with evidence receipts. Two qualified industry figures independently validated it: a 12-year veterans realtor designed the product on a call (&ldquo;I give it to you&rdquo;), and a Showsuite director designed the go-to-market (&ldquo;sell it as the digital auntie, not AI&rdquo;).</p>
+          <p>The economics are software-grade: ~93% gross margin per seat. The path is profitable without venture-scale outcomes &mdash; 250 paying seats (under 1% of Singapore's registered agents) reaches $20,000/month in profit. We are raising <strong>$350K</strong> to fund the pilot, the first growth cluster, and the road to profitability &mdash; <em>not</em> the road to fundraise again.</p>
+        </div>
+      </div>
+
+      <div class="exec-stats">
+        <div class="exec-stat"><div class="v">93<span class="sm">%</span></div><div class="l">Gross margin / seat</div></div>
+        <div class="exec-stat"><div class="v">2 / 2</div><div class="l">Independent validations</div></div>
+        <div class="exec-stat"><div class="v"><span class="cur">$</span>20K<span class="sm">/mo</span></div><div class="l">Profit at ~250 seats</div></div>
+        <div class="exec-stat"><div class="v"><span class="cur">$</span>350K</div><div class="l">Raising (SAFE)</div></div>
+        <div class="exec-stat"><div class="v">~0.8<span class="sm">%</span></div><div class="l">SG penetration needed</div></div>
+      </div>
+
+      <div class="callout"><strong>The one-line thesis.</strong> Build the follow-up memory layer for people who sell on trust, wedge through Singapore real estate's most respected agents, and expand into the adjacent relationship-sales verticals (insurance, private banking, advisory) that share the same shape.</div>
+    </div>
+  </section>
+
+  <!-- 02 PROBLEM -->
+  <section class="wrap" id="s2">
+    <div class="section-head"><span class="section-num">02</span><h2 class="section-title">The problem.</h2><span class="section-tag">What's broken</span></div>
+    <p class="lead">Deals aren't lost on the pitch. They're lost in the gaps between conversations &mdash; where memory fails and trust quietly erodes.</p>
+    <div class="two-col">
+      <div class="body-block">
+        <p>Relationship-driven salespeople &mdash; real estate agents, insurance advisers, private bankers, IFAs &mdash; carry their most valuable asset in their heads: the specific texture of every client relationship. They manage 50&ndash;200 active relationships at once, scattered across WhatsApp threads, voice notes, viewings, and ad-hoc meetings.</p>
+        <p>The tools meant to help don't fit how they work. <strong>CRMs</strong> demand manual data entry into structured fields and never capture the unstructured texture that actually matters. <strong>Note-taking</strong> is too slow to do live. <strong>A human assistant</strong> costs ~S$3,000/month and still can't recall a specific past conversation on command.</p>
+      </div>
+      <div class="body-block">
+        <p>So the texture stays trapped in recordings and chat history that are impossible to navigate. As one veteran agent put it: <em>&ldquo;I still need to go through the minutes. I don't even know which minute, which second we had this topic about &mdash; it's not like YouTube.&rdquo;</em></p>
+        <p>And there's no good artifact to give the client afterward &mdash; a long WhatsApp text is ignored, a PDF takes up space. The follow-up, the moment that builds trust, is a manual, unstructured, unshareable afterthought. <strong>That is the gap FollowRoom closes.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 SOLUTION -->
+  <section class="wrap" id="s3">
+    <div class="section-head"><span class="section-num">03</span><h2 class="section-title">The solution &amp; product.</h2><span class="section-tag">What we built</span></div>
+    <p class="lead">Forward it. We remember the rest. FollowRoom converts the agent's existing workflow into structured memory and a shareable client room &mdash; <em>without</em> asking them to change how they sell.</p>
+    <div class="cards">
+      <div class="card"><div class="ci">01</div><h4>Silent ingestion</h4><p>The operator forwards a WhatsApp message or uploads a meeting recording. No new app to live in, no channel to change.</p></div>
+      <div class="card"><div class="ci">02</div><h4>Memory, built</h4><p>Speech is diarised and transcribed; key facts are extracted and filed under the right client, each one linked to its exact source.</p></div>
+      <div class="card"><div class="ci">03</div><h4>Operator approves</h4><p>The dashboard surfaces what was captured. The operator accepts, edits, or rejects. Sensitive inferences never reach the client.</p></div>
+      <div class="card"><div class="ci">04</div><h4>The client room</h4><p>A co-branded, timestamped, threaded link the client opens on any device &mdash; meeting notes, next steps, and documents, all approved by the operator.</p></div>
+    </div>
+    <div class="callout"><strong>Built, not slideware.</strong> Live FastAPI backend on Render; Next.js dashboard on Vercel; Supabase data layer with per-operator security; WhatsApp Cloud API ingestion; AssemblyAI transcription; Anthropic-powered extraction with evidence receipts. 130 backend tests, CI on every change. Money raised funds growth, not the core build.</div>
+  </section>
+
+  <!-- 04 MARKET -->
+  <section class="wrap" id="s4">
+    <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Market opportunity.</h2><span class="section-tag">Sized for floor and ceiling</span></div>
+    <p class="lead">A wedge small enough to win and a ceiling large enough to matter. We start where the founder has a warm network, and expand along a shape that repeats across verticals and geographies.</p>
+    <div class="market-grid">
+      <div class="market-card"><div class="ml">SOM · SG real estate</div><div class="mv">31,500<span class="sm">agents</span></div><div class="mn">Registered Real Estate Salespersons in Singapore. 250 seats &mdash; the $20K-profit milestone &mdash; is ~0.8% of this.</div></div>
+      <div class="market-card featured"><div class="ml">SAM · SG relationship sales</div><div class="mv">~80K<span class="sm">operators</span></div><div class="mn">Real estate + insurance + financial advisory + private banking + business brokers. Same WhatsApp behaviour, same memory pain.</div></div>
+      <div class="market-card"><div class="ml">TAM · SG + AU + HK + Gulf</div><div class="mv">~500K<span class="sm">operators</span></div><div class="mn">High-trust relationship-sales markets with SG-style messaging behaviour. The Phase 3 horizon.</div></div>
+    </div>
+    <div class="callout"><strong>Why now.</strong> Four shifts converged: WhatsApp's Cloud API matured into a compliant ingestion route; diarised transcription dropped below $1/hour; LLM extraction with caching collapsed to a few dollars per seat; and Singapore real estate's &ldquo;agents as entrepreneurs&rdquo; turn (led by Keller Williams' 2025 launch) primed the buyer for relationship-first tooling. The category prerequisite finally exists.</div>
+  </section>
+
+  <!-- 05 VALIDATION -->
+  <section class="wrap" id="s5">
+    <div class="section-head"><span class="section-num">05</span><h2 class="section-title">Validation &amp; traction.</h2><span class="section-tag">Two qualified, independent yeses</span></div>
+    <p class="lead">The strongest early signal isn't that two industry people liked the idea &mdash; it's that <em>each one, asked cold, independently designed a different half of FollowRoom</em>, and both halves matched what's already built.</p>
+    <div class="two-col">
+      <div class="body-block">
+        <p><strong>Scott Ng &mdash; the product.</strong> A 12-year veteran realtor at Keller Williams Singapore, asked to react to feature ideas, reverse-engineered FollowRoom's exact wedge on the call: timestamped transcript &rarr; co-branded shareable link &rarr; threaded follow-up between agent and client. His verdict: <em>&ldquo;you're simplifying Salesforce&hellip; I give it to you.&rdquo;</em> He is FollowRoom's lead beta user and design partner.</p>
+      </div>
+      <div class="body-block">
+        <p><strong>Suresh Superamaniam &mdash; the go-to-market.</strong> A director at Showsuite (a Singapore proptech platform for property developers, agents, and lawyers), asked the same cold, designed the GTM: don't lead with &ldquo;AI,&rdquo; frame it as the affordable assistant, and ride the adoption wave through the market's top-performing agencies. He is in discussions to advise.</p>
+      </div>
+    </div>
+    <div class="callout"><strong>Product-market resonance before a single demo.</strong> When two qualified outsiders independently converge on the architecture and pricing you've already written down, the remaining work is execution, not discovery.</div>
+  </section>
+
+  <!-- 06 BUSINESS MODEL -->
+  <section class="wrap" id="s6">
+    <div class="section-head"><span class="section-num">06</span><h2 class="section-title">Business model &amp; pricing.</h2><span class="section-tag">Cohort ladder</span></div>
+    <p class="lead">A per-seat SaaS subscription priced as a <em>time ladder</em> &mdash; reward the early believers, let the standard rate rise behind them.</p>
+    <table class="tbl">
+      <caption>Pricing ladder</caption>
+      <thead><tr><th>Tier</th><th>When</th><th class="n">Price</th><th>Mechanic</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Beta</strong></td><td>Months 0&ndash;3</td><td class="n mono">Free</td><td>Pilot cohort (~5&ndash;10 agents). Free for feedback + a case study. Converts to Founder.</td></tr>
+        <tr><td><strong>Founder</strong></td><td>From beta · locked 12 mo</td><td class="n mono">$99/mo</td><td>Early adopters (cohort capped ~50). A third below standard, locked for a year. Loyalty moat.</td></tr>
+        <tr class="total"><td><strong>Pro</strong></td><td>Standard</td><td class="n mono">$149/mo</td><td>Going rate after the Founder cohort fills. ~5% of the assistant it replaces.</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Unit economics.</strong> At ~$10/seat variable cost (Anthropic + AssemblyAI + storage + WhatsApp), a $149 Pro seat returns ~$139 contribution &mdash; a <strong>93% gross margin</strong>. Fixed infrastructure is ~$78/month at production scale. The binding constraint is customer acquisition, never infrastructure. Full model in the companion pricing &amp; validation document.</div>
+  </section>
+
+  <!-- 07 GTM -->
+  <section class="wrap" id="s7">
+    <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Go-to-market.</h2><span class="section-tag">Wedge · Wave · Horizon</span></div>
+    <p class="lead">Win one agency cluster, ride the market's herd dynamics to the next, then expand into adjacent verticals &mdash; <em>in the order the market hands us, not the order a roadmap fantasises.</em></p>
+    <div class="phase">
+      <div><div class="phase-tag">Phase 1</div><div class="phase-name">The <em>Wedge</em></div><div class="phase-when">0&ndash;6 months · 20 seats</div></div>
+      <div class="phase-body"><p>Land the meeting-room product with Scott + 4 other Keller Williams Singapore agents he can introduce. KW pre-selects for the entrepreneurial, relationship-first mindset FollowRoom assumes &mdash; the right early-adopter shape. Lead with the outcome (&ldquo;never forget a client conversation&rdquo;) and the cost frame (&ldquo;a fraction of an assistant&rdquo;), never with &ldquo;AI.&rdquo;</p><p><strong>Exit:</strong> 20 paying seats · $3K MRR · a published KW case study · 3 unprompted referrals.</p></div>
+    </div>
+    <div class="phase">
+      <div><div class="phase-tag">Phase 2</div><div class="phase-name">The <em>Wave</em></div><div class="phase-when">6&ndash;18 months · 250 seats</div></div>
+      <div class="phase-body"><p>Singapore's agency market follows its top performers. With a proven KW cluster, expand to PropNex and Huttons top desks &mdash; not via central procurement, but via the WhatsApp screenshots colleagues pass each other. Add first-contact lead curation so the product earns its keep from the first message, not just the first meeting.</p><p><strong>Exit:</strong> 250 seats · $37.5K MRR · $20K/month profit · two verticals scoped for Phase 3.</p></div>
+    </div>
+    <div class="phase">
+      <div><div class="phase-tag">Phase 3</div><div class="phase-name">The <em>Horizon</em></div><div class="phase-when">18&ndash;36 months · 550+ seats</div></div>
+      <div class="phase-body"><p>The relationship-sales shape repeats: insurance, private banking, IFAs, business brokers. Each vertical is a deliberate, compliance-aware entry with one paid design partner first. Geographic expansion follows the Singapore-buyer corridor &mdash; Perth, then Hong Kong, then the Gulf.</p><p><strong>Outcome:</strong> a focused, profitable operator-tooling company with optional growth-equity upside.</p></div>
+    </div>
+  </section>
+
+  <!-- 08 MOATS -->
+  <section class="wrap" id="s8">
+    <div class="section-head"><span class="section-num">08</span><h2 class="section-title">Competition &amp; moats.</h2><span class="section-tag">Why it holds</span></div>
+    <p class="lead">The product is copyable. The moats are structural, slow to assemble, and uncomfortable for incumbents to imitate because they impose constraints incumbents won't accept.</p>
+    <div class="cards">
+      <div class="card"><div class="ci">i.</div><h4>Memory compounds</h4><p>Every message and meeting deepens the client record. At month thirty of a relationship, switching cost is thirty months of texture &mdash; not a database export. Competitors enter every relationship at month zero.</p></div>
+      <div class="card"><div class="ci">ii.</div><h4>Trust as architecture</h4><p>Evidence receipts, operator-approval gates, no sensitive inferences in client surfaces, no third-party scripts. These read as features but are coded invariants &mdash; the convenient shortcut is the one that breaches trust.</p></div>
+      <div class="card"><div class="ci">iii.</div><h4>Channel-native onboarding</h4><p>Forward a message &mdash; that's the activation step. Most CRMs die here. The silent WhatsApp ingestion behind it takes quarters and a regulatory posture (Business Verification, PDPA) to replicate end-to-end.</p></div>
+    </div>
+    <p style="margin-top:1.5rem;">Adjacent players &mdash; Salesforce (Keller Williams' CRM partner), HubSpot, agency-internal builds, call-analytics tools like Gong &mdash; either demand structured data entry, prescribe behaviour, or aren't channel-native. FollowRoom competes by staying sharper, smaller, and trust-first. The explicit non-goal: never try to become Salesforce.</p>
+  </section>
+
+  <!-- 09 TEAM -->
+  <section class="wrap" id="s9">
+    <div class="section-head"><span class="section-num">09</span><h2 class="section-title">Team &amp; advisors.</h2><span class="section-tag">Founder + a forming bench</span></div>
+    <div class="team">
+      <div class="member">
+        <div><div class="m-role">Founder &amp; CEO</div><div class="m-name">Khaniff Lau</div><div class="m-aff">Singapore · full-time</div></div>
+        <div class="m-bio"><p>Former real estate operator with an active Singapore agency network &mdash; the warm relationships the Phase 1 pilot is built around &mdash; with a background spanning business development, sales, and software. Building FollowRoom solo today; the first hire (customer success / sales) is funded post-pilot.</p><p>FollowRoom inherits a battle-tested operating doctrine from prior product work: append-only data, evidence receipts, operator-approved publishing, and a privacy-by-architecture posture encoded in the codebase, not aspirational.</p></div>
+      </div>
+      <div class="member">
+        <div><div class="m-role">Advisor</div><div class="m-name">Suresh Superamaniam</div><div class="m-aff">Director, Design &amp; Marketing Communications, Showsuite Pte Ltd</div></div>
+        <div class="m-bio"><p>Showsuite is a Singapore proptech platform digitising the property sales journey for developers, agents, and lawyers across Singapore, Thailand, and Australia. Suresh brings proptech go-to-market experience, deep familiarity with Singapore's agency landscape, and a marketing / lead-generation lens directly relevant to FollowRoom's distribution.</p><div class="m-status">Advisory in discussions</div></div>
+      </div>
+      <div class="member">
+        <div><div class="m-role">Lead beta user · design partner</div><div class="m-name">Scott Ng</div><div class="m-aff">12-year veteran realtor, Keller Williams Singapore</div></div>
+        <div class="m-bio"><p>An established, relationship-first agent focused on commercial property and business-owner clients. Scott validated FollowRoom's product direction in detail and is the lead design partner for the Phase 1 pilot &mdash; the bridge into the Keller Williams Singapore cluster.</p><div class="m-status">Design partner #1</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 ROADMAP -->
+  <section class="wrap" id="s10">
+    <div class="section-head"><span class="section-num">10</span><h2 class="section-title">Product roadmap &amp; operations.</h2><span class="section-tag">What ships next</span></div>
+    <p class="lead">The core is built. The near-term roadmap is the short distance between today and a product a paying agent uses daily.</p>
+    <table class="tbl">
+      <thead><tr><th>Stage</th><th>Scope</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Plans 1&ndash;4</td><td>Backend, schema, extraction pipeline, transcription, WhatsApp ingestion, dashboard</td><td class="mono pos">Shipped</td></tr>
+        <tr><td>Plan 4.5</td><td>Meta Business Verification, production phone number, outbound nudges, media handling</td><td class="mono">Next (gates pilot)</td></tr>
+        <tr><td>Plan 5</td><td>File drop / room attachments (floor plans, comparables, docs)</td><td class="mono">Queued</td></tr>
+        <tr><td>Plan 6</td><td>Client-facing room (slug + PIN) + update approval &mdash; the headline shareable surface</td><td class="mono">Queued</td></tr>
+        <tr><td>Plan 7</td><td>Suggested replies + lead curation + review queue</td><td class="mono">Queued</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>The one external dependency.</strong> Meta Business Verification (free, 1&ndash;2 week review) gates the live pilot &mdash; it unlocks a production phone number real clients can message. Everything else is execution on an existing codebase. A manual-upload path is the fallback during the verification window.</div>
+  </section>
+
+  <!-- 11 FINANCIALS -->
+  <section class="wrap" id="s11">
+    <div class="section-head"><span class="section-num">11</span><h2 class="section-title">Financial plan.</h2><span class="section-tag">Costs · breakeven · the road to $20K</span></div>
+    <p class="lead">Software-margin economics with a profitable path that doesn't require venture-scale outcomes. Shown <em>with and without a founder draw</em>, because the founder's salary is the single biggest cost &mdash; the product itself is cheap to run.</p>
+
+    <table class="tbl">
+      <caption>Cost structure</caption>
+      <thead><tr><th>Bucket</th><th>Detail</th><th class="n">Amount</th></tr></thead>
+      <tbody>
+        <tr><td>Fixed infra (production)</td><td>Render + Vercel + Supabase + domain + email</td><td class="n mono">~$78/mo</td></tr>
+        <tr><td>Variable ops / seat</td><td>Anthropic $5 + AssemblyAI $2.60 + storage $1 + WhatsApp $0.50 + buffer</td><td class="n mono">~$10/seat</td></tr>
+        <tr class="total"><td>Gross margin / Pro seat</td><td>$149 revenue &minus; $10 ops</td><td class="n mono">$139 (93%)</td></tr>
+      </tbody>
+    </table>
+
+    <table class="tbl" style="margin-top:2.5rem;">
+      <caption>Breakeven &amp; $20K profit — both ways (blended ARPU ~$130)</caption>
+      <thead><tr><th>Milestone</th><th class="n">Without founder draw</th><th class="n">With $10K/mo draw</th></tr></thead>
+      <tbody>
+        <tr><td>Breakeven</td><td class="n mono">~1 seat</td><td class="n mono">~84 seats</td></tr>
+        <tr class="total"><td>$20,000/month profit</td><td class="n mono">~167 seats</td><td class="n mono">~250 seats</td></tr>
+      </tbody>
+    </table>
+
+    <div class="chart-wrap">
+      <svg viewBox="0 0 1100 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Net profit trajectory">
+        <defs><pattern id="g" width="100" height="44" patternUnits="userSpaceOnUse"><path d="M100 0 L0 0 0 44" fill="none" stroke="#CFC4AB" stroke-width="0.5" opacity="0.5"/></pattern></defs>
+        <rect x="90" y="30" width="970" height="320" fill="url(#g)"/>
+        <line x1="90" y1="302" x2="1060" y2="302" stroke="#18150F" stroke-width="1.2" opacity="0.8"/>
+        <text x="84" y="306" font-family="JetBrains Mono,monospace" font-size="10" fill="#18150F" text-anchor="end" font-weight="600">$0</text>
+        <line x1="90" y1="230" x2="1060" y2="230" stroke="#9A6A45" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.7"/>
+        <text x="1055" y="223" font-family="JetBrains Mono,monospace" font-size="10" fill="#9A6A45" text-anchor="end" font-weight="600">$20K / month profit</text>
+        <g font-family="JetBrains Mono,monospace" font-size="10" fill="#7A6F58" text-anchor="middle">
+          <text x="90" y="370">M0</text><text x="252" y="370">M6</text><text x="414" y="370">M12</text><text x="576" y="370">M18</text><text x="738" y="370">M24</text><text x="900" y="370">M30</text><text x="1060" y="370">M36</text>
+        </g>
+        <rect x="90" y="30" width="162" height="272" fill="#9A6A45" opacity="0.04"/>
+        <rect x="252" y="30" width="486" height="272" fill="#3B5345" opacity="0.04"/>
+        <rect x="738" y="30" width="322" height="272" fill="#18150F" opacity="0.03"/>
+        <!-- no-draw net line -->
+        <path d="M90 303 L252 298 L414 281 L576 240 L738 189 L899 121 L1060 47" fill="none" stroke="#3B5345" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- with-draw net line -->
+        <path d="M90 339 L252 334 L414 317 L576 276 L738 225 L899 157 L1060 83" fill="none" stroke="#9A6A45" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="738" cy="225" r="6" fill="#9A6A45" stroke="#F8F4EA" stroke-width="2"/>
+        <text x="730" y="216" font-family="JetBrains Mono,monospace" font-size="10" fill="#9A6A45" text-anchor="end" font-weight="700">$20K profit · ~250 seats · M24</text>
+        <circle cx="414" cy="317" r="4" fill="#9A6A45"/><circle cx="576" cy="276" r="4" fill="#9A6A45"/>
+      </svg>
+      <div class="legend">
+        <span><span class="sw" style="background:#3B5345;"></span>Net, no founder draw</span>
+        <span><span class="sw" style="background:#9A6A45;"></span>Net, after $10K/mo draw</span>
+        <span><span class="sw" style="border-top:2px dashed #9A6A45;height:0;"></span>$20K profit target</span>
+      </div>
+    </div>
+    <div class="callout"><strong>The pilot is nearly free to run.</strong> A 5&ndash;10 agent beta over six months costs under ~$1,100 in infrastructure and ops. The only meaningful cost of validating this business is the founder's time. Full model, including the with/without-draw breakdowns, in the companion pricing &amp; validation document.</div>
+  </section>
+
+  <!-- 12 RISKS -->
+  <section class="wrap" id="s12">
+    <div class="section-head"><span class="section-num">12</span><h2 class="section-title">Risks &amp; mitigations.</h2><span class="section-tag">Named honestly</span></div>
+    <p class="lead">The most dangerous risks are the unnamed ones. These are designed-against; none, in our judgement, is existential. A deeper internal risk register is maintained separately.</p>
+    <div>
+      <div class="risk-row"><div class="rk"><span class="b">R-01</span>Adoption, not just endorsement</div><div class="rm">An &ldquo;I love it&rdquo; is not daily use. <strong>Mitigation:</strong> the beta measures weekly active usage and willingness-to-pay rigorously before any scale.</div></div>
+      <div class="risk-row"><div class="rk"><span class="b">R-02</span>Median-user activation</div><div class="rm">Our lead beta user is a sophisticated outlier. <strong>Mitigation:</strong> the pilot includes less tech-forward agents; onboarding must work without hand-holding.</div></div>
+      <div class="risk-row"><div class="rk"><span class="b">R-03</span>Meta / WhatsApp dependency</div><div class="rm">Ingestion sits on Meta's rails. <strong>Mitigation:</strong> channel-agnostic at the boundary; Telegram + email forwarding parity is a known, small lift.</div></div>
+      <div class="risk-row"><div class="rk"><span class="b">R-04</span>Unvalidated pricing</div><div class="rm">$99/$149 is a reasoned hypothesis, not proven. <strong>Mitigation:</strong> the beta is the price-discovery instrument.</div></div>
+      <div class="risk-row"><div class="rk"><span class="b">R-05</span>Single-founder bandwidth</div><div class="rm">Solo to month 6, with other commitments. <strong>Mitigation:</strong> first revenue funds the first hire; Phase 1 is operationally light by design.</div></div>
+      <div class="risk-row"><div class="rk"><span class="b">R-06</span>Data &amp; trust liability</div><div class="rm">Handling third-party client conversations carries PDPA exposure. <strong>Mitigation:</strong> trust architecture + operator-responsibility framing + privacy by design.</div></div>
+    </div>
+  </section>
+
+  <!-- 13 THE ASK -->
+  <section class="wrap" id="s13">
+    <div class="section-head"><span class="section-num">13</span><h2 class="section-title">The ask.</h2><span class="section-tag">Foundation for the investment package</span></div>
+    <p class="lead">We are raising <em>$350,000</em> on a SAFE at a $3M post-money cap to fund the pilot, the first growth cluster, and the road to $20K/month profit by month 24 &mdash; not the road to fundraise again.</p>
+    <div class="two-col">
+      <div class="body-block">
+        <p><strong>Use of funds (18 months):</strong> founder runway (~51%), first customer-success / sales hire post-pilot (~17%), go-to-market experiments (~10%), AI &amp; infrastructure buffer (~8%), legal / compliance / verification (~6%), contingency (~8%).</p>
+        <p><strong>Milestones this round funds:</strong> Business Verification cleared (M1) &middot; 20 paying seats + KW case study (M6) &middot; 60 seats + lead curation (M12) &middot; 150 seats + founder-draw breakeven (M18) &middot; 250 seats + $20K/month profit (M24).</p>
+      </div>
+      <div class="body-block">
+        <p><strong>Return profile</strong> (at $3M cap, $350K ≈ 11.7%): a floor of a profitable focused business (3&ndash;5&times; via dividend recap), a base case of a strategic acquisition by year five (15&ndash;30&times;), and a bull case of a cross-vertical operator-tooling platform (50&times;+).</p>
+        <p>Full terms, use-of-funds detail, return scenarios, and the data-room index are in the accompanying <strong>investment package</strong>, for which this plan is the foundation.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-row"><span>FollowRoom · Business Plan · v1.0 · Confidential</span><span>khaniff@gmail.com · 2026-05-20</span></div>
+      <p>Companion documents: <em>followroom-investment-package.html</em> (the offering), <em>followroom-pricing-validation.html</em> (full cost &amp; pricing model), <em>followroom-positioning.html</em> (brand &amp; messaging), <em>followroom-thesis-brief.html</em> (founder thesis). Suresh Superamaniam is described by his official Showsuite title; advisory relationship is in discussions, not finalised. Scott Ng is the lead beta user / design partner; his endorsement is of the product direction, with a paid pilot to be confirmed. Market figures: CEA Singapore (registered salespersons), 2025/26; adjacent-vertical sizing from MAS/LIA reporting. All projections are illustrative and not a guarantee of performance. Pricing ($99/$149) is a hypothesis to be validated in the beta.</p>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>
