@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sarah's room — Khaniff Lau</title>
+  <!-- Generic title — never leak the deal/unit/client into the tab, history, or link unfurl. -->
+  <title>Your property journey · FollowRoom</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -17,291 +18,288 @@
       --bg-muted: #F5F2EB;
       --text-primary: #1A1815;
       --text-secondary: #5C574E;
-      --text-muted: #9B9489;
+      --text-muted: #6E685D;        /* darkened to pass WCAG AA (~5:1) for small captions/meta */
       --border-subtle: #E8E3D9;
-      --accent-gold: #9B7B3B;
+      --accent-gold: #9B7B3B;        /* decorative use only (borders, marks) */
+      --accent-gold-text: #7E6224;   /* AA-passing gold for small text (eyebrows, numerals) */
       --accent-deep: #1F4F4A;
       --attention-warm: #9B5B3B;
       --serif: 'Newsreader', Georgia, serif;
       --sans: 'Inter', -apple-system, system-ui, sans-serif;
+      --space-section: clamp(40px, 8vw, 56px);
+      --space-within: clamp(14px, 3vw, 20px);
+      --pad-x: clamp(20px, 5vw, 24px);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
-      background: var(--bg-page);
-      color: var(--text-primary);
-      font-family: var(--sans);
-      font-size: 17px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg-page); color: var(--text-primary);
+      font-family: var(--sans); font-size: 17px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
     }
-    .room {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 32px 24px 96px;
+    a:focus-visible, summary:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent-deep); outline-offset: 2px; border-radius: 2px;
     }
-    .operator-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border-subtle);
+
+    /* Internal-use banner — so a stray screenshot is self-evidently not for distribution. */
+    .internal-banner {
+      background: #2B2620; color: #F3EEE3; font-family: var(--sans);
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      text-align: center; padding: 6px 12px;
     }
-    .operator-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--accent-deep);
-      color: #FBFAF6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      flex-shrink: 0;
-    }
-    .operator-name {
-      font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: -0.005em;
-      line-height: 1.2;
-    }
-    .operator-tagline {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-top: 2px;
-    }
-    .room-title {
-      font-family: var(--serif);
-      font-size: 38px;
-      font-weight: 400;
-      letter-spacing: -0.015em;
-      margin: 56px 0 8px;
-      line-height: 1.1;
-    }
-    .room-subtitle {
-      color: var(--text-secondary);
-      font-size: 16px;
-      margin-bottom: 0;
-    }
-    section.block {
-      margin-top: 56px;
-    }
-    .section-heading {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 500;
-      letter-spacing: -0.005em;
-      margin: 0 0 20px;
-    }
-    .operator-note {
-      background: var(--bg-muted);
-      border-left: 2px solid var(--accent-gold);
-      padding: 22px 24px;
-      border-radius: 0 4px 4px 0;
-      line-height: 1.7;
-    }
+
+    /* ── Room shell ───────────────────────────────────────
+       Layout follows content: a discovery room has little genuinely-secondary content,
+       so it's a single, generously-set reading column — no manufactured sidebar.
+       DOM order == reading order (no display:contents/order tricks). */
+    .room { max-width: 680px; margin: 0 auto; padding: clamp(24px, 5vw, 32px) var(--pad-x) clamp(80px, 12vw, 96px); }
+
+    /* ── Co-brand header ───────────────────────────────── */
+    .operator-header { display: flex; flex-direction: column; gap: 16px; padding-bottom: var(--space-within); border-bottom: 1px solid var(--border-subtle); }
+    .brand-row { display: flex; align-items: center; justify-content: space-between; gap: 14px 18px; flex-wrap: wrap; }
+    .team { display: flex; align-items: center; gap: 9px; }
+    .team-mark { width: 26px; height: 26px; border-radius: 6px; flex-shrink: 0; background: var(--accent-deep); color: var(--bg-page); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 500; font-size: 14px; line-height: 1; }
+    .team-name { font-weight: 600; font-size: clamp(13px, 2.4vw, 15px); letter-spacing: 0.01em; color: var(--text-primary); }
+    .agency { display: flex; align-items: center; gap: 8px; }
+    .agency-mark { display:flex; width:26px; height:26px; border-radius:6px; flex-shrink:0; background:var(--accent-deep); color:var(--bg-page); align-items:center; justify-content:center; font-family:var(--serif); font-weight:600; font-size:14px; line-height:1; }
+    .agency-name { font-weight: 600; font-size: clamp(13px, 2.4vw, 14px); letter-spacing: 0.01em; color: var(--text-primary); }
+    .agent-row { display: flex; align-items: center; gap: 14px; }
+    .operator-avatar { width: clamp(48px, 13vw, 58px); height: clamp(48px, 13vw, 58px); border-radius: 50%; flex-shrink: 0; background: var(--accent-deep); box-shadow: 0 0 0 1px var(--border-subtle), 0 2px 8px rgba(26,24,21,0.10); display:flex; align-items:center; justify-content:center; color:var(--bg-page); font-family:var(--serif); font-weight:500; font-size:clamp(17px,4vw,20px); }
+    .operator-id { min-width: 0; }
+    .operator-name { font-family: var(--serif); font-size: clamp(18px, 3.2vw, 20px); font-weight: 500; letter-spacing: -0.005em; line-height: 1.2; }
+    .operator-tagline { font-size: clamp(12px, 2.4vw, 13px); color: var(--text-secondary); margin-top: 2px; }
+
+    /* ── Room title — the DEAL (no unit/address) ────────── */
+    .room-head { margin-top: clamp(40px, 9vw, 48px); }
+    .room-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent-gold-text); margin-bottom: 10px; }
+    .room-title { font-family: var(--serif); font-size: clamp(28px, 7vw, 38px); font-weight: 400; letter-spacing: -0.015em; margin: 0 0 8px; line-height: 1.12; overflow-wrap: anywhere; }
+    .room-subtitle { color: var(--text-secondary); font-size: clamp(15px, 2.6vw, 16px); margin: 0; }
+
+    section.block { margin-top: var(--space-section); }
+    .section-heading { font-family: var(--serif); font-size: clamp(19px, 4vw, 22px); font-weight: 500; letter-spacing: -0.005em; margin: 0 0 var(--space-within); }
+
+    /* ── Operator note (first-person, the curated letter) ── */
+    .operator-note { background: var(--bg-muted); border-left: 2px solid var(--accent-gold); padding: clamp(18px, 4vw, 22px) clamp(18px, 4vw, 24px); border-radius: 0 4px 4px 0; line-height: 1.7; }
     .operator-note p { margin: 0 0 14px; }
     .operator-note p:last-child { margin-bottom: 0; }
-    .receipt {
-      color: var(--text-primary);
-      border-bottom: 1px dotted var(--text-muted);
-      cursor: help;
-      text-decoration: none;
-      transition: border-color 0.15s;
-    }
-    .receipt:hover { border-bottom-color: var(--accent-gold); }
-    .receipt::after {
-      content: " · " attr(data-source);
-      color: var(--text-muted);
-      font-size: 13px;
-      border-bottom: none;
-      display: none;
-    }
-    @media (hover: none) {
-      .receipt::after { display: inline; }
-      .receipt { border-bottom: none; }
-    }
+
+    /* ── Anchor (transaction spine — collapsed; in the main column, under the note) ── */
+    .anchor { border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg-card); overflow: hidden; }
+    .anchor > summary { list-style: none; cursor: pointer; padding: 15px clamp(16px, 4vw, 20px); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .anchor > summary::-webkit-details-marker { display: none; }
+    .anchor > summary::marker { content: ""; }
+    .anchor .caret { color: var(--text-muted); font-size: 12px; transition: transform 0.15s ease; flex-shrink: 0; }
+    .anchor[open] .caret { transform: rotate(90deg); }
+    .anchor .summary-text { font-size: clamp(14px, 2.6vw, 15px); color: var(--text-secondary); flex: 1; min-width: 0; }
+    .anchor .summary-text strong { color: var(--text-primary); font-weight: 500; }
+    .anchor .summary-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); flex-shrink: 0; }
+    .anchor-panel { padding: 4px clamp(16px, 4vw, 20px) clamp(16px, 4vw, 20px); border-top: 1px solid var(--border-subtle); margin-top: 2px; }
+    .anchor-eyebrow { font-size: 11px; letter-spacing: 0.05em; color: var(--text-muted); margin: 12px 0 14px; }
+    .anchor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: clamp(14px, 3vw, 16px) clamp(20px, 4vw, 28px); }
+    .anchor-cell .k { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+    .anchor-cell .v { font-size: clamp(14px, 2.6vw, 15px); color: var(--text-primary); margin-top: 3px; line-height: 1.4; }
+
+    /* ── Where we stand & next ─────────────────────────── */
+    .stand-line { color: var(--text-secondary); margin: 0 0 var(--space-within); }
+    .stand-line strong { color: var(--text-primary); font-weight: 500; }
     .next-list { list-style: none; padding: 0; margin: 0; }
-    .next-item {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border-subtle);
-    }
+    .next-item { display: flex; gap: 16px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
     .next-item:last-child { border-bottom: none; }
-    .next-num {
-      font-family: var(--serif);
-      font-size: 17px;
-      color: var(--accent-gold);
-      width: 20px;
-      flex-shrink: 0;
-      padding-top: 1px;
-    }
+    .next-num { font-family: var(--serif); font-size: 17px; color: var(--accent-gold-text); width: 20px; flex-shrink: 0; padding-top: 1px; }
     .next-body { flex: 1; }
-    .next-meta {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-    .reach-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 24px;
-    }
-    .reach-quiet {
-      font-style: italic;
-      color: var(--text-secondary);
-      font-size: 15px;
-      margin: 0 0 16px;
-      line-height: 1.6;
-    }
-    .reach-action {
-      display: inline-block;
-      color: var(--accent-deep);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 15px;
-      border-bottom: 1px solid var(--accent-deep);
-      padding-bottom: 1px;
-    }
-    .footer {
-      margin-top: 80px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 13px;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-    .footer .tended {
-      color: var(--text-secondary);
-    }
-    .footer .attribution {
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    @media (max-width: 480px) {
-      .room { padding: 24px 20px 80px; }
-      .room-title { font-size: 32px; margin-top: 48px; }
-      section.block { margin-top: 48px; }
+    .next-meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── What we noted (synthesized memory — neutral, record register, NOT the operator's "I") ── */
+    .noted p { margin: 0 0 14px; }
+    .noted p:last-child { margin-bottom: 0; }
+
+    /* ── Timeline (on demand) ──────────────────────────── */
+    .timeline > summary { list-style: none; cursor: pointer; font-family: var(--serif); font-size: clamp(15px, 3vw, 16px); font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 10px; }
+    .timeline > summary::-webkit-details-marker { display: none; }
+    .timeline > summary::marker { content: ""; }
+    .timeline .caret { color: var(--text-muted); font-size: 12px; transition: transform 0.15s ease; }
+    .timeline[open] .caret { transform: rotate(90deg); }
+    .timeline-list { list-style: none; padding: 18px 0 0; margin: 0; }
+    .timeline-item { display: flex; gap: 16px; padding: 0 0 16px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-date { font-size: 13px; color: var(--text-muted); width: clamp(72px, 18vw, 92px); flex-shrink: 0; padding-top: 1px; }
+    .timeline-body { flex: 1; font-size: clamp(14px, 2.6vw, 15px); }
+    .timeline-note { font-size: 13px; color: var(--text-muted); margin-top: 14px; font-style: italic; }
+
+    /* ── Reach card ────────────────────────────────────── */
+    .reach-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 6px; padding: clamp(18px, 4vw, 24px); }
+    .reach-quiet { font-style: italic; color: var(--text-secondary); font-size: 15px; margin: 0 0 16px; line-height: 1.6; }
+    .reach-action { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent-deep); text-decoration: none; font-weight: 500; font-size: 15px; border-bottom: 1px solid var(--accent-deep); }
+
+    /* ── Footer ────────────────────────────────────────── */
+    .footer { margin-top: clamp(56px, 12vw, 80px); padding-top: var(--space-within); border-top: 1px solid var(--border-subtle); font-size: 13px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+    .footer .tended { color: var(--text-secondary); }
+    .footer .attribution { font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+    @media print {
+      .internal-banner { display: none; }
+      /* reveal collapsed details so the printout / PDF isn't missing the anchor + timeline */
+      details > *:not(summary) { display: revert !important; }
+      .reach-action { min-height: 0; }
     }
   </style>
 </head>
 <body>
+  <div class="internal-banner">Design mockup · sample data</div>
   <main class="room">
 
-    <!-- Operator brand header — operator first, FollowRoom silent -->
+    <!-- Co-brand. SAMPLE DATA: fictional agency (Meridian Realty) + fictional team (Eastview) + fictional agent
+         (Marcus Lim, initials avatar). Self-contained — no real brand, no real face, no external image hotlinks. -->
     <header class="operator-header">
-      <div class="operator-avatar" aria-hidden="true">KL</div>
-      <div>
-        <div class="operator-name">Khaniff Lau</div>
-        <div class="operator-tagline">Your advisor for Marine Parade and East Coast</div>
+      <div class="brand-row">
+        <div class="team">
+          <span class="team-mark" aria-hidden="true">E</span>
+          <span class="team-name">Eastview Property Group</span>
+        </div>
+        <div class="agency" aria-label="Meridian Realty">
+          <span class="agency-mark" aria-hidden="true">M</span>
+          <span class="agency-name">Meridian Realty</span>
+        </div>
+      </div>
+      <div class="agent-row">
+        <div class="operator-avatar" aria-hidden="true">ML</div>
+        <div class="operator-id">
+          <div class="operator-name">Marcus Lim</div>
+          <div class="operator-tagline">Senior Associate Director · Marine Parade &amp; East Coast</div>
+        </div>
       </div>
     </header>
 
-    <!-- Room title — client's perspective -->
-    <h1 class="room-title">Sarah's room</h1>
-    <p class="room-subtitle">A quiet record of what we've discussed, and where we're heading next.</p>
+    <div class="room-head">
+      <div class="room-eyebrow">Your property journey</div>
+      <h1 class="room-title">Purchase of a 4-bedroom HDB</h1>
+      <p class="room-subtitle">For Sarah Tan — a quiet record of your search, and where we're heading next.</p>
+    </div>
 
-    <!-- Operator note — what Khaniff wrote, in his voice -->
-    <section class="block" aria-labelledby="note-heading">
-      <h2 id="note-heading" class="section-heading">From our conversation today</h2>
-      <div class="operator-note">
-        <p>
-          Sarah — really enjoyed our chat at the showflat this morning. You've thought
-          about this move more carefully than most clients I work with, which makes my
-          job a lot easier.
-        </p>
-        <p>
-          A few things stood out: the proximity to your parents matters more than any
-          single feature of a unit, the $1.8M ceiling is firm (and I respect that),
-          and you and your husband are aligned on the location but not yet on the
-          timing. That's normal at this stage.
-        </p>
-        <p>
-          I've started putting together a shortlist of units in Marine Parade Central
-          and the adjacent stack. I'll send you the first three by the weekend so you
-          can look through them with your husband over a quiet evening.
-        </p>
-      </div>
-    </section>
-
-    <!-- Memory section — extracted facts as receipt-thread prose -->
-    <section class="block" aria-labelledby="memory-heading">
-      <h2 id="memory-heading" class="section-heading">What we noted</h2>
-      <p>
-        You're looking for a
-        <a class="receipt" data-source="from our conversation on 19 May">3-bedroom HDB upgrade close to your parents in Marine Parade</a>,
-        with a firm budget ceiling of
-        <a class="receipt" data-source="confirmed today">$1.8M</a>.
-      </p>
-      <p>
-        Ideal move-in is
-        <a class="receipt" data-source="mentioned today">around Q3 of this year</a>,
-        though your husband would prefer a slower decision if rates move
-        further in the next few months.
-      </p>
-      <p>
-        Property features that matter most:
-        <a class="receipt" data-source="mentioned today">corner units, higher floor, lease above 80 years</a>.
-        Walking distance to your parents was your first sentence — I noted
-        that.
-      </p>
-    </section>
-
-    <!-- Next steps — calm imperative, not urgent -->
-    <section class="block" aria-labelledby="next-heading">
-      <h2 id="next-heading" class="section-heading">Where we are next</h2>
-      <ul class="next-list">
-        <li class="next-item">
-          <span class="next-num">1.</span>
-          <div class="next-body">
-            <div>I'll send a shortlist of three Marine Parade units for you to review with your husband.</div>
-            <div class="next-meta">By this weekend</div>
+    <!-- Single column · reading order = DOM order: note → anchor → where we stand → what we noted → timeline → reach -->
+    <section class="block s-note" aria-labelledby="note-heading">
+          <h2 id="note-heading" class="section-heading">From our conversation today</h2>
+          <div class="operator-note">
+            <p>
+              Sarah — really enjoyed our chat at the showflat this morning. You've thought
+              about this move more carefully than most clients I work with, which makes my
+              job a lot easier.
+            </p>
+            <p>
+              A few things stood out: the proximity to your parents matters more than any
+              single feature of a unit, the budget ceiling is one you feel firm about (and I
+              respect that), and you and your husband are aligned on the location but not yet
+              on the timing. That's normal at this stage.
+            </p>
+            <p>
+              I've started putting together a shortlist of units in Marine Parade Central
+              and the adjacent stack. I'll send you the first three by the weekend so you
+              can look through them with your husband over a quiet evening.
+            </p>
           </div>
-        </li>
-        <li class="next-item">
-          <span class="next-num">2.</span>
-          <div class="next-body">
-            <div>You'll come back with the two units you'd most like to view in person.</div>
-            <div class="next-meta">Whenever you're both ready — no rush</div>
-          </div>
-        </li>
-        <li class="next-item">
-          <span class="next-num">3.</span>
-          <div class="next-body">
-            <div>We'll plan a viewing morning together — usually a Saturday works best.</div>
-            <div class="next-meta">After your shortlist</div>
-          </div>
-        </li>
-      </ul>
-    </section>
+        </section>
 
-    <!-- Reach card — quiet reassurance, single action -->
-    <section class="block" aria-labelledby="reach-heading">
-      <h2 id="reach-heading" class="section-heading">Anytime you need me</h2>
-      <div class="reach-card">
-        <p class="reach-quiet">
-          If something comes up between now and the shortlist — a question, a
-          property you saw, a change in timing — just message me directly.
-          You don't need to wait for our next meeting.
-        </p>
-        <a class="reach-action" href="https://wa.me/6591234567">WhatsApp Khaniff →</a>
-      </div>
-    </section>
+        <!-- Anchor — transaction spine, in the main column directly under the note (so reading order
+             = visual order on every device; no display:contents/order reordering). Captured cells ONLY. -->
+        <section class="block s-anchor" aria-label="Deal summary">
+          <details class="anchor">
+            <summary>
+              <span class="caret" aria-hidden="true">▸</span>
+              <span class="summary-text"><strong>4-bedroom HDB · Marine Parade</strong> · ~$1.8M target</span>
+              <span class="summary-label">Target specs</span>
+            </summary>
+            <div class="anchor-panel">
+              <div class="anchor-eyebrow">Target purchase specifications · as I understood them from our first conversation</div>
+              <div class="anchor-grid">
+                <div class="anchor-cell"><div class="k">Looking for</div><div class="v">4-bedroom HDB (upgrade)</div></div>
+                <div class="anchor-cell"><div class="k">Area</div><div class="v">Marine Parade — near your parents</div></div>
+                <div class="anchor-cell"><div class="k">Budget</div><div class="v">Around $1.8M</div></div>
+                <div class="anchor-cell"><div class="k">Timing</div><div class="v">Around Q3, flexible</div></div>
+                <div class="anchor-cell"><div class="k">Must-haves</div><div class="v">Corner unit · higher floor · lease 80yr+</div></div>
+                <div class="anchor-cell"><div class="k">Deciding together</div><div class="v">You and your husband</div></div>
+              </div>
+            </div>
+          </details>
+        </section>
 
-    <!-- Footer — operator first, FollowRoom subtle -->
+        <section class="block s-stand" aria-labelledby="next-heading">
+          <h2 id="next-heading" class="section-heading">Where we stand, and what's next</h2>
+          <p class="stand-line">
+            <strong>Right now:</strong> we've had our first conversation and the brief is clear.
+            The next move is mine — a shortlist for you and your husband to react to.
+          </p>
+          <ul class="next-list">
+            <li class="next-item">
+              <span class="next-num">1.</span>
+              <div class="next-body">
+                <div>I'll send a shortlist of three Marine Parade units for you to review with your husband.</div>
+                <div class="next-meta">By this weekend</div>
+              </div>
+            </li>
+            <li class="next-item">
+              <span class="next-num">2.</span>
+              <div class="next-body">
+                <div>You'll come back with the two units you'd most like to view in person.</div>
+                <div class="next-meta">Whenever you're both ready — no rush</div>
+              </div>
+            </li>
+            <li class="next-item">
+              <span class="next-num">3.</span>
+              <div class="next-body">
+                <div>We'll plan a viewing morning together — usually a Saturday works best.</div>
+                <div class="next-meta">After your shortlist</div>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Synthesized memory — neutral record register (no first-person "I", to stay distinct
+             from the operator's note above). Extracted figures hedged, not stated as hard fact. -->
+        <section class="block s-noted noted" aria-labelledby="memory-heading">
+          <h2 id="memory-heading" class="section-heading">What we noted</h2>
+          <p>
+            The search is for a 4-bedroom HDB upgrade close to your parents in Marine Parade,
+            with a budget ceiling of around $1.8M.
+          </p>
+          <p>
+            Ideal move-in is around Q3 this year, though there's an openness to a slower
+            decision if rates move further over the next few months.
+          </p>
+          <p>
+            The features that matter most: corner units, a higher floor, and a lease above
+            80 years. Walking distance to your parents came up first — clearly the priority.
+          </p>
+        </section>
+
+        <section class="block s-timeline" aria-labelledby="timeline-heading">
+          <details class="timeline">
+            <summary>
+              <span class="caret" aria-hidden="true">▸</span>
+              <span id="timeline-heading">Our history together</span>
+            </summary>
+            <ul class="timeline-list">
+              <li class="timeline-item">
+                <span class="timeline-date">19 May</span>
+                <span class="timeline-body">First conversation at the Marine Parade Central showflat. We talked through what you're looking for and the budget.</span>
+              </li>
+            </ul>
+            <p class="timeline-note">I'll add to this as we go — every conversation, viewing, and decision will live here.</p>
+          </details>
+        </section>
+
+        <section class="block s-reach" aria-labelledby="reach-heading">
+          <h2 id="reach-heading" class="section-heading">Anytime you need me</h2>
+          <div class="reach-card">
+            <p class="reach-quiet">
+              If something comes up between now and the shortlist — a question, a
+              property you saw, a change in timing — just message me directly.
+              You don't need to wait for our next meeting.
+            </p>
+            <a class="reach-action" href="https://wa.me/6591234567" rel="noopener" aria-label="Message Marcus on WhatsApp">WhatsApp Marcus →</a>
+          </div>
+        </section>
     <footer class="footer">
-      <div class="tended">I'll add more to this room as we go.</div>
+      <div class="tended">Marcus will add to this room as your search moves along.</div>
       <div class="attribution">FollowRoom</div>
     </footer>
 

@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Chens' room — Khaniff Lau</title>
+  <!-- Generic title — never leak the deal/unit/client into the tab, history, or link unfurl. -->
+  <title>Your property plans · FollowRoom</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -17,13 +18,19 @@
       --bg-muted: #F5F2EB;
       --text-primary: #1A1815;
       --text-secondary: #5C574E;
-      --text-muted: #9B9489;
+      --text-muted: #6E685D;        /* darkened to pass WCAG AA (~5:1) for small captions/meta */
       --border-subtle: #E8E3D9;
-      --accent-gold: #9B7B3B;
+      --accent-gold: #9B7B3B;        /* decorative use only (borders, marks) */
+      --accent-gold-text: #7E6224;   /* AA-passing gold for small text (eyebrows, numerals) */
       --accent-deep: #1F4F4A;
       --attention-warm: #9B5B3B;
       --serif: 'Newsreader', Georgia, serif;
       --sans: 'Inter', -apple-system, system-ui, sans-serif;
+
+      /* Fluid scales — adapt continuously, no breakpoint snaps for type/spacing */
+      --space-section: clamp(40px, 8vw, 56px);
+      --space-within: clamp(14px, 3vw, 20px);
+      --pad-x: clamp(20px, 5vw, 24px);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
@@ -31,167 +38,151 @@
       background: var(--bg-page);
       color: var(--text-primary);
       font-family: var(--sans);
-      font-size: 17px;
+      font-size: 17px;            /* prose readability floor */
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-    .room {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 32px 24px 96px;
-    }
-    .operator-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .operator-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--accent-deep);
-      color: #FBFAF6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 500;
-      flex-shrink: 0;
-    }
-    .operator-name {
-      font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 500;
-      line-height: 1.2;
-    }
-    .operator-tagline {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-top: 2px;
-    }
-    .room-title {
-      font-family: var(--serif);
-      font-size: 38px;
-      font-weight: 400;
-      letter-spacing: -0.015em;
-      margin: 56px 0 8px;
-      line-height: 1.1;
-    }
-    .room-subtitle {
-      color: var(--text-secondary);
-      font-size: 16px;
-      margin-bottom: 0;
-    }
-    section.block { margin-top: 56px; }
-    .section-heading {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 500;
-      letter-spacing: -0.005em;
-      margin: 0 0 20px;
-    }
-    .section-heading-eyebrow {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin: 0 0 6px;
+    a:focus-visible, summary:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent-deep); outline-offset: 2px; border-radius: 2px;
     }
 
+    /* Internal-use banner — so a stray screenshot is self-evidently not for distribution. */
+    .internal-banner {
+      background: #2B2620; color: #F3EEE3; font-family: var(--sans);
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      text-align: center; padding: 6px 12px;
+    }
+
+    /* ── Room shell ───────────────────────────────────────
+       Layout follows content: 03 has genuinely-secondary content (documents,
+       history, view-stats), so it earns a side rail at wide widths.
+       DOM order == reading order — NO display:contents / order tricks. On mobile
+       the columns simply stack (main then rail), so reading order is preserved. */
+    .room {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: clamp(24px, 5vw, 32px) var(--pad-x) clamp(80px, 12vw, 96px);
+    }
+    .content { display: flex; flex-direction: column; }
+
+    @media (min-width: 1000px) {
+      .room { max-width: 1180px; }
+      .content { flex-direction: row; gap: clamp(36px,4vw,64px); justify-content: center; align-items: flex-start; }
+      .col-main { flex: 1 1 0; min-width: 0; max-width: 680px; }
+      .col-rail { flex: 0 0 clamp(260px,26vw,320px); }
+      .col-main > .block:first-child, .col-rail > .block:first-child { margin-top: 0; }
+      .col-rail .section-heading { font-size: clamp(16px,1.6vw,18px); }
+    }
+
+    /* ── Co-brand header: team + agency (brands) over agent (person) ── */
+    .operator-header {
+      display: flex; flex-direction: column; gap: 16px;
+      padding-bottom: var(--space-within);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    /* brand row — team (the agent's banner) left, agency (the umbrella) right */
+    .brand-row { display: flex; align-items: center; justify-content: space-between; gap: 14px 18px; flex-wrap: wrap; }
+    .team { display: flex; align-items: center; gap: 9px; }
+    .team-mark {
+      width: 26px; height: 26px; border-radius: 6px; flex-shrink: 0;
+      background: var(--accent-deep); color: var(--bg-page);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-weight: 500; font-size: 14px; line-height: 1;
+    }
+    .team-name { font-weight: 600; font-size: clamp(13px, 2.4vw, 15px); letter-spacing: 0.01em; color: var(--text-primary); }
+    .agency { display: flex; align-items: center; gap: 8px; }
+    .agency-mark { display:flex; width:26px; height:26px; border-radius:6px; flex-shrink:0; background:var(--accent-deep); color:var(--bg-page); align-items:center; justify-content:center; font-family:var(--serif); font-weight:600; font-size:14px; line-height:1; }
+    .agency-name { font-weight: 600; font-size: clamp(13px, 2.4vw, 14px); letter-spacing: 0.01em; color: var(--text-primary); }
+    /* agent row — the human */
+    .agent-row { display: flex; align-items: center; gap: 14px; }
+    .operator-avatar {
+      width: clamp(48px, 13vw, 58px); height: clamp(48px, 13vw, 58px);
+      border-radius: 50%; flex-shrink: 0;
+      background: var(--accent-deep);
+      box-shadow: 0 0 0 1px var(--border-subtle), 0 2px 8px rgba(26,24,21,0.10);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--bg-page); font-family:var(--serif); font-weight:500; font-size:clamp(17px,4vw,20px);
+    }
+    .operator-id { min-width: 0; }
+    .operator-name { font-family: var(--serif); font-size: clamp(18px, 3.2vw, 20px); font-weight: 500; letter-spacing: -0.005em; line-height: 1.2; }
+    .operator-tagline { font-size: clamp(12px, 2.4vw, 13px); color: var(--text-secondary); margin-top: 2px; }
+
+    /* ── Room title — the DEAL, not the person ──────────── */
+    .room-head { margin-top: clamp(40px, 9vw, 48px); }
+    .room-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent-gold-text); margin-bottom: 10px; }
+    .room-title { font-family: var(--serif); font-size: clamp(28px, 7vw, 38px); font-weight: 400; letter-spacing: -0.015em; margin: 0 0 8px; line-height: 1.12; overflow-wrap: anywhere; }
+    .room-subtitle { color: var(--text-secondary); font-size: clamp(15px, 2.6vw, 16px); margin: 0; }
+
+    section.block { margin-top: var(--space-section); }
+    .section-heading { font-family: var(--serif); font-size: clamp(19px, 4vw, 22px); font-weight: 500; letter-spacing: -0.005em; margin: 0 0 var(--space-within); }
+
+    /* ── Operator note (first-person, the curated letter) ── */
     .operator-note {
-      background: var(--bg-muted);
-      border-left: 2px solid var(--accent-gold);
-      padding: 22px 24px;
-      border-radius: 0 4px 4px 0;
-      line-height: 1.7;
+      background: var(--bg-muted); border-left: 2px solid var(--accent-gold);
+      padding: clamp(18px, 4vw, 22px) clamp(18px, 4vw, 24px);
+      border-radius: 0 4px 4px 0; line-height: 1.7;
     }
     .operator-note p { margin: 0 0 14px; }
     .operator-note p:last-child { margin-bottom: 0; }
-    .operator-note .sign-off {
-      font-family: var(--serif);
-      font-style: italic;
-      color: var(--text-secondary);
-      margin-top: 18px;
-    }
+    .operator-note .sign-off { font-family: var(--serif); font-style: italic; color: var(--text-secondary); margin-top: 18px; }
 
-    /* Property interest cards — three side-by-side options */
-    .interest {
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border-subtle);
+    /* ── Anchor (transaction spine — collapsed; in the main column, under the note) ── */
+    .anchor { border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg-card); overflow: hidden; }
+    .anchor > summary {
+      list-style: none; cursor: pointer;
+      padding: 15px clamp(16px, 4vw, 20px);
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
     }
-    .interest:last-child { border-bottom: none; }
-    .interest-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 6px;
-      gap: 12px;
+    .anchor > summary::-webkit-details-marker { display: none; }
+    .anchor > summary::marker { content: ""; }
+    .anchor .caret { color: var(--text-muted); font-size: 12px; transition: transform 0.15s ease; flex-shrink: 0; }
+    .anchor[open] .caret { transform: rotate(90deg); }
+    .anchor .summary-text { font-size: clamp(14px, 2.6vw, 15px); color: var(--text-secondary); flex: 1; min-width: 0; }
+    .anchor .summary-text strong { color: var(--text-primary); font-weight: 500; }
+    .anchor .summary-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); flex-shrink: 0; }
+    .anchor-panel { padding: 4px clamp(16px, 4vw, 20px) clamp(16px, 4vw, 20px); border-top: 1px solid var(--border-subtle); margin-top: 2px; }
+    .anchor-eyebrow { font-size: 11px; letter-spacing: 0.05em; color: var(--text-muted); margin: 12px 0 14px; }
+    .anchor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); /* fluid: 1 col in rail, 2 in main */
+      gap: clamp(14px, 3vw, 16px) clamp(20px, 4vw, 28px);
     }
-    .interest-title {
-      font-family: var(--serif);
-      font-size: 19px;
-      font-weight: 500;
-      flex: 1;
-    }
-    .interest-status {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      flex-shrink: 0;
-      padding-top: 4px;
-    }
-    .interest-detail {
-      font-size: 15px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin: 0;
-    }
+    .anchor-cell .k { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+    .anchor-cell .v { font-size: clamp(14px, 2.6vw, 15px); color: var(--text-primary); margin-top: 3px; line-height: 1.4; }
 
-    /* Document library */
+    /* ── Where we stand & next ─────────────────────────── */
+    .stand-line { color: var(--text-secondary); margin: 0 0 var(--space-within); }
+    .stand-line strong { color: var(--text-primary); font-weight: 500; }
+    .next-list { list-style: none; padding: 0; margin: 0; }
+    .next-item { display: flex; gap: 16px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+    .next-item:last-child { border-bottom: none; }
+    .next-num { font-family: var(--serif); font-size: 17px; color: var(--accent-gold-text); width: 20px; flex-shrink: 0; padding-top: 1px; }
+    .next-body { flex: 1; }
+    .next-meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── What we noted (synthesized memory — neutral, record register, NOT the operator's "I") ── */
+    .noted p { margin: 0 0 14px; }
+    .noted p:last-child { margin-bottom: 0; }
+
+    /* ── Document library — an organized LIST (not a card grid) ── */
     .doc-list { list-style: none; padding: 0; margin: 0; }
     .doc-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border-subtle);
-      text-decoration: none;
-      color: inherit;
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 0; border-bottom: 1px solid var(--border-subtle);
+      text-decoration: none; color: inherit;
     }
     .doc-item:last-child { border-bottom: none; }
-    .doc-icon {
-      color: var(--text-muted);
-      flex-shrink: 0;
-      padding-top: 3px;
-    }
+    .doc-icon { color: var(--text-muted); flex-shrink: 0; padding-top: 3px; }
     .doc-body { flex: 1; min-width: 0; }
-    .doc-title {
-      font-weight: 500;
-      color: var(--text-primary);
-      line-height: 1.4;
-    }
-    .doc-meta {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-    .doc-action {
-      font-size: 13px;
-      color: var(--accent-deep);
-      font-weight: 500;
-      flex-shrink: 0;
-      padding-top: 3px;
-    }
+    .doc-title { font-weight: 500; color: var(--text-primary); line-height: 1.4; }
+    .doc-meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .doc-action { font-size: 13px; color: var(--accent-deep); font-weight: 500; flex-shrink: 0; padding-top: 3px; }
 
-    /* WhatsApp send-helper — appears once, on the most relevant item */
+    /* WhatsApp send-helper — appears ONCE, on the most relevant item */
     .doc-item.with-send {
       background: var(--bg-muted);
-      padding: 16px 18px;
+      padding: clamp(14px, 3.5vw, 16px) clamp(14px, 3.5vw, 18px);
       border: 1px solid var(--border-subtle);
       border-left: 2px solid var(--accent-gold);
       border-radius: 0 4px 4px 0;
@@ -199,363 +190,353 @@
     }
     .doc-item.with-send .doc-meta { color: var(--text-secondary); }
     .doc-send {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      color: var(--accent-deep);
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px solid var(--accent-deep);
-      padding-bottom: 1px;
-      margin-top: 6px;
+      display: inline-flex; align-items: center; min-height: 44px; gap: 6px;
+      font-size: 13px; color: var(--accent-deep); text-decoration: none; font-weight: 500;
+      border-bottom: 1px solid var(--accent-deep); margin-top: 2px;
     }
 
-    /* Pending actions — same component as scenario 2, calm */
-    .action-card {
-      display: flex;
-      gap: 14px;
-      padding: 18px 20px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-left: 2px solid var(--accent-gold);
-      border-radius: 0 4px 4px 0;
-      margin-bottom: 12px;
+    /* ── Timeline (on demand) ──────────────────────────── */
+    .timeline > summary {
+      list-style: none; cursor: pointer;
+      font-family: var(--serif); font-size: clamp(15px, 3vw, 16px); font-weight: 500;
+      color: var(--text-secondary); display: flex; align-items: center; gap: 10px;
     }
-    .action-icon { color: var(--accent-gold); flex-shrink: 0; padding-top: 2px; }
-    .action-body { flex: 1; min-width: 0; }
-    .action-title { font-weight: 500; font-size: 16px; color: var(--text-primary); line-height: 1.4; }
-    .action-meta { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-    .action-meta strong { color: var(--text-secondary); font-weight: 400; }
-    .action-link {
-      color: var(--accent-deep); font-size: 14px; font-weight: 500;
-      text-decoration: none; border-bottom: 1px solid var(--accent-deep);
-      padding-bottom: 1px; align-self: flex-start; flex-shrink: 0;
-    }
+    .timeline > summary::-webkit-details-marker { display: none; }
+    .timeline > summary::marker { content: ""; }
+    .timeline .caret { color: var(--text-muted); font-size: 12px; transition: transform 0.15s ease; }
+    .timeline[open] .caret { transform: rotate(90deg); }
+    .timeline-list { list-style: none; padding: 18px 0 0; margin: 0; }
+    .timeline-item { display: flex; gap: 16px; padding: 0 0 16px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-date { font-size: 13px; color: var(--text-muted); width: clamp(72px, 18vw, 92px); flex-shrink: 0; padding-top: 1px; }
+    .timeline-body { flex: 1; font-size: clamp(14px, 2.6vw, 15px); }
+    .timeline-body strong { color: var(--text-primary); font-weight: 500; }
+    .timeline-note { font-size: 13px; color: var(--text-muted); margin-top: 14px; font-style: italic; }
 
-    /* Receipt thread */
-    .receipt {
-      color: var(--text-primary);
-      border-bottom: 1px dotted var(--text-muted);
-      cursor: help;
-      text-decoration: none;
-    }
-    .receipt:hover { border-bottom-color: var(--accent-gold); }
-    @media (hover: none) {
-      .receipt::after { content: " · " attr(data-source); color: var(--text-muted); font-size: 13px; }
-      .receipt { border-bottom: none; }
-    }
-
-    /* Memory section — synthesized prose, NOT bullets */
-    .memory p { margin: 0 0 18px; }
-    .memory p:last-child { margin-bottom: 0; }
-
-    /* History timeline — minimal */
-    .history-list { list-style: none; padding: 0; margin: 0; }
-    .history-item {
-      display: flex;
-      gap: 20px;
-      padding: 12px 0;
-    }
-    .history-date {
-      font-family: var(--serif);
-      font-size: 15px;
-      color: var(--text-muted);
-      width: 90px;
-      flex-shrink: 0;
-    }
-    .history-body { flex: 1; color: var(--text-secondary); font-size: 15px; }
-    .history-body strong { color: var(--text-primary); font-weight: 500; }
-
-    /* View tracking aggregate — subtle, informational */
+    /* ── View-tracking aggregate — subtle, non-surveilling ── */
     .tracking {
-      margin-top: 80px;
-      padding: 20px 0;
+      padding: clamp(14px, 3vw, 16px) 0;
       border-top: 1px solid var(--border-subtle);
       border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-      font-size: 13px;
-      color: var(--text-muted);
+      font-size: 13px; color: var(--text-muted);
     }
-    .tracking-stats { color: var(--text-secondary); }
+    .tracking-stats { color: var(--text-secondary); line-height: 1.5; }
     .tracking-link {
-      color: var(--text-muted);
-      text-decoration: none;
+      color: var(--text-muted); text-decoration: none;
       border-bottom: 1px dotted var(--text-muted);
+      font-size: 12px; margin-top: 6px; display: inline-block;
     }
 
-    .footer {
-      margin-top: 40px;
-      font-size: 13px;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
+    /* ── Reach card ────────────────────────────────────── */
+    .reach-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 6px; padding: clamp(18px, 4vw, 24px); }
+    .reach-quiet { font-style: italic; color: var(--text-secondary); font-size: 15px; margin: 0 0 16px; line-height: 1.6; }
+    .reach-action { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent-deep); text-decoration: none; font-weight: 500; font-size: 15px; border-bottom: 1px solid var(--accent-deep); }
+
+    /* ── Footer ────────────────────────────────────────── */
+    .footer { margin-top: clamp(56px, 12vw, 80px); padding-top: var(--space-within); border-top: 1px solid var(--border-subtle); font-size: 13px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
     .footer .tended { color: var(--text-secondary); }
-    .footer .attribution {
-      font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
-    }
+    .footer .attribution { font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
 
-    @media (max-width: 480px) {
-      .room { padding: 24px 20px 80px; }
-      .room-title { font-size: 32px; margin-top: 48px; }
-      section.block { margin-top: 48px; }
-      .interest-header { flex-direction: column; gap: 4px; }
-      .interest-status { padding-top: 0; }
-      .action-card { flex-wrap: wrap; }
-      .action-link { width: 100%; padding-top: 8px; }
-      .tracking { flex-direction: column; align-items: flex-start; gap: 8px; }
-      .history-item { gap: 12px; }
-      .history-date { width: 70px; font-size: 14px; }
+    @media print {
+      .internal-banner { display: none; }
+      /* reveal collapsed details so the printout / PDF isn't missing the anchor + timeline */
+      details > *:not(summary) { display: revert !important; }
+      .reach-action, .doc-send { min-height: 0; }
     }
   </style>
 </head>
 <body>
+  <div class="internal-banner">Design mockup · sample data</div>
   <main class="room">
 
+    <!-- Co-brand. SAMPLE DATA: fictional agency (Meridian Realty) + generated team (Eastview) + generated
+         agent (Marcus Lim, initials avatar). Fully self-contained — no external logo/photo hotlinks. -->
     <header class="operator-header">
-      <div class="operator-avatar" aria-hidden="true">KL</div>
-      <div>
-        <div class="operator-name">Khaniff Lau</div>
-        <div class="operator-tagline">Your advisor since 2024</div>
+      <div class="brand-row">
+        <div class="team">
+          <span class="team-mark" aria-hidden="true">E</span>
+          <span class="team-name">Eastview Property Group</span>
+        </div>
+        <div class="agency" aria-label="Meridian Realty">
+          <span class="agency-mark" aria-hidden="true">M</span>
+          <span class="agency-name">Meridian Realty</span>
+        </div>
+      </div>
+      <div class="agent-row">
+        <div class="operator-avatar" aria-hidden="true">ML</div>
+        <div class="operator-id">
+          <div class="operator-name">Marcus Lim</div>
+          <div class="operator-tagline">Senior Associate Director · Marine Parade &amp; East Coast</div>
+        </div>
       </div>
     </header>
 
-    <h1 class="room-title">The Chens' room</h1>
-    <p class="room-subtitle">David, Mei Lin · all three options under consideration · updated 18 May.</p>
-
-    <!-- Operator letter — sets relationship continuity, longer than other scenarios -->
-    <section class="block" aria-labelledby="note-heading">
-      <h2 id="note-heading" class="section-heading">Where we are this quarter</h2>
-      <div class="operator-note">
-        <p>
-          David, Mei Lin — happy to put the three options side by side in one place
-          for you. Reading back through our chats over the last two months, you've
-          been weighing whether to consolidate (a family home in Bukit Timah, kids
-          near Hwa Chong) or diversify (the Sentosa waterfront unit, with the Marina
-          investment as the income hedge).
-        </p>
-        <p>
-          There's no wrong answer here, and I'll keep both paths open until you're
-          ready to commit. What I can do this month is make each option concrete enough
-          that the decision starts to feel obvious. The shortlists below are the
-          first move toward that.
-        </p>
-        <p>
-          Mei Lin — I noted your point about the school commute being the deciding
-          factor for Bukit Timah. I've added two cluster home options that put you
-          within 1.5km of Hwa Chong primary, which makes the catchment work for both
-          kids. We can discuss when we next sit down.
-        </p>
-        <p class="sign-off">— Khaniff</p>
-      </div>
-    </section>
-
-    <!-- Three property interests -->
-    <section class="block" aria-labelledby="interests-heading">
-      <h2 id="interests-heading" class="section-heading">Three options on the table</h2>
-
-      <div class="interest">
-        <div class="interest-header">
-          <div class="interest-title">Bukit Timah cluster home</div>
-          <div class="interest-status">2 shortlisted</div>
-        </div>
-        <p class="interest-detail">
-          For the family. Two options in the Hwa Chong primary catchment, both with
-          enclosed gardens. Estimated $3.8M-4.2M range based on
-          <a class="receipt" data-source="recent comparables, Q1 2026">recent comparable transactions</a>.
-          Viewings can be arranged for the weekend after next.
-        </p>
-      </div>
-
-      <div class="interest">
-        <div class="interest-header">
-          <div class="interest-title">Sentosa Cove waterfront</div>
-          <div class="interest-status">1 unit identified</div>
-        </div>
-        <p class="interest-detail">
-          For the dual purpose — family weekends plus investment exposure. One unit
-          at Marina Collection currently meets your criteria (direct waterfront,
-          private berth). $5.4M asking. Owner is open to negotiating to mid-fives.
-        </p>
-      </div>
-
-      <div class="interest">
-        <div class="interest-header">
-          <div class="interest-title">Marina Bay investment</div>
-          <div class="interest-status">Yield-tracking</div>
-        </div>
-        <p class="interest-detail">
-          For income. Marina One studio or 1BR, targeting 3.5%+ gross yield. I've
-          flagged two units that just dropped onto market this week — I'll send the
-          rental projections separately once I've run them through MyAnchor.
-        </p>
-      </div>
-    </section>
-
-    <!-- Document library -->
-    <section class="block" aria-labelledby="docs-heading">
-      <h2 id="docs-heading" class="section-heading">Documents and references</h2>
-      <ul class="doc-list">
-
-        <!-- This one has the WhatsApp send helper — appears ONCE, on the most actionable item -->
-        <li>
-          <div class="doc-item with-send">
-            <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
-            </svg>
-            <div class="doc-body">
-              <div class="doc-title">Bukit Timah cluster homes — first shortlist</div>
-              <div class="doc-meta">Added today · 2 options, both within Hwa Chong catchment</div>
-              <a class="doc-send" href="https://wa.me/6591234567?text=I've%20looked%20through%20the%20Bukit%20Timah%20shortlist">
-                Share thoughts via WhatsApp →
-              </a>
-            </div>
-          </div>
-        </li>
-
-        <a class="doc-item" href="#">
-          <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 9h6v6H9z" />
-          </svg>
-          <div class="doc-body">
-            <div class="doc-title">Marina One floor plans · stack 04 + stack 12</div>
-            <div class="doc-meta">Added 14 May</div>
-          </div>
-          <div class="doc-action">Open</div>
-        </a>
-
-        <a class="doc-item" href="#">
-          <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M3 3h18v18H3z" /><path d="M3 9h18M9 21V9" />
-          </svg>
-          <div class="doc-body">
-            <div class="doc-title">Latest comparable transactions · Sentosa Cove waterfront</div>
-            <div class="doc-meta">Updated 18 May · last 6 months</div>
-          </div>
-          <div class="doc-action">Open</div>
-        </a>
-
-        <a class="doc-item" href="#">
-          <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
-          </svg>
-          <div class="doc-body">
-            <div class="doc-title">MyAnchor rental yield calculator · Marina Bay scenarios</div>
-            <div class="doc-meta">Saved link · projections to be updated this week</div>
-          </div>
-          <div class="doc-action">Open</div>
-        </a>
-
-        <a class="doc-item" href="#">
-          <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" />
-          </svg>
-          <div class="doc-body">
-            <div class="doc-title">Signed OTP · Tampines investment unit (2024 purchase)</div>
-            <div class="doc-meta">Reference · 18 Aug 2024 · for record</div>
-          </div>
-          <div class="doc-action">Open</div>
-        </a>
-      </ul>
-    </section>
-
-    <!-- Memory section — synthesized facts as conversational prose -->
-    <section class="block memory" aria-labelledby="memory-heading">
-      <h2 id="memory-heading" class="section-heading">What your record shows</h2>
-      <p>
-        Across the last two months we've narrowed from six candidate strategies to
-        the three options above:
-        <a class="receipt" data-source="discussion 12 Apr, refined 3 May">family home consolidation, dual-purpose waterfront, or pure income investment</a>.
-        Bukit Timah leads on emotional terms; the Marina investment leads on
-        financial terms; Sentosa is the bridge between them.
-      </p>
-      <p>
-        Budget headroom is comfortable: your liquidity sits at
-        <a class="receipt" data-source="from your conversation 28 Apr">around $4.5M after the existing mortgage</a>,
-        which puts any single option within reach without leverage. A combination
-        (Bukit Timah plus Marina investment) is also viable; we'd discussed
-        that as a Plan B if Sentosa doesn't move.
-      </p>
-      <p>
-        We've been weighing whether to consolidate or diversify — there's no wrong
-        answer here, and I'll keep both paths open until you're ready. The school
-        catchment for the kids is the constraint that simplifies it most: Bukit
-        Timah's primary-school proximity is the only option that resolves it
-        cleanly.
-      </p>
-    </section>
-
-    <!-- Pending actions across categories -->
-    <section class="block" aria-labelledby="actions-heading">
-      <h2 id="actions-heading" class="section-heading">For your decisions</h2>
-
-      <div class="action-card">
-        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="4" y="3" width="16" height="18" rx="1.5" /><path d="M8 8h8M8 12h8M8 16h5" />
-        </svg>
-        <div class="action-body">
-          <div class="action-title">Review the Bukit Timah shortlist</div>
-          <div class="action-meta">Whenever you have a quiet hour · two options, ~10 min read</div>
-        </div>
-        <a class="action-link" href="#">Open</a>
-      </div>
-
-      <div class="action-card">
-        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="9" /><path d="M8 12l3 3 5-6" />
-        </svg>
-        <div class="action-body">
-          <div class="action-title">Decide if you'd like me to make a soft offer on Sentosa</div>
-          <div class="action-meta"><strong>Before end of May</strong> · owner has indicated they may relist higher in June</div>
-        </div>
-        <a class="action-link" href="#">Open</a>
-      </div>
-
-      <div class="action-card">
-        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M3 17l6-6 4 4 8-8" /><path d="M14 7h7v7" />
-        </svg>
-        <div class="action-body">
-          <div class="action-title">Sit with the rental projections for the Marina units</div>
-          <div class="action-meta">I'll send updated numbers later this week</div>
-        </div>
-        <a class="action-link" href="#">Open</a>
-      </div>
-    </section>
-
-    <!-- History — quiet relationship timeline -->
-    <section class="block" aria-labelledby="history-heading">
-      <p class="section-heading-eyebrow">Working together since</p>
-      <h2 id="history-heading" class="section-heading">Aug 2024</h2>
-      <ul class="history-list">
-        <li class="history-item">
-          <div class="history-date">May 2026</div>
-          <div class="history-body">Three concurrent options shortlisted; <strong>Bukit Timah cluster homes</strong> added as decision constraint resolved around schools.</div>
-        </li>
-        <li class="history-item">
-          <div class="history-date">Mar 2026</div>
-          <div class="history-body">Began exploring <strong>investment + family home</strong> dual strategy after Tampines unit hit projected yield.</div>
-        </li>
-        <li class="history-item">
-          <div class="history-date">Aug 2024</div>
-          <div class="history-body"><strong>Tampines investment unit</strong> · purchased, currently at 3.7% gross yield.</div>
-        </li>
-      </ul>
-    </section>
-
-    <!-- Subtle view tracking aggregate -->
-    <div class="tracking">
-      <div class="tracking-stats">You and Mei Lin have opened this room 4 times in the last week.</div>
-      <a class="tracking-link" href="#">What's tracked</a>
+    <!-- Room title = the overall engagement, never the client's name.
+         David runs three concurrent fronts — the title names the whole strategy. -->
+    <div class="room-head">
+      <div class="room-eyebrow">Your property strategy</div>
+      <h1 class="room-title">Bukit Timah home + investment plays</h1>
+      <p class="room-subtitle">For David &amp; Mei Lin Chen — three fronts in motion, kept in one place, with where each stands.</p>
     </div>
 
+    <!-- Two-zone room. DOM order = reading order: col-main (the narrative + its
+         anchor) precedes col-rail (reference + contact). On mobile they stack
+         main-then-rail; at ≥1000px they sit side by side. No order/contents tricks. -->
+    <div class="content">
+
+      <!-- MAIN COLUMN — the primary narrative; the anchor stays here, under the note -->
+      <div class="col-main">
+
+        <section class="block s-note" aria-labelledby="note-heading">
+          <h2 id="note-heading" class="section-heading">Where we are this quarter</h2>
+          <div class="operator-note">
+            <p>
+              David, Mei Lin — it's been a good two months. I've pulled the three fronts
+              we've been working into one place so you can see them side by side, rather
+              than scattered across our chats. Reading back through everything, the
+              question you keep circling is whether to consolidate — a family home in
+              Bukit Timah, the kids near Hwa Chong — or to diversify, with the Sentosa
+              waterfront unit and the Marina investment running as an income hedge.
+            </p>
+            <p>
+              There's no wrong answer, and I'll keep both paths open until you're ready
+              to commit. What I can do this quarter is make each option concrete enough
+              that the decision starts to feel obvious rather than agonising. The
+              shortlists and references below are the first move toward that.
+            </p>
+            <p>
+              Mei Lin — I noted your point that the school commute is the deciding factor
+              for Bukit Timah. I've added two cluster-home options that put you within
+              1.5km of Hwa Chong primary, so the catchment works cleanly for both kids.
+              That single constraint does a lot to simplify the whole picture, and we can
+              talk it through when we next sit down.
+            </p>
+            <p>
+              Nothing here is urgent. Read it at your own pace over a quiet evening, and
+              message me whenever a question surfaces — you don't need to wait for our
+              next meeting.
+            </p>
+            <p class="sign-off">— Marcus</p>
+          </div>
+        </section>
+
+        <!-- Anchor — transaction spine, in the main column directly under the note (so reading order
+             = visual order on every device). For a multi-front buyer/investor: the active fronts,
+             not one property. Display-as-captured. Financial-position intel (liquidity, hard yields)
+             is operator-only and intentionally NOT surfaced here — soft, non-numeric phrasing only. -->
+        <section class="block s-anchor" aria-label="Active fronts">
+          <details class="anchor">
+            <summary>
+              <span class="caret" aria-hidden="true">▸</span>
+              <span class="summary-text"><strong>Three fronts</strong> · Bukit Timah · Sentosa · Marina</span>
+              <span class="summary-label">Active fronts</span>
+            </summary>
+            <div class="anchor-panel">
+              <div class="anchor-eyebrow">Active fronts · what you're pursuing, as I understand it today</div>
+              <div class="anchor-grid">
+                <div class="anchor-cell"><div class="k">Bukit Timah · family home</div><div class="v">Cluster home, Hwa Chong catchment · 2 shortlisted</div></div>
+                <div class="anchor-cell"><div class="k">Sentosa Cove · dual purpose</div><div class="v">Marina Collection waterfront, private berth · 1 unit identified</div></div>
+                <div class="anchor-cell"><div class="k">Marina Bay · income</div><div class="v">Studio / 1BR for rental · projections in progress</div></div>
+                <div class="anchor-cell"><div class="k">Budget</div><div class="v">Comfortable headroom — we'll size each option together</div></div>
+                <div class="anchor-cell"><div class="k">Deciding together</div><div class="v">You and Mei Lin</div></div>
+              </div>
+            </div>
+          </details>
+        </section>
+
+        <section class="block s-stand" aria-labelledby="next-heading">
+          <h2 id="next-heading" class="section-heading">Where we stand, and what's next</h2>
+          <p class="stand-line">
+            <strong>Right now:</strong> all three fronts are live and the briefs are clear.
+            The next moves are a mix of mine and yours — nothing time-critical except the
+            Sentosa window, which I've flagged so it doesn't slip past quietly.
+          </p>
+          <ul class="next-list">
+            <li class="next-item">
+              <span class="next-num">1.</span>
+              <div class="next-body">
+                <div>Review the Bukit Timah shortlist together — two options, both inside the Hwa Chong catchment.</div>
+                <div class="next-meta">Whenever you have a quiet hour · ~10 min read</div>
+              </div>
+            </li>
+            <li class="next-item">
+              <span class="next-num">2.</span>
+              <div class="next-body">
+                <div>Decide whether you'd like me to make a soft offer on the Sentosa Cove unit.</div>
+                <div class="next-meta">Before end of May — the owner has indicated they may relist higher in June</div>
+              </div>
+            </li>
+            <li class="next-item">
+              <span class="next-num">3.</span>
+              <div class="next-body">
+                <div>Sit with the rental projections for the two Marina units once I send the updated numbers.</div>
+                <div class="next-meta">I'll have them to you later this week</div>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Synthesized memory — neutral record register (no first-person "I", to stay distinct
+             from the operator's note above). Extracted figures hedged, not stated as hard fact.
+             Financial-position intel is operator-only and kept out of this client surface. -->
+        <section class="block s-noted noted" aria-labelledby="memory-heading">
+          <h2 id="memory-heading" class="section-heading">What your record shows</h2>
+          <p>
+            Over the last two months the search has narrowed from six candidate strategies
+            down to the three fronts above — family-home consolidation, dual-purpose
+            waterfront, or pure income investment. Bukit Timah leads on emotional terms,
+            the Marina investment on financial terms, and Sentosa sits as the bridge
+            between the two.
+          </p>
+          <p>
+            The budget headroom looks comfortable across the options, so the decision
+            seems likely to come down to fit rather than affordability. A combination —
+            Bukit Timah plus the Marina investment — also appears viable, and was noted as
+            a possible Plan B if the Sentosa unit doesn't move.
+          </p>
+          <p>
+            The school catchment for the kids reads as the constraint that simplifies
+            everything else. Of the three, Bukit Timah's primary-school proximity is the
+            only one that resolves it cleanly, which is why it keeps returning to the
+            front of the conversation.
+          </p>
+          <p>
+            For the record, the 2024 Tampines investment unit appears to be performing
+            roughly in line with what was projected — part of what built the confidence to
+            look at a second income property this year.
+          </p>
+        </section>
+
+      </div><!-- /col-main -->
+
+      <!-- SIDE RAIL — genuinely-secondary content: documents, history, view-stats, contact -->
+      <div class="col-rail">
+
+        <section class="block s-docs" aria-labelledby="docs-heading">
+          <h2 id="docs-heading" class="section-heading">Documents and references</h2>
+          <ul class="doc-list">
+
+            <!-- The WhatsApp send-helper lives here ONCE, on the most actionable item -->
+            <li>
+              <div class="doc-item with-send">
+                <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+                </svg>
+                <div class="doc-body">
+                  <div class="doc-title">Bukit Timah cluster homes — first shortlist</div>
+                  <div class="doc-meta">Added today · 2 options, both within the Hwa Chong catchment</div>
+                  <a class="doc-send" href="https://wa.me/6591234567?text=I've%20looked%20through%20the%20Bukit%20Timah%20shortlist" rel="noopener">
+                    Share your thoughts via WhatsApp →
+                  </a>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <a class="doc-item" href="#">
+                <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 9h6v6H9z" />
+                </svg>
+                <div class="doc-body">
+                  <div class="doc-title">Marina One floor plans · stack 04 + stack 12</div>
+                  <div class="doc-meta">Added 14 May</div>
+                </div>
+                <div class="doc-action">Open</div>
+              </a>
+            </li>
+
+            <li>
+              <a class="doc-item" href="#">
+                <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M3 3h18v18H3z" /><path d="M3 9h18M9 21V9" />
+                </svg>
+                <div class="doc-body">
+                  <div class="doc-title">Comparable transactions · Sentosa Cove waterfront</div>
+                  <div class="doc-meta">Updated 18 May · last 6 months</div>
+                </div>
+                <div class="doc-action">Open</div>
+              </a>
+            </li>
+
+            <li>
+              <a class="doc-item" href="#">
+                <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
+                </svg>
+                <div class="doc-body">
+                  <div class="doc-title">Rental yield calculator · Marina Bay scenarios</div>
+                  <div class="doc-meta">Saved link · projections to be updated this week</div>
+                </div>
+                <div class="doc-action">Open</div>
+              </a>
+            </li>
+
+            <li>
+              <a class="doc-item" href="#">
+                <svg class="doc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" />
+                </svg>
+                <div class="doc-body">
+                  <div class="doc-title">Signed OTP · Tampines investment unit</div>
+                  <div class="doc-meta">Reference · 18 Aug 2024 · kept for record</div>
+                </div>
+                <div class="doc-action">Open</div>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section class="block s-timeline" aria-labelledby="timeline-heading">
+          <details class="timeline">
+            <summary>
+              <span class="caret" aria-hidden="true">▸</span>
+              <span id="timeline-heading">Our history together</span>
+            </summary>
+            <ul class="timeline-list">
+              <li class="timeline-item">
+                <span class="timeline-date">May 2026</span>
+                <span class="timeline-body">Three concurrent fronts shortlisted; <strong>Bukit Timah cluster homes</strong> added once the school constraint resolved the catchment question.</span>
+              </li>
+              <li class="timeline-item">
+                <span class="timeline-date">Mar 2026</span>
+                <span class="timeline-body">Began exploring an <strong>investment + family-home</strong> dual strategy after the Tampines unit reached its projected return.</span>
+              </li>
+              <li class="timeline-item">
+                <span class="timeline-date">Aug 2024</span>
+                <span class="timeline-body"><strong>Tampines investment unit</strong> purchased — now performing roughly as projected.</span>
+              </li>
+            </ul>
+            <p class="timeline-note">I'll keep adding to this as we go — every conversation, viewing, and decision lives here.</p>
+          </details>
+        </section>
+
+        <!-- View-tracking aggregate — calm, informational, no behavioural inference about the client.
+             A "What's tracked" disclosure is mandatory for any client-facing tracking. -->
+        <section class="block s-tracking" aria-label="Room activity">
+          <div class="tracking">
+            <div class="tracking-stats">3 viewings recorded this room last week.</div>
+            <a class="tracking-link" href="#">What's tracked</a>
+          </div>
+        </section>
+
+        <section class="block s-reach" aria-labelledby="reach-heading">
+          <h2 id="reach-heading" class="section-heading">Anytime you need me</h2>
+          <div class="reach-card">
+            <p class="reach-quiet">
+              If something comes up between updates — a question on any of the three
+              fronts, a unit you've seen, a shift in how you're both leaning — just
+              message me directly. You don't need to wait for our next meeting.
+            </p>
+            <a class="reach-action" href="https://wa.me/6591234567" rel="noopener" aria-label="Message Marcus on WhatsApp">WhatsApp Marcus →</a>
+          </div>
+        </section>
+
+      </div><!-- /col-rail -->
+
+    </div><!-- /content -->
+
     <footer class="footer">
-      <div class="tended">Tended by Khaniff Lau · next update next Sunday.</div>
+      <div class="tended">Tended by Marcus Lim · next update next Sunday.</div>
       <div class="attribution">FollowRoom</div>
     </footer>
 

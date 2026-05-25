@@ -26,6 +26,8 @@ For the intended experience: open on a phone, since clients open these from What
 3. **Calm restraint at high stakes** — no badges, no urgency theater
 4. **Operator voice ≠ extracted memory** — visible distinction between what the operator wrote and what the system synthesized
 
+**Foundational principle:** both surfaces are **fully adaptive to device size** — fluid type, spacing, and grids that scale continuously (≈320px → wide desktop), never fixed-with-breakpoints. See DESIGN_SPEC.md → "Foundational principle — fully adaptive to device size".
+
 ## How this becomes code
 
 DESIGN_SPEC.md §"Translating to Plan 6 React components" sketches the component decomposition. Each section in a mockup maps cleanly to a React component that renders `null` when its data is empty — the room layout is a composition of optional sections, not a fixed template.
