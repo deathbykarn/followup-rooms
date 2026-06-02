@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FollowRoom — Positioning &amp; Brand Voice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3EEE3;
+    --paper-warm: #F8F4EA;
+    --paper-deep: #EAE3D2;
+    --ink: #18150F;
+    --ink-soft: #322C22;
+    --ink-mid: #4E4636;
+    --muted: #7A6F58;
+    --rule: #CFC4AB;
+    --rule-soft: #DDD4BD;
+    --sage: #3B5345;
+    --sage-soft: #5A7060;
+    --clay: #9A6A45;
+    --gold: #B8923E;
+  }
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink-soft);
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.12rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content:""; position: fixed; inset:-10%; pointer-events:none; z-index:1;
+    background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.06 0 0 0 0 0.03 0 0 0 0.15 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity:.5; mix-blend-mode:multiply;
+  }
+  main { position: relative; z-index: 2; }
+  .display { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 460; line-height:.95; letter-spacing:-.025em; color:var(--ink); }
+  .eyebrow { font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:var(--sage); }
+  .mono { font-family:'JetBrains Mono',monospace; }
+  p { max-width: 40em; }
+  em { font-style: italic; }
+  strong { font-weight: 600; color: var(--ink); }
+
+  .wrap { max-width: 1080px; margin:0 auto; padding:0 clamp(1.5rem,5vw,4.5rem); }
+  section { padding: clamp(4rem,9vh,7rem) 0; border-bottom:1px solid var(--rule-soft); }
+  section:last-of-type { border-bottom:none; }
+
+  .section-head { display:grid; grid-template-columns:auto 1fr; gap:1.4rem; align-items:baseline; margin-bottom:3rem; padding-bottom:1rem; border-bottom:1px solid var(--rule); }
+  .section-num { font-family:'JetBrains Mono',monospace; font-size:.8rem; letter-spacing:.1em; color:var(--clay); font-weight:600; }
+  .section-title { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 40,'opsz' 60,'wght' 450; font-size:clamp(1.4rem,2.4vw,1.85rem); color:var(--ink); letter-spacing:-.01em; line-height:1.1; }
+  .section-tag { margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+
+  /* COVER */
+  .cover { min-height:92vh; display:flex; flex-direction:column; justify-content:space-between; padding:clamp(2.5rem,5vh,4rem) 0; border-bottom:2px solid var(--ink); }
+  .cover-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; }
+  .brand-mark { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 30,'opsz' 48,'wght' 500; font-size:1.05rem; letter-spacing:.03em; color:var(--ink); }
+  .brand-mark .dot { color:var(--clay); }
+  .stamp { border:1.5px solid var(--sage); color:var(--sage); padding:.4rem .9rem; font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; border-radius:2px; }
+  .cover-center { flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(2rem,6vh,4rem) 0; }
+  .cover-eyebrow { margin-bottom:1.6rem; }
+  .cover-title { font-size:clamp(3rem,9vw,7rem); margin-bottom:1.5rem; color:var(--ink); }
+  .cover-sub { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 100,'opsz' 80,'wght' 320; font-style:italic; font-size:clamp(1.3rem,2.3vw,1.85rem); line-height:1.3; max-width:24em; color:var(--ink-soft); }
+  .cover-bottom { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:2rem; padding-top:1.8rem; border-top:1px solid var(--rule); }
+  .cover-bottom .label { font-family:'JetBrains Mono',monospace; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:.45rem; }
+  .cover-bottom .value { font-family:'Fraunces',Georgia,serif; font-variation-settings:'opsz' 36,'wght' 420; font-size:1rem; color:var(--ink); line-height:1.3; }
+
+  /* PROMISE band */
+  .promise { background:var(--sage); color:var(--paper-warm); padding:clamp(5rem,13vh,9rem) 0; position:relative; overflow:hidden; }
+  .promise::before { content:""; position:absolute; inset:0; background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.92 0 0 0 0 0.85 0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); mix-blend-mode:screen; }
+  .promise .wrap { position:relative; z-index:2; }
+  .promise .eyebrow { color:var(--gold); margin-bottom:1.5rem; }
+  .promise-statement { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 360; font-style:italic; font-size:clamp(2.2rem,5vw,4.2rem); line-height:1.08; color:var(--paper-warm); max-width:18em; letter-spacing:-.015em; margin-bottom:1.5rem; }
+  .promise-note { font-size:1.05rem; color:rgba(248,244,234,.78); max-width:34em; line-height:1.55; }
+
+  .lead { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 100,'opsz' 60,'wght' 350; font-size:clamp(1.35rem,2.1vw,1.65rem); line-height:1.42; color:var(--ink); max-width:30em; margin-bottom:2rem; }
+  .lead em { color:var(--clay); font-style:italic; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:3.5rem; }
+  .two-col p { max-width:none; }
+  .two-col p + p { margin-top:1rem; }
+
+  /* HERO LINE CANDIDATES */
+  .hero-list { display:flex; flex-direction:column; gap:0; border-top:1.5px solid var(--ink); margin-top:1rem; }
+  .hero-cand { display:grid; grid-template-columns:auto 1fr auto; gap:2rem; align-items:baseline; padding:1.6rem 0; border-bottom:1px solid var(--rule); }
+  .hero-cand.pick { background:linear-gradient(90deg,transparent,var(--paper-warm) 25%,var(--paper-warm) 75%,transparent); margin:0 -1.5rem; padding:1.8rem 1.5rem; }
+  .hero-rank { font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--clay); font-weight:600; padding-top:.5rem; }
+  .hero-line { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 60,'opsz' 80,'wght' 430; font-size:clamp(1.4rem,2.6vw,2rem); color:var(--ink); line-height:1.12; letter-spacing:-.015em; }
+  .hero-line .note { display:block; font-family:'Newsreader',serif; font-variation-settings:normal; font-style:italic; font-size:.92rem; color:var(--muted); margin-top:.4rem; line-height:1.4; letter-spacing:0; }
+  .hero-badge { font-family:'JetBrains Mono',monospace; font-size:.58rem; letter-spacing:.16em; text-transform:uppercase; color:var(--sage); border:1px solid var(--sage); padding:.25rem .55rem; border-radius:2px; white-space:nowrap; align-self:start; margin-top:.5rem; }
+
+  .reco { margin-top:2.5rem; padding:1.75rem 2rem; background:var(--paper-warm); border-left:3px solid var(--clay); }
+  .reco h4 { font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--clay); margin-bottom:.8rem; }
+  .reco .pick-hero { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 80,'opsz' 100,'wght' 440; font-size:clamp(1.6rem,3vw,2.3rem); color:var(--ink); line-height:1.05; margin-bottom:.6rem; letter-spacing:-.02em; }
+  .reco .pick-sub { font-family:'Fraunces',serif; font-variation-settings:'SOFT' 100,'opsz' 48,'wght' 330; font-style:italic; font-size:1.15rem; color:var(--ink-soft); line-height:1.4; max-width:34em; }
+
+  /* VOICE PRINCIPLES */
+  .principles { display:grid; grid-template-columns:repeat(2,1fr); gap:0; border-top:1px solid var(--rule); }
+  .principle { padding:1.8rem 2rem 1.8rem 0; border-bottom:1px solid var(--rule); border-right:1px solid var(--rule); }
+  .principle:nth-child(2n) { border-right:none; padding-right:0; padding-left:2rem; }
+  .principle .pn { font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.18em; color:var(--clay); margin-bottom:.7rem; }
+  .principle h4 { font-family:'Fraunces',serif; font-variation-settings:'opsz' 48,'wght' 450; font-size:1.2rem; color:var(--ink); margin-bottom:.5rem; line-height:1.2; }
+  .principle p { font-size:.97rem; line-height:1.55; color:var(--ink-mid); max-width:none; }
+
+  /* PILLARS */
+  .pillars { display:grid; grid-template-columns:repeat(2,1fr); gap:1.25rem; margin-top:1rem; }
+  .pillar { background:var(--paper-warm); border:1px solid var(--rule); padding:1.75rem 1.75rem 2rem; }
+  .pillar .pi { font-family:'Fraunces',serif; font-style:italic; font-variation-settings:'opsz' 60,'wght' 400; font-size:2rem; color:var(--clay); line-height:1; margin-bottom:.9rem; }
+  .pillar h4 { font-family:'Fraunces',serif; font-variation-settings:'opsz' 48,'wght' 480; font-size:1.25rem; color:var(--ink); margin-bottom:.6rem; line-height:1.15; }
+  .pillar p { font-size:.95rem; line-height:1.55; color:var(--ink-mid); max-width:none; }
+
+  /* DO / DON'T */
+  .dodont { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--rule); margin-top:1rem; }
+  .dd-col { padding:2rem; }
+  .dd-col.do { border-right:1px solid var(--rule); }
+  .dd-col h4 { font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; margin-bottom:1.2rem; }
+  .dd-col.do h4 { color:var(--sage); }
+  .dd-col.dont h4 { color:var(--clay); }
+  .chip-row { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.5rem; }
+  .chip { font-family:'JetBrains Mono',monospace; font-size:.74rem; padding:.32rem .7rem; border-radius:100px; letter-spacing:.02em; }
+  .do .chip { background:rgba(59,83,69,.1); color:var(--sage); border:1px solid rgba(59,83,69,.3); }
+  .dont .chip { background:rgba(154,106,69,.1); color:var(--clay); border:1px solid rgba(154,106,69,.3); text-decoration:line-through; text-decoration-thickness:1px; }
+  .dd-col p { font-size:.92rem; line-height:1.5; color:var(--ink-mid); max-width:none; }
+
+  /* LANDING SECTIONS */
+  .lp { display:flex; flex-direction:column; gap:0; border-top:1.5px solid var(--ink); margin-top:1rem; }
+  .lp-row { display:grid; grid-template-columns:0.55fr 1.45fr; gap:2.5rem; padding:2rem 0; border-bottom:1px solid var(--rule); }
+  .lp-where { font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--clay); padding-top:.3rem; }
+  .lp-where span { display:block; color:var(--muted); margin-top:.4rem; font-size:.78rem; letter-spacing:.08em; text-transform:none; font-style:italic; line-height:1.4; }
+  .lp-copy .lp-h { font-family:'Fraunces',serif; font-variation-settings:'SOFT' 50,'opsz' 60,'wght' 450; font-size:1.5rem; color:var(--ink); line-height:1.15; margin-bottom:.6rem; letter-spacing:-.01em; }
+  .lp-copy .lp-b { font-size:1.02rem; line-height:1.55; color:var(--ink-mid); max-width:38em; }
+  .lp-copy .lp-b strong { color:var(--ink); }
+  .lp-copy .micro { font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--muted); margin-top:.7rem; letter-spacing:.04em; }
+
+  /* TAGLINES */
+  .taglines { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:0; border-top:1px solid var(--rule); margin-top:1rem; }
+  .tag { padding:1.5rem 1.5rem 1.5rem 0; border-bottom:1px solid var(--rule); border-right:1px solid var(--rule); }
+  .tag:nth-child(3n) { border-right:none; }
+  .tag .tag-use { font-family:'JetBrains Mono',monospace; font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; }
+  .tag .tag-text { font-family:'Fraunces',serif; font-variation-settings:'opsz' 48,'wght' 430; font-size:1.15rem; color:var(--ink); line-height:1.2; }
+
+  footer { padding:3rem 0 5rem; border-top:1px solid var(--rule); font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.08em; color:var(--muted); line-height:1.7; }
+  footer .foot-row { display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; padding-bottom:1.4rem; border-bottom:1px solid var(--rule-soft); margin-bottom:1.4rem; }
+  footer p { max-width:55em; font-size:.76rem; }
+
+  @media (max-width:860px){
+    .two-col,.principles,.pillars,.dodont { grid-template-columns:1fr; }
+    .principle,.dd-col.do { border-right:none; padding-right:0; padding-left:0; }
+    .hero-cand { grid-template-columns:auto 1fr; }
+    .hero-badge { grid-column:2; }
+    .lp-row { grid-template-columns:1fr; gap:.75rem; }
+    .tag { border-right:none; }
+    section { padding:3.5rem 0; }
+  }
+  @media print { body{background:#fff;} body::before{display:none;} .promise{background:#fff;color:#000;} .promise-statement,.promise-note{color:#000;} section{break-inside:avoid;} }
+
+  @keyframes rise { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+  .cover-title,.cover-sub,.cover-eyebrow,.cover-bottom { animation:rise 1s ease-out backwards; }
+  .cover-eyebrow{animation-delay:.1s;} .cover-title{animation-delay:.25s;} .cover-sub{animation-delay:.45s;} .cover-bottom{animation-delay:.65s;}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- COVER -->
+  <section class="cover wrap">
+    <div class="cover-top">
+      <div class="brand-mark">FollowRoom<span class="dot">·</span></div>
+      <div class="stamp">Positioning &amp; Voice · Internal</div>
+    </div>
+    <div class="cover-center">
+      <div class="cover-eyebrow eyebrow">Brand foundations · v0.1 · 2026-05-20</div>
+      <h1 class="display cover-title">How we<br>speak.</h1>
+      <p class="cover-sub">The positioning, the promise, the voice, and the words that go on the page — so the landing page and every message after it sound like the same calm, trustworthy adviser.</p>
+    </div>
+    <div class="cover-bottom">
+      <div><div class="label">Promise</div><div class="value">Never forget a client<br>conversation again</div></div>
+      <div><div class="label">Voice</div><div class="value">Adviser-calm.<br>Evidence-led. Quiet.</div></div>
+      <div><div class="label">Audience</div><div class="value">Relationship-driven<br>salespeople</div></div>
+      <div><div class="label">First market</div><div class="value">SG real estate<br>(KW wedge)</div></div>
+    </div>
+  </section>
+
+  <!-- THE PROMISE -->
+  <section class="promise">
+    <div class="wrap">
+      <div class="eyebrow">The promise</div>
+      <p class="promise-statement">Never forget a client conversation again.</p>
+      <p class="promise-note">This is the <em>promise</em> — what the customer walks away believing. It is not the hero line itself; the hero line is tighter and more concrete. The promise is the north star every word on the page must serve. If a sentence doesn't ladder up to this, cut it.</p>
+    </div>
+  </section>
+
+  <!-- 01 HERO LINE -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">The hero line — candidates &amp; the pick.</h2>
+      <span class="section-tag">Headline</span>
+    </div>
+
+    <p class="lead">You asked whether <em>"never forget a client conversation again"</em> is the hero line. It's the promise, not the headline. A hero line should be shorter, calmer, and let the sub-line do the explaining. Six candidates, in the adviser-calm register:</p>
+
+    <div class="hero-list">
+      <div class="hero-cand pick">
+        <div class="hero-rank">01</div>
+        <div class="hero-line">Every client conversation, remembered.
+          <span class="note">Calm, declarative, outcome-first. No verb to obey, no hype. Reads like a quiet fact. Pairs cleanly with an explanatory sub-line.</span>
+        </div>
+        <div class="hero-badge">Recommended</div>
+      </div>
+      <div class="hero-cand">
+        <div class="hero-rank">02</div>
+        <div class="hero-line">The memory your client relationships deserve.
+          <span class="note">Warmer, slightly aspirational. Good if the page leans relationship over utility. A touch softer than #1.</span>
+        </div>
+      </div>
+      <div class="hero-cand">
+        <div class="hero-rank">03</div>
+        <div class="hero-line">Walk into every meeting already remembering.
+          <span class="note">Names the moment of value (the meeting). Concrete. Slightly more active than #1 without being pushy.</span>
+        </div>
+      </div>
+      <div class="hero-cand">
+        <div class="hero-rank">04</div>
+        <div class="hero-line">Your relationships, with perfect recall.
+          <span class="note">Tight and confident. "Perfect recall" is a small, defensible claim because every detail carries a receipt. Risk: "perfect" can read as a promise we must keep.</span>
+        </div>
+      </div>
+      <div class="hero-cand">
+        <div class="hero-rank">05</div>
+        <div class="hero-line">The follow-up that remembers for you.
+          <span class="note">Uses the product category word ("follow-up"). Plain, functional, low-risk. Slightly less evocative.</span>
+        </div>
+      </div>
+      <div class="hero-cand">
+        <div class="hero-rank">06</div>
+        <div class="hero-line">Remember every client like they're your only one.
+          <span class="note">The most emotional option. Strong for a video or a closing line; a little long for a hero. Hold in reserve for campaign copy.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reco">
+      <h4>The pick — hero + sub</h4>
+      <div class="pick-hero">Every client conversation, remembered.</div>
+      <div class="pick-sub">FollowRoom turns the messages you forward and the meetings you record into a living memory for every client — with a receipt under every detail, so you can trust what you act on — and a clean room you can share. You stay in control of all of it.</div>
+    </div>
+  </section>
+
+  <!-- 02 VOICE -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">The voice — adviser-calm.</h2>
+      <span class="section-tag">Tone</span>
+    </div>
+
+    <p class="lead">We sound like a <em>trusted, competent adviser</em> — the quiet professional who has already done the reading. Never the excitable vendor. Confidence comes from restraint, not volume.</p>
+
+    <div class="principles">
+      <div class="principle">
+        <div class="pn">PRINCIPLE 01</div>
+        <h4>Witness, not coach.</h4>
+        <p>We describe what we noticed; we never prescribe what to do. "Three of your clients mentioned affordability this week" — not "you should change your pitch." The operator is the expert. We are the memory.</p>
+      </div>
+      <div class="principle">
+        <div class="pn">PRINCIPLE 02</div>
+        <h4>Evidence over assertion.</h4>
+        <p>Every claim earns its place by pointing to a source. We say "remembered," "on record," "with a receipt" — not "smart," "intelligent," "powerful." Specifics build trust; adjectives erode it.</p>
+      </div>
+      <div class="principle">
+        <div class="pn">PRINCIPLE 03</div>
+        <h4>Calm at high stakes.</h4>
+        <p>No urgency theatre. No countdowns, no "🚀", no red badges, no "act now." The product handles a salesperson's most valuable asset — their relationships. The copy should feel like it knows that.</p>
+      </div>
+      <div class="principle">
+        <div class="pn">PRINCIPLE 04</div>
+        <h4>The operator is the hero.</h4>
+        <p>We are the assistant in the background, never the star. Sentences put the operator and their client first. We don't say what <em>we</em> do; we say what <em>they</em> can now do.</p>
+      </div>
+      <div class="principle">
+        <div class="pn">PRINCIPLE 05</div>
+        <h4>Specificity is identity.</h4>
+        <p>Concrete beats generic, always. "The wife's preference for Marine Parade because her parents are nearby" out-sells "manage client preferences." Use real, textured examples drawn from the work.</p>
+      </div>
+      <div class="principle">
+        <div class="pn">PRINCIPLE 06</div>
+        <h4>Lead with the outcome, never the technology.</h4>
+        <p>Per the market: don't open with "AI" or "digital" — they make seasoned agents suspicious. Lead with what they get (memory, recall, the room). The technology is plumbing; mention it only when it earns trust, never as the headline.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 DO / DON'T -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Words we use &amp; words we don't.</h2>
+      <span class="section-tag">Lexicon</span>
+    </div>
+
+    <div class="dodont">
+      <div class="dd-col do">
+        <h4>Say this</h4>
+        <div class="chip-row">
+          <span class="chip">remember</span><span class="chip">recall</span><span class="chip">every detail</span><span class="chip">on record</span><span class="chip">with a receipt</span><span class="chip">the conversation</span><span class="chip">your client</span><span class="chip">quietly</span><span class="chip">in the background</span><span class="chip">you decide</span><span class="chip">your words</span><span class="chip">never miss</span><span class="chip">follow up</span><span class="chip">the room</span><span class="chip">forward it</span>
+        </div>
+        <p>Concrete verbs about memory and control. Words that put the operator in charge and keep the product modest. Anything a working agent would actually say to a colleague over kopi.</p>
+      </div>
+      <div class="dd-col dont">
+        <h4>Never this</h4>
+        <div class="chip-row">
+          <span class="chip">AI</span><span class="chip">powered by AI</span><span class="chip">digital</span><span class="chip">automation</span><span class="chip">revolutionize</span><span class="chip">supercharge</span><span class="chip">10x</span><span class="chip">game-changer</span><span class="chip">seamless</span><span class="chip">cutting-edge</span><span class="chip">leverage</span><span class="chip">synergy</span><span class="chip">unlock</span><span class="chip">robust</span><span class="chip">disrupt</span>
+        </div>
+        <p>SaaS-deck filler and tech-forward language. "AI" and "digital" specifically make experienced agents wary — the market told us they'll "burn you and bury you" for leading with it. If a word would sound at home in a generic startup pitch, it doesn't belong here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 PILLARS -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Four messaging pillars.</h2>
+      <span class="section-tag">What we repeat</span>
+    </div>
+
+    <p class="lead">Every page, email, and demo returns to these four. They are the load-bearing claims — each one true, each one provable, none of them hype.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pi">i.</div>
+        <h4>Memory that compounds.</h4>
+        <p>Every message you forward and every meeting you record makes the client's record richer. The longer you use it, the more it knows — and the harder it would be to walk away from.</p>
+      </div>
+      <div class="pillar">
+        <div class="pi">ii.</div>
+        <h4>Receipts, always.</h4>
+        <p>Every detail traces back to the exact message or moment it came from — and you can see it. Nothing is invented: if we can't show you where a fact came from, we don't keep it. Those receipts are yours — your client gets a clean room, not a logbook.</p>
+      </div>
+      <div class="pillar">
+        <div class="pi">iii.</div>
+        <h4>You stay in control.</h4>
+        <p>Nothing reaches your client without your say-so. We never message your clients. You review, you approve, you decide what becomes a room. The relationship stays yours, start to finish.</p>
+      </div>
+      <div class="pillar">
+        <div class="pi">iv.</div>
+        <h4>It lives where you work.</h4>
+        <p>Forward a WhatsApp message. Drop in a recording. No new app to live in, no workflow to relearn, no habit to change. It fits around how you already sell.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 LANDING PAGE COPY -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Landing page — section by section.</h2>
+      <span class="section-tag">Ready-to-use copy</span>
+    </div>
+
+    <p class="lead">Drop-in copy for the first version of the page. Calm, concrete, in voice. Edit freely — but if you change a line, check it still ladders to the promise.</p>
+
+    <div class="lp">
+      <div class="lp-row">
+        <div class="lp-where">Hero<span>Top of page. One line, one sub, one button.</span></div>
+        <div class="lp-copy">
+          <div class="lp-h">Every client conversation, remembered.</div>
+          <div class="lp-b">FollowRoom turns the messages you forward and the meetings you record into a living memory for every client — with a receipt under every detail, so you can trust what you act on — and a clean room you can share. You stay in control of all of it.</div>
+          <div class="micro">CTA: &nbsp;Join the beta &nbsp;·&nbsp; secondary: See how it works</div>
+        </div>
+      </div>
+
+      <div class="lp-row">
+        <div class="lp-where">The problem<span>One honest paragraph. No fear-mongering.</span></div>
+        <div class="lp-copy">
+          <div class="lp-h">You don't lose deals on the pitch. You lose them in the gaps.</div>
+          <div class="lp-b">The wife who preferred Marine Parade because her parents are nearby. The hesitation about repayments after bonus season. The texture of a relationship lives in your head and three chat apps — and the moment it slips, so does the trust. A $3,000-a-month assistant still can't replay last month's viewing for you.</div>
+        </div>
+      </div>
+
+      <div class="lp-row">
+        <div class="lp-where">How it works<span>Three steps. Plain verbs.</span></div>
+        <div class="lp-copy">
+          <div class="lp-h">Forward it. We remember the rest.</div>
+          <div class="lp-b"><strong>1 — Forward or upload.</strong> Send a WhatsApp message to FollowRoom, or drop in a meeting recording. &nbsp;<strong>2 — We build the memory.</strong> Every detail is captured and filed under the right client, each one linked to its source. &nbsp;<strong>3 — You review and share.</strong> Approve what's right, and turn it into a clean room your client can open on any device.</div>
+        </div>
+      </div>
+
+      <div class="lp-row">
+        <div class="lp-where">The room<span>The shareable surface — the headline feature.</span></div>
+        <div class="lp-copy">
+          <div class="lp-h">A room your client actually keeps coming back to.</div>
+          <div class="lp-b">Not a long text dump or another PDF. A private, branded page — your name, your face — with what you discussed, what's next, and the documents that matter. Shareable by link. Yours to approve, line by line, before anyone sees it.</div>
+        </div>
+      </div>
+
+      <div class="lp-row">
+        <div class="lp-where">Why it's safe<span>The trust section. Quiet, specific.</span></div>
+        <div class="lp-copy">
+          <div class="lp-h">Built so your client feels listened to — never analysed.</div>
+          <div class="lp-b">We never message your clients. Nothing becomes visible to them without your approval. Every detail we keep can be traced to the moment it was said. And the private guesses a machine might make about someone's mood or motives never reach the room. <strong>The relationship is yours. We just help you remember it.</strong></div>
+        </div>
+      </div>
+
+      <div class="lp-row">
+        <div class="lp-where">Pricing teaser<span>Founder offer. Scarcity is honest, not theatrical.</span></div>
+        <div class="lp-copy">
+          <div class="lp-h">Free while we're in beta. A founder's price after, locked for a year.</div>
+          <div class="lp-b">Join the beta and use FollowRoom free while we build it with you. When we open paid plans, beta members lock in the Founder price for twelve months — well below the standard rate. No card to start.</div>
+          <div class="micro">CTA: &nbsp;Claim a beta seat</div>
+        </div>
+      </div>
+
+      <div class="lp-row">
+        <div class="lp-where">Closing<span>Last line on the page. Return to the promise.</span></div>
+        <div class="lp-copy">
+          <div class="lp-h">Your clients remember how you made them feel. Now you can too.</div>
+          <div class="lp-b">FollowRoom remembers every conversation, so the next one always picks up exactly where the last left off.</div>
+          <div class="micro">CTA: &nbsp;Join the beta</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 TAGLINES -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Taglines &amp; short forms.</h2>
+      <span class="section-tag">Reuse kit</span>
+    </div>
+
+    <div class="taglines">
+      <div class="tag"><div class="tag-use">Primary tagline</div><div class="tag-text">Every conversation, remembered.</div></div>
+      <div class="tag"><div class="tag-use">Email sign-off</div><div class="tag-text">FollowRoom — the memory under the relationship.</div></div>
+      <div class="tag"><div class="tag-use">One-liner (to a peer)</div><div class="tag-text">It remembers every client conversation, so you never walk in cold.</div></div>
+      <div class="tag"><div class="tag-use">Cost frame (Suresh)</div><div class="tag-text">Less than a tenth of an assistant. Never forgets a thing.</div></div>
+      <div class="tag"><div class="tag-use">Trust line</div><div class="tag-text">We never message your clients. You approve everything they see.</div></div>
+      <div class="tag"><div class="tag-use">Category, plainly</div><div class="tag-text">The follow-up layer for people who sell on trust.</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-row">
+        <span>FollowRoom · Positioning &amp; Brand Voice · v0.1</span>
+        <span>khaniff@gmail.com · 2026-05-20</span>
+      </div>
+      <p>Voice and lexicon derived from <em>PROJECT_DEV_SOUL.md</em> (celebration over correction, witness not coach, evidence over assertion, calm at high stakes). The "lead with outcome, not technology" rule traces to the Suresh conversation (don't lead with "AI/digital"). Pricing language aligns with <em>followroom-pricing-validation.html</em> (cohort ladder: free beta → Founder price locked 12 months → Pro). Hero line and all copy are proposals for the first version — test against real beta-agent reactions and revise. "Auntie" framing is internal shorthand only; it is SG-specific and stays out of public copy.</p>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>

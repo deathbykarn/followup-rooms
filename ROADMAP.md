@@ -47,11 +47,29 @@ Status legend: `□ pending` · `◐ in progress` · `■ shipped` · `⊘ defer
 | 2 | Core KB Layer — extraction → facts → profile | `v0.2.0` | ■ shipped 2026-05-18 | `docs/superpowers/plans/2026-05-18-core-kb-layer.md` |
 | 3 | Ingestion: transcript + voice upload | `v0.3.0` | ■ shipped 2026-05-19 | `docs/superpowers/plans/2026-05-18-ingestion-transcript-voice.md` |
 | 4 | WhatsApp Shape X ingestion (inbound) | `v0.4.0` | ■ shipped 2026-05-19 (smoke gated on Meta Business Verification) | `docs/superpowers/plans/2026-05-19-whatsapp-ingestion.md` |
-| 4.2 | Visual design for client-facing rooms — HTML mockups + DESIGN_SPEC | — | ■ shipped 2026-05-19 | `docs/design/` |
+| 4.2 | Visual design for client-facing rooms + operator dashboard — HTML mockups + DESIGN_SPEC | — | ■ shipped 2026-05-19 | `docs/design/` |
 | 4.5 | WhatsApp Plan 4 follow-ups + ops debt | — | □ queued | TBD |
 | 5 | File drop / room attachments | — | □ queued | TBD |
 | 6 | Client-facing room (slug + PIN) + room update approval | — | □ queued (anchored to `docs/design/` mockups + DESIGN_SPEC) | TBD |
-| 7+ | Suggested reply, review queue, vertical templates, integrations | — | □ queued | TBD |
+| 7 | Suggested reply + generic review queue | — | □ queued | TBD |
+
+**Stage 2 — FollowRoom + Hivemind** (cross-vector relationship memory; see `docs/architecture/lineos-evolution.md`):
+
+| # | Plan | Status | Triggered by |
+|---|------|--------|--------------|
+| 8 | Hivemind read interface — cross-client pattern surfacing on dashboard | □ queued | Solo operator ~30+ clients OR first agency customer |
+| 9 | Agency tier — multi-operator visibility under `agency_visible` tier | □ queued | First agency customer |
+| 10 | Temporal Governance (TG-lite) — enforcement layer for agent writes | □ queued | First autonomous-write feature (likely concurrent with Plan 8) |
+
+**Stage 3 — FollowRoom + Zettel** (LineOS substrate integration):
+
+| # | Plan | Status | Triggered by |
+|---|------|--------|--------------|
+| 11+ | Zettel-protocol interface — FollowRoom nodes addressable from other LineOS apps | □ queued | Decades or another LineOS app standing up a Zettel primitive with adoption |
+| 12+ | Outbound Zettel queries — FollowRoom reading from Decades / Calendar / other Lines | □ queued | After 11; depends on substrate stability + TG-lite |
+| 13+ | Compositional cross-app surfaces (Decades+FollowRoom+Calendar suggestions) | □ queued | Emergent; depends on 11 + 12 |
+
+Vertical templates, integrations (Calendar / Drive / Otter), and the optional bot layer remain Plans 14+ (see PRD §23 Phases 3-6).
 
 ---
 

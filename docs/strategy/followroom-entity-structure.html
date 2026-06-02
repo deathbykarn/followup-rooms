@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FollowRoom — Entity Structure Decision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EEE3;--paper-warm:#F8F4EA;--paper-deep:#EAE3D2;
+    --ink:#18150F;--ink-soft:#322C22;--ink-mid:#4E4636;--muted:#7A6F58;
+    --rule:#CFC4AB;--rule-soft:#DDD4BD;
+    --sage:#3B5345;--clay:#9A6A45;--gold:#B8923E;--good:#3B5345;--neg:#A24530;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink-soft);font-family:'Newsreader',Georgia,serif;font-size:1.1rem;line-height:1.62;-webkit-font-smoothing:antialiased;font-feature-settings:'kern' 1,'liga' 1;position:relative;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:-10%;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.06 0 0 0 0 0.03 0 0 0 0.15 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.5;mix-blend-mode:multiply;}
+  main{position:relative;z-index:2;}
+  .display{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 450;line-height:.95;letter-spacing:-.025em;color:var(--ink);}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--clay);}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  p{max-width:42em;}em{font-style:italic;}strong{font-weight:600;color:var(--ink);}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4.5rem);}
+  section{padding:clamp(3.5rem,8vh,5.5rem) 0;border-bottom:1px solid var(--rule-soft);}
+  section:last-of-type{border-bottom:none;}
+  .section-head{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:baseline;margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.1em;color:var(--clay);font-weight:600;}
+  .section-title{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 40,'opsz' 60,'wght' 450;font-size:clamp(1.4rem,2.4vw,1.9rem);color:var(--ink);letter-spacing:-.01em;line-height:1.1;}
+  .section-tag{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+  .lead{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 60,'wght' 350;font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.42;color:var(--ink);max-width:34em;margin-bottom:2rem;}
+  .lead em{color:var(--clay);font-style:italic;}
+  .body-block p{margin-bottom:1.1rem;}
+  .callout{margin-top:1.5rem;padding:1.5rem 1.8rem;background:var(--paper-warm);border-left:3px solid var(--clay);font-size:1rem;line-height:1.55;}
+  .callout strong{color:var(--clay);}
+
+  /* COVER */
+  .cover{min-height:90vh;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(2.5rem,5vh,4rem) 0;border-bottom:2px solid var(--ink);}
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;}
+  .brand-mark{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 30,'opsz' 48,'wght' 500;font-size:1.05rem;letter-spacing:.03em;color:var(--ink);}
+  .brand-mark .dot{color:var(--clay);}
+  .stamp{border:1.5px solid var(--sage);color:var(--sage);padding:.4rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;}
+  .cover-center{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(2rem,5vh,4rem) 0;}
+  .cover-eyebrow{margin-bottom:1.5rem;}
+  .cover-title{font-size:clamp(2.6rem,7vw,5.2rem);margin-bottom:1.5rem;color:var(--ink);max-width:16ch;}
+  .cover-sub{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 80,'wght' 320;font-style:italic;font-size:clamp(1.25rem,2vw,1.7rem);line-height:1.3;max-width:27em;color:var(--ink-soft);}
+  .cover-bottom{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.8rem;padding-top:1.8rem;border-top:1px solid var(--rule);}
+  .cover-bottom .label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+  .cover-bottom .value{font-family:'Fraunces',Georgia,serif;font-variation-settings:'opsz' 36,'wght' 420;font-size:.98rem;color:var(--ink);line-height:1.3;}
+
+  /* VERDICT */
+  .verdict{background:var(--sage);color:var(--paper-warm);padding:clamp(2.5rem,6vh,4rem) 0;}
+  .verdict .wrap{}
+  .verdict .vk{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+  .verdict .vt{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 380;font-style:italic;font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.1;color:var(--paper-warm);max-width:20em;letter-spacing:-.015em;margin-bottom:1.2rem;}
+  .verdict .vt b{font-style:normal;font-variation-settings:'wght' 520;color:var(--gold);}
+  .verdict p{color:rgba(248,244,234,.85);max-width:40em;}
+
+  /* DECISIVE */
+  .decisive{background:var(--paper-warm);border:1px solid var(--rule);border-left:3px solid var(--neg);padding:2rem 2.25rem;margin-top:1rem;}
+  .decisive .dk{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--neg);margin-bottom:.9rem;}
+  .decisive h3{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 50,'opsz' 60,'wght' 480;font-size:1.5rem;color:var(--ink);line-height:1.15;margin-bottom:.8rem;letter-spacing:-.01em;}
+  .decisive p{font-size:1rem;line-height:1.6;}
+
+  /* COMPARE TABLE */
+  .cmp{width:100%;border-collapse:collapse;margin-top:1rem;}
+  .cmp caption{text-align:left;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-bottom:.8rem;}
+  .cmp th,.cmp td{text-align:left;padding:1rem 1.1rem;border-bottom:1px solid var(--rule-soft);font-size:.95rem;vertical-align:top;line-height:1.5;}
+  .cmp thead th{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);font-weight:500;}
+  .cmp thead th.sp{color:var(--neg);}.cmp thead th.pl{color:var(--sage);}
+  .cmp td.dim{font-family:'Fraunces',serif;font-variation-settings:'opsz' 36,'wght' 540;color:var(--ink);font-size:1rem;width:18%;}
+  .cmp td.sp{color:var(--ink-mid);}
+  .cmp td.pl{color:var(--ink-soft);}
+  .cmp td.bite{color:var(--ink-mid);font-style:italic;font-size:.9rem;}
+  .cmp tbody tr:hover{background:var(--paper-warm);}
+  .x{color:var(--neg);font-weight:600;}.tick{color:var(--sage);font-weight:600;}
+
+  /* secondary reasons */
+  .reasons{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+  .reason{background:var(--paper-warm);border:1px solid var(--rule);padding:1.7rem;}
+  .reason h4{font-family:'Fraunces',serif;font-variation-settings:'opsz' 48,'wght' 480;font-size:1.25rem;color:var(--ink);margin-bottom:.6rem;line-height:1.15;}
+  .reason p{font-size:.93rem;line-height:1.55;color:var(--ink-mid);max-width:none;}
+  .reason .fig{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--clay);margin-top:.7rem;letter-spacing:.02em;}
+
+  /* counter */
+  .counter{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);margin-top:1rem;}
+  .counter .c-col{padding:1.8rem 2rem;}
+  .counter .pro{border-right:1px solid var(--rule);}
+  .counter h4{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1rem;}
+  .counter .pro h4{color:var(--sage);}.counter .con h4{color:var(--neg);}
+  .counter ul{list-style:none;padding:0;}
+  .counter li{padding-left:1.3em;position:relative;margin-bottom:.7rem;font-size:.94rem;line-height:1.5;}
+  .counter .pro li::before{content:"+";position:absolute;left:0;color:var(--sage);font-weight:700;}
+  .counter .con li::before{content:"\2212";position:absolute;left:0;color:var(--neg);font-weight:700;}
+
+  /* steps */
+  .steps{list-style:none;counter-reset:s;padding:0;margin-top:1rem;max-width:44em;}
+  .steps li{counter-increment:s;position:relative;padding:1.1rem 0 1.1rem 3rem;border-bottom:1px solid var(--rule-soft);font-size:1rem;line-height:1.5;}
+  .steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:1.2rem;font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--clay);font-weight:600;}
+  .steps li strong{color:var(--ink);}
+  .steps li .cost{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--muted);}
+
+  footer{padding:3rem 0 5rem;border-top:1px solid var(--rule);font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--muted);line-height:1.7;}
+  footer .foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule-soft);margin-bottom:1.4rem;}
+  footer p{max-width:60em;font-size:.75rem;}
+
+  @media (max-width:840px){
+    .reasons,.counter{grid-template-columns:1fr;}
+    .counter .pro{border-right:none;border-bottom:1px solid var(--rule);}
+    .cmp td.dim{width:auto;}
+    .cmp thead{display:none;}
+    .cmp td{display:block;border-bottom:none;padding:.3rem 0;}
+    .cmp tr{display:block;border-bottom:1px solid var(--rule);padding:1rem 0;}
+    .cmp td.dim{font-size:1.1rem;margin-bottom:.4rem;}
+    section{padding:3rem 0;}
+  }
+  @media print{body{background:#fff;}body::before{display:none;}.verdict{background:#eee;}.verdict *{color:#000 !important;}section{break-inside:avoid;}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .cover-title,.cover-sub,.cover-eyebrow,.cover-bottom{animation:rise 1s ease-out backwards;}
+  .cover-eyebrow{animation-delay:.1s;}.cover-title{animation-delay:.25s;}.cover-sub{animation-delay:.45s;}.cover-bottom{animation-delay:.65s;}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- COVER -->
+  <section class="cover wrap">
+    <div class="cover-top">
+      <div class="brand-mark">FollowRoom<span class="dot">·</span></div>
+      <div class="stamp">Decision Brief · Internal</div>
+    </div>
+    <div class="cover-center">
+      <div class="cover-eyebrow eyebrow">Entity structure · Singapore · 2026</div>
+      <h1 class="display cover-title">Pte Ltd, not sole prop.</h1>
+      <p class="cover-sub">Why FollowRoom should incorporate a private limited company now &mdash; even though a sole proprietorship is quicker and cheaper to start.</p>
+    </div>
+    <div class="cover-bottom">
+      <div><div class="label">Question</div><div class="value">Which entity to register?</div></div>
+      <div><div class="label">Recommendation</div><div class="value">Pte Ltd, now</div></div>
+      <div><div class="label">Decisive factor</div><div class="value">You're raising capital</div></div>
+      <div><div class="label">Cost to incorporate</div><div class="value">~S$315 · ~1 day</div></div>
+    </div>
+  </section>
+
+  <!-- VERDICT -->
+  <section class="verdict">
+    <div class="wrap">
+      <div class="vk">The verdict, up front</div>
+      <p class="vt">The sole prop is faster and cheaper to start. But it <b>cannot take investment, exposes you personally, and can't be sold</b> &mdash; so for FollowRoom, its only advantage is illusory.</p>
+      <p>You'd have to convert to a Pte Ltd before the first dollar of investment anyway. Converting mid-raise is more friction than starting right. Incorporate once, now.</p>
+    </div>
+  </section>
+
+  <!-- 01 DECISIVE -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">01</span><h2 class="section-title">The decisive reason.</h2><span class="section-tag">If you read nothing else</span></div>
+    <div class="decisive">
+      <div class="dk">Structural blocker</div>
+      <h3>You literally cannot take the investment into a sole prop.</h3>
+      <p>A sole proprietorship has <strong>no shares</strong>. A SAFE converts into equity &mdash; and there's nothing for it to convert into. The entire $350K SAFE @ $3M-cap raise in the investment package is <strong>structurally impossible</strong> as a sole prop. The choice isn't really &ldquo;sole prop vs Pte Ltd&rdquo; &mdash; it's &ldquo;incorporate now, or incorporate later under deal pressure and re-paper everything.&rdquo; Since you know you're raising, doing it once, now, is the clean path.</p>
+    </div>
+  </section>
+
+  <!-- 02 COMPARISON -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">02</span><h2 class="section-title">The four that bite hardest.</h2><span class="section-tag">Where it matters for you</span></div>
+    <table class="cmp">
+      <caption>Sole proprietorship vs private limited company — FollowRoom's lens</caption>
+      <thead><tr><th>Dimension</th><th class="sp">Sole proprietorship</th><th class="pl">Pte Ltd</th><th>Why it bites <em>you</em></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim">Liability</td>
+          <td class="sp"><span class="x">You are the business.</span> Unlimited personal exposure.</td>
+          <td class="pl"><span class="tick">Separate legal entity.</span> Liability generally limited to company assets.</td>
+          <td class="bite">FollowRoom processes third-party client conversations &mdash; PDPA-regulated PII. A breach or misuse claim against a sole prop flows to your personal assets: savings, home. For a trust/data product, separation is the whole point.</td>
+        </tr>
+        <tr>
+          <td class="dim">Raising capital</td>
+          <td class="sp"><span class="x">Cannot issue shares.</span> No equity to sell.</td>
+          <td class="pl"><span class="tick">Issues shares, SAFEs, notes.</span></td>
+          <td class="bite">No Pte Ltd = no investors. Full stop. The whole investment package depends on this.</td>
+        </tr>
+        <tr>
+          <td class="dim">Equity for others</td>
+          <td class="sp"><span class="x">Nothing to grant.</span></td>
+          <td class="pl"><span class="tick">ESOP, share grants, options.</span></td>
+          <td class="bite">To compensate Suresh's advisory with options, give Scott a sliver, or bring on a co-founder/first hire on equity &mdash; you need shares to grant.</td>
+        </tr>
+        <tr>
+          <td class="dim">Sale / exit</td>
+          <td class="sp"><span class="x">Tied to you.</span> Can't be cleanly sold; ends with you.</td>
+          <td class="pl"><span class="tick">Perpetual, transferable, sellable.</span></td>
+          <td class="bite">The base/bull cases in the investment package are an acquisition. An acquirer buys a company, not a person. A sole prop has nothing to buy.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 03 SECONDARY -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Two more, once you're profitable.</h2><span class="section-tag">Tax &amp; credibility</span></div>
+    <div class="reasons">
+      <div class="reason">
+        <h4>Tax efficiency</h4>
+        <p>Sole-prop profits are taxed as <em>your personal income</em> &mdash; progressive, up to 24%. A Pte Ltd pays a flat <strong>17%</strong> corporate rate, and Singapore's Start-Up Tax Exemption exempts 75% of the first S$100K of chargeable income (and 50% of the next S$100K) for the first three years. At your projected $20K/month profit, the corporate structure is materially more efficient and gives you salary-vs-dividend flexibility.</p>
+        <div class="fig">17% flat · vs · up to 24% personal</div>
+      </div>
+      <div class="reason">
+        <h4>Credibility &amp; onboarding</h4>
+        <p>Investors effectively require it &mdash; but it goes further. Meta Business Verification, Stripe, banks, and agency / enterprise customers all onboard a Pte Ltd more smoothly and take it more seriously. A Pte Ltd UEN reads as &ldquo;a real company,&rdquo; which matters at every counterparty touchpoint from your first pilot invoice onward.</p>
+        <div class="fig">One clean entity for BV · banking · Stripe · the SAFE</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 COUNTER -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">04</span><h2 class="section-title">The honest case for sole prop.</h2><span class="section-tag">And why it loses here</span></div>
+    <p class="lead">The sole prop's advantages are real &mdash; just <em>marginal</em> against four structural blockers. Worth stating plainly so the decision is made with eyes open.</p>
+    <div class="counter">
+      <div class="c-col pro">
+        <h4>Genuine advantages</h4>
+        <ul>
+          <li>Cheaper: ~S$115 first year, ~S$30&ndash;90 to renew.</li>
+          <li>Simpler: no company secretary, no annual returns, lighter accounting.</li>
+          <li>Faster to set up and to wind down.</li>
+          <li>Fine <em>if</em> you're only testing and never raising.</li>
+        </ul>
+      </div>
+      <div class="c-col con">
+        <h4>Why it loses for FollowRoom</h4>
+        <ul>
+          <li>Pte Ltd is ~S$315 self-filed via BizFile &mdash; still ~1 day.</li>
+          <li>Ongoing overhead is modest: company secretary (~S$300&ndash;600/yr) + annual filings.</li>
+          <li>If you're a SG citizen or PR, you can be the resident director yourself &mdash; no nominee cost.</li>
+          <li>Its one edge (a few hundred dollars) is dwarfed by: no investment, personal liability on a PII product, no equity to grant, nothing to sell.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><strong>The only scenario where sole prop wins:</strong> you decide <em>not</em> to raise and run FollowRoom purely on cashflow as a solo operation. The investment package says otherwise &mdash; so Pte Ltd it is.</div>
+  </section>
+
+  <!-- 05 NEXT STEPS -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">05</span><h2 class="section-title">How to do it.</h2><span class="section-tag">Practical path</span></div>
+    <p class="lead">Roughly one day and ~S$315 self-filed. Sequenced so the new entity feeds straight into Meta verification and the raise.</p>
+    <ol class="steps">
+      <li><strong>Incorporate the Pte Ltd via BizFile</strong> &mdash; name application + incorporation. <span class="cost">~S$315 self-filed, or ~S$600&ndash;1,000 via an agent (Sleek / Osome / Lanturn) who bundles the company secretary.</span></li>
+      <li><strong>Confirm the resident-director requirement.</strong> At least one director must be ordinarily resident in Singapore. <span class="cost">If you're a citizen or PR, that's you &mdash; no nominee director needed.</span></li>
+      <li><strong>Appoint a company secretary within 6 months</strong> and set minimum paid-up capital (S$1 is fine). <span class="cost">~S$300&ndash;600/yr if outsourced.</span></li>
+      <li><strong>Pull a fresh ACRA Business Profile</strong> from the new Pte Ltd &mdash; this is the document Meta Business Verification wants. <span class="cost">~S$5.50.</span></li>
+      <li><strong>Use the one clean entity everywhere:</strong> Meta BV, business bank account, Stripe, and the SAFE all reference the same UEN. <span class="cost">Avoids the re-papering you'd hit if you started as a sole prop.</span></li>
+    </ol>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-row"><span>FollowRoom · Entity Structure Decision · v0.1</span><span>khaniff@gmail.com · 2026-05-20</span></div>
+      <p><strong style="color:var(--ink);">Not legal or tax advice.</strong> General guidance for a Singapore context as of May 2026 &mdash; confirm specifics (residency status, tax exemptions, secretary requirements) with an incorporation service or corporate lawyer before acting. Figures (incorporation ~S$315, company secretary ~S$300&ndash;600/yr, 17% corporate rate, Start-Up Tax Exemption) are indicative and subject to ACRA / IRAS current rules. Companion to <em>followroom-business-plan.html</em> and <em>followroom-investment-package.html</em>; relates to the Meta Business Verification requirements covered in the BV findings note.</p>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>

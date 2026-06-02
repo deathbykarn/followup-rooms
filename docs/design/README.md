@@ -5,10 +5,13 @@
 ## What's in here
 
 - **`DESIGN_SPEC.md`** — the design decisions made visible in the mockups. Color tokens, typography, component patterns, state patterns, anti-patterns avoided. This is the surface we work backwards from when building Plan 6's React components.
-- **`mockups/`** — three standalone HTML files that demonstrate the design across three scenarios:
-  - `01-sarah-tan-discovery.html` — first-meeting room. Empty-state grace.
-  - `02-wendy-lim-negotiation.html` — active negotiation room. Calm restraint at high stakes.
-  - `03-david-chen-feature-showcase.html` — long-term client with full feature utilization.
+- **`mockups/`** — standalone HTML files demonstrating the visual language across both surfaces:
+  - Client-facing rooms (Plan 6 target):
+    - `01-sarah-tan-discovery.html` — first-meeting room. Empty-state grace.
+    - `02-wendy-lim-negotiation.html` — active negotiation room. Calm restraint at high stakes.
+    - `03-david-chen-feature-showcase.html` — long-term client with full feature utilization.
+  - Operator dashboard (Plans 5/7/8 target):
+    - `04-operator-dashboard.html` — daily working surface. Density, ⌘K-ready, Linear/Superhuman pattern. Includes a `PREVIEW`-flagged Hivemind panel that anchors the Stage 2 visual ahead of implementation.
 
 ## How to view
 
@@ -22,6 +25,8 @@ For the intended experience: open on a phone, since clients open these from What
 2. **Empty-state grace** — sparse rooms feel intentional, not impoverished
 3. **Calm restraint at high stakes** — no badges, no urgency theater
 4. **Operator voice ≠ extracted memory** — visible distinction between what the operator wrote and what the system synthesized
+
+**Foundational principle:** both surfaces are **fully adaptive to device size** — fluid type, spacing, and grids that scale continuously (≈320px → wide desktop), never fixed-with-breakpoints. See DESIGN_SPEC.md → "Foundational principle — fully adaptive to device size".
 
 ## How this becomes code
 

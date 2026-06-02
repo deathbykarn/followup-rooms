@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FollowRoom — Marcus Lim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-page: #FBFAF6;
+      --bg-card: #FFFFFF;
+      --bg-muted: #F5F2EB;
+      --text-primary: #1A1815;
+      --text-secondary: #5C574E;
+      --text-muted: #6E685D;          /* darkened to pass WCAG AA (~5:1) for small captions/meta */
+      --border-subtle: #E8E3D9;
+      --accent-gold: #9B7B3B;          /* decorative use only (borders, marks) */
+      --accent-gold-text: #7E6224;     /* AA-passing gold for small text (eyebrows, numerals) */
+      --accent-deep: #1F4F4A;
+      --attention-warm: #9B5B3B;
+      --serif: 'Newsreader', Georgia, serif;
+      --sans: 'Inter', -apple-system, system-ui, sans-serif;
+      --cap: 1040px;                          /* content cap */
+      --pad-x: clamp(16px, 4vw, 28px);        /* fluid gutters */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--accent-deep); outline-offset: 2px; border-radius: 2px;
+    }
+
+    /* Internal-use banner — so a stray screenshot is self-evidently not for distribution. */
+    .internal-banner {
+      background: #2B2620; color: #F3EEE3; font-family: var(--sans);
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      text-align: center; padding: 6px 12px;
+    }
+
+    /* Top bar — FollowRoom mark visible on operator surface */
+    .topbar {
+      position: sticky; top: 0;
+      background: rgba(251, 250, 246, 0.92);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-subtle); z-index: 10;
+    }
+    @supports not (backdrop-filter: blur(8px)) { .topbar { background: var(--bg-page); } }
+    .topbar-inner {
+      max-width: var(--cap); margin: 0 auto;
+      padding: 12px var(--pad-x);
+      display: flex; align-items: center; gap: clamp(10px, 2vw, 16px);
+    }
+    .brand { font-family: var(--serif); font-size: 16px; font-weight: 500; letter-spacing: -0.005em; color: var(--text-primary); }
+    .brand-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gold); margin: 0 6px 2px 0; vertical-align: middle; }
+    .topbar-spacer { flex: 1; }
+    /* ⌘K — the recency-bias quick-jump to a client/room */
+    .cmd-hint {
+      font-family: var(--sans); font-size: 12px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 10px; border: 1px solid var(--border-subtle);
+      border-radius: 4px; background: var(--bg-card); cursor: pointer;
+    }
+    .kbd { font-family: 'SF Mono', Menlo, monospace; font-size: 11px; color: var(--text-secondary); }
+    .pending-chip { background: var(--bg-muted); color: var(--text-secondary); font-size: 13px; padding: 4px 10px 4px 8px; border-radius: 12px; text-decoration: none; border-left: 2px solid var(--accent-gold); white-space: nowrap; }
+    .pending-chip strong { color: var(--text-primary); font-weight: 500; }
+    .topbar-user { display: flex; align-items: center; gap: 8px; }
+    .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-deep); color: #FBFAF6; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 13px; font-weight: 500; flex-shrink: 0; }
+    .user-name { font-size: 13px; color: var(--text-secondary); }
+
+    .container { max-width: var(--cap); margin: 0 auto; padding: clamp(24px, 4vw, 32px) var(--pad-x) 80px; }
+    .date-line { font-family: var(--serif); font-size: 14px; color: var(--text-muted); letter-spacing: 0.02em; margin-bottom: 4px; }
+    .day-greeting { font-family: var(--serif); font-size: clamp(24px, 4.5vw, 32px); font-weight: 400; letter-spacing: -0.015em; margin: 0 0 clamp(20px, 3vw, 28px); line-height: 1.15; }
+    .day-greeting .subtle { color: var(--text-secondary); font-weight: 400; }
+
+    /* ── Thin metrics strip — fluid, reflows continuously ── */
+    .metric-strip {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1px; background: var(--border-subtle);
+      border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .metric { background: var(--bg-card); padding: 11px 16px; }
+    .metric .m-num { font-family: var(--serif); font-size: clamp(18px, 2.2vw, 22px); color: var(--text-primary); line-height: 1.1; font-feature-settings: 'tnum'; }
+    .metric .m-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+
+    /* ── One headline insight ──────────────────────────── */
+    .headline-insight {
+      display: flex; align-items: baseline; gap: 10px;
+      padding: 12px 16px; margin-bottom: clamp(24px, 3.5vw, 36px);
+      background: var(--bg-muted); border-radius: 8px; border-left: 2px solid var(--accent-gold);
+    }
+    .headline-insight .hi-body { font-family: var(--serif); font-size: clamp(15px, 1.8vw, 16px); line-height: 1.5; color: var(--text-primary); }
+    .headline-insight .hi-body strong { font-weight: 500; }
+    .headline-insight .hi-action { color: var(--accent-deep); text-decoration: none; font-weight: 500; font-family: var(--sans); font-size: 13px; }
+
+    /* Section pattern — denser than client rooms */
+    section.panel { margin-bottom: clamp(28px, 4vw, 40px); }
+    .panel-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; }
+    .panel-title { font-family: var(--serif); font-size: 17px; font-weight: 500; margin: 0; letter-spacing: -0.003em; }
+    .panel-meta { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .panel-link { font-size: 13px; color: var(--accent-deep); text-decoration: none; font-weight: 500; }
+    .panel-link:hover { text-decoration: underline; }
+
+    /* Today panel — 3 items max */
+    .today-list { list-style: none; padding: 0; margin: 0; }
+    .today-item { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border-subtle); align-items: baseline; flex-wrap: wrap; }
+    .today-item:last-child { border-bottom: none; }
+    .today-when { font-family: var(--serif); font-size: 14px; color: var(--accent-gold-text); width: 86px; flex-shrink: 0; }
+    .today-body { flex: 1; min-width: 200px; }
+    .today-title { color: var(--text-primary); font-weight: 500; line-height: 1.4; }
+    .today-meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .today-link { font-size: 13px; color: var(--accent-deep); text-decoration: none; font-weight: 500; flex-shrink: 0; padding-top: 2px; }
+
+    /* Pending forwards strip */
+    .pending-strip { background: var(--bg-muted); border: 1px solid var(--border-subtle); border-left: 2px solid var(--accent-gold); border-radius: 0 4px 4px 0; padding: 14px 18px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .pending-strip .count { font-family: var(--serif); font-size: 24px; color: var(--text-primary); line-height: 1; width: 32px; text-align: center; }
+    .pending-strip .body { flex: 1; min-width: 200px; }
+    .pending-strip .body strong { font-weight: 500; }
+    .pending-strip .meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .pending-strip .review-link { font-size: 13px; color: var(--accent-deep); text-decoration: none; font-weight: 500; padding: 6px 12px; border: 1px solid var(--accent-deep); border-radius: 4px; }
+
+    /* ── Rooms index — sortable, deal-titled, with anchor gaps ── */
+    .sort-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .sort-tab { font-size: 12px; color: var(--text-muted); padding: 6px 12px; border-radius: 100px; text-decoration: none; border: 1px solid transparent; cursor: pointer; background: none; font-family: var(--sans); line-height: 1; }
+    .sort-tab:hover { color: var(--text-secondary); }
+    .sort-tab.active { color: var(--text-primary); background: var(--bg-muted); border-color: var(--border-subtle); font-weight: 500; }
+
+    .room-list { list-style: none; padding: 0; margin: 0; }
+    .room-li { border-bottom: 1px solid var(--border-subtle); }
+    .room-li:last-child { border-bottom: none; }
+    .room-row { display: grid; grid-template-columns: 1fr auto; gap: 12px 16px; padding: 13px 0; align-items: center; text-decoration: none; color: inherit; cursor: pointer; border-radius: 4px; }
+    .room-row:hover { background: var(--bg-muted); margin: 0 -12px; padding: 13px 12px; }
+    .room-main { min-width: 0; }
+    .room-title-line { font-weight: 500; color: var(--text-primary); font-size: 15px; }
+    .room-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gold); display: inline-block; margin-right: 7px; vertical-align: middle; }
+    .room-pulse.quiet { background: var(--text-muted); }
+    .room-pulse.deep { background: var(--accent-deep); }
+    .room-context { font-size: 13px; color: var(--text-secondary); margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* Gentle freshness hint — only on rooms going cold. Muted, no alarm styling, no icon. */
+    .freshness-hint { font-size: 12px; color: var(--text-muted); margin-top: 5px; font-style: italic; }
+    .gap-chip { display: inline-flex; align-items: center; font-size: 11px; color: #7A4326; border: 1px solid rgba(122,67,38,0.32); background: rgba(155,91,59,0.06); padding: 3px 9px; border-radius: 100px; margin-top: 6px; }
+    .room-side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+    .room-stage { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .room-stage.attention { color: var(--attention-warm); }
+    .room-last { font-size: 12px; color: var(--text-muted); font-feature-settings: 'tnum'; }
+
+    /* Cross-relationship insight — Stage 2 Hivemind preview */
+    .insight { padding: 16px 18px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 4px; }
+    .insight + .insight { margin-top: 12px; }
+    .insight-eyebrow { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: flex; gap: 10px; align-items: center; }
+    .preview-pill { font-size: 10px; color: var(--accent-gold-text); border: 1px solid var(--accent-gold); padding: 1px 6px; border-radius: 8px; letter-spacing: 0.05em; }
+    .insight-body { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--text-primary); }
+    .insight-body strong { font-weight: 500; }
+    .insight-meta { font-size: 13px; color: var(--text-secondary); margin-top: 8px; }
+    .insight-action { font-size: 13px; color: var(--accent-deep); text-decoration: none; font-weight: 500; }
+
+    /* Recent activity feed */
+    .activity-list { list-style: none; padding: 0; margin: 0; }
+    .activity-item { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border-subtle); font-size: 14px; }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-when { font-size: 12px; color: var(--text-muted); width: 70px; flex-shrink: 0; font-feature-settings: 'tnum'; padding-top: 1px; }
+    .activity-body { flex: 1; color: var(--text-secondary); }
+    .activity-body strong { color: var(--text-primary); font-weight: 500; }
+    .activity-body .activity-type { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; margin-right: 8px; }
+
+    /* The ONE structural breakpoint: drop the ⌘K hint on narrow screens.
+       Everything else scales fluidly via clamp() + auto-fit. */
+    @media (max-width: 680px) {
+      .cmd-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="internal-banner">Internal mockup · not for distribution · demo data</div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="brand-dot"></span>FollowRoom</div>
+      <div class="topbar-spacer"></div>
+      <button class="cmd-hint">Jump to a room <span class="kbd">⌘K</span></button>
+      <a class="pending-chip" href="#pending"><strong>4</strong> pending</a>
+      <div class="topbar-user">
+        <div class="avatar">ML</div>
+        <span class="user-name">Marcus</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <p class="date-line">SATURDAY · 23 MAY 2026</p>
+    <h1 class="day-greeting">Good morning, Marcus. <span class="subtle">Three things would benefit from your eyes this week.</span></h1>
+
+    <!-- Thin metrics strip -->
+    <div class="metric-strip">
+      <div class="metric"><div class="m-num">32</div><div class="m-label">Active rooms</div></div>
+      <div class="metric"><div class="m-num">847</div><div class="m-label">Facts in memory</div></div>
+      <div class="metric"><div class="m-num">14</div><div class="m-label">Events this week</div></div>
+      <div class="metric"><div class="m-num">3.2hr</div><div class="m-label">Time saved vs manual</div></div>
+    </div>
+
+    <!-- One headline insight (full set lives lower, in "Across your book") -->
+    <div class="headline-insight">
+      <div class="hi-body">
+        <strong>Three buyers are weighing Marine Parade right now</strong> — a comparative read could help in any of those conversations.
+        <span class="preview-pill">PREVIEW</span> &nbsp;<a class="hi-action" href="#book">Open →</a>
+      </div>
+    </div>
+
+    <!-- This week — actions, above the fold -->
+    <section class="panel" aria-labelledby="today-h">
+      <div class="panel-header">
+        <h2 id="today-h" class="panel-title">This week</h2>
+        <span class="panel-meta">3 items</span>
+      </div>
+      <ul class="today-list">
+        <li class="today-item">
+          <span class="today-when">By Fri 5pm</span>
+          <div class="today-body">
+            <div class="today-title">Wendy's OTP decision · Marina One sale</div>
+            <div class="today-meta">Two offers in. Your recommendation is drafted; needs your read-through.</div>
+          </div>
+          <a class="today-link" href="#">Open</a>
+        </li>
+        <li class="today-item">
+          <span class="today-when">By Sun</span>
+          <div class="today-body">
+            <div class="today-title">Sarah's Marine Parade shortlist · 3 units</div>
+            <div class="today-meta">Discovery conversation last Thursday. Shortlist promised for the weekend.</div>
+          </div>
+          <a class="today-link" href="#">Open</a>
+        </li>
+        <li class="today-item">
+          <span class="today-when">End of May</span>
+          <div class="today-body">
+            <div class="today-title">David's Sentosa Cove window · Marina Collection unit</div>
+            <div class="today-meta">Owner indicated they may relist higher in June. Decision needed on a soft offer.</div>
+          </div>
+          <a class="today-link" href="#">Open</a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Pending forwards -->
+    <section class="panel" id="pending" aria-labelledby="pending-h">
+      <div class="panel-header">
+        <h2 id="pending-h" class="panel-title">WhatsApp forwards</h2>
+        <span class="panel-meta">awaiting attribution</span>
+      </div>
+      <div class="pending-strip">
+        <div class="count">4</div>
+        <div class="body">
+          <div><strong>Four forwards from this morning</strong> awaiting your confirm.</div>
+          <div class="meta">Suggested rooms: Sarah Tan (×2), Edmund Chua, Rachel Yeo</div>
+        </div>
+        <a class="review-link" href="#">Review</a>
+      </div>
+    </section>
+
+    <!-- Your rooms — sortable index. Default sort = Recency (most recent first).
+         Inline gap chips surface anchor-checklist holes; the full checklist lives inside each room.
+         Freshness hints appear only on rooms going cold — calm, no alarm styling. -->
+    <section class="panel" aria-labelledby="rooms-h">
+      <div class="panel-header">
+        <h2 id="rooms-h" class="panel-title">Your rooms</h2>
+        <div class="sort-tabs" aria-label="Sort rooms">
+          <a class="sort-tab active" aria-current="true" href="#">Recency</a>
+          <a class="sort-tab" href="#">Stage</a>
+          <a class="sort-tab" href="#">Needs attention</a>
+        </div>
+      </div>
+      <ul class="room-list">
+
+        <li class="room-li">
+          <a class="room-row" href="#">
+            <div class="room-main">
+              <div class="room-title-line"><span class="room-pulse"></span>Sale of Marina One #28-04</div>
+              <div class="room-context">Wendy Lim · 2 offers received · recommendation drafted</div>
+            </div>
+            <div class="room-side">
+              <span class="room-stage attention">Negotiation · Fri</span>
+              <span class="room-last">today</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="room-li">
+          <a class="room-row" href="#">
+            <div class="room-main">
+              <div class="room-title-line"><span class="room-pulse"></span>Purchase · resale Marine Parade</div>
+              <div class="room-context">Rachel Yeo · first-time buyer · ~$1.5M · forwarded a listing today</div>
+            </div>
+            <div class="room-side">
+              <span class="room-stage">Active discussion</span>
+              <span class="room-last">today</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="room-li">
+          <a class="room-row" href="#">
+            <div class="room-main">
+              <div class="room-title-line"><span class="room-pulse deep"></span>Purchase · Bukit Timah &amp; Sentosa</div>
+              <div class="room-context">David &amp; Mei Lin Chen · 3 concurrent strategies · investment angle</div>
+              <span class="gap-chip">Move-in timeline not captured</span>
+            </div>
+            <div class="room-side">
+              <span class="room-stage">Active discussion</span>
+              <span class="room-last">yesterday</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="room-li">
+          <a class="room-row" href="#">
+            <div class="room-main">
+              <div class="room-title-line"><span class="room-pulse"></span>Purchase of a 4-bedroom HDB</div>
+              <div class="room-context">Sarah Tan · Marine Parade · ~$1.8M · husband alignment pending</div>
+              <span class="gap-chip">Financing not captured</span>
+            </div>
+            <div class="room-side">
+              <span class="room-stage">Discovery</span>
+              <span class="room-last">Thu</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="room-li">
+          <a class="room-row" href="#">
+            <div class="room-main">
+              <div class="room-title-line"><span class="room-pulse quiet"></span>Purchase · Marina Bay 1-bedroom</div>
+              <div class="room-context">Edmund Chua · investment buyer · awaiting yield projections</div>
+              <span class="gap-chip">Target yield not captured</span>
+              <div class="freshness-hint">quiet for 9 days</div>
+            </div>
+            <div class="room-side">
+              <span class="room-stage">Awaiting</span>
+              <span class="room-last">3d ago</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="room-li">
+          <a class="room-row" href="#">
+            <div class="room-main">
+              <div class="room-title-line"><span class="room-pulse quiet"></span>Lease renewal · Tanjong Pagar shophouse</div>
+              <div class="room-context">Mr. Lim Boon Keng · commercial landlord · renewal next quarter</div>
+              <div class="freshness-hint">quiet for 3 weeks</div>
+            </div>
+            <div class="room-side">
+              <span class="room-stage">Standing</span>
+              <span class="room-last">2w ago</span>
+            </div>
+          </a>
+        </li>
+
+      </ul>
+      <div style="margin-top:14px;"><a class="panel-link" href="#">View all 32 rooms →</a></div>
+    </section>
+
+    <!-- Across your book — full Hivemind preview (headline promoted to the top strip) -->
+    <section class="panel" id="book" aria-labelledby="insight-h">
+      <div class="panel-header">
+        <h2 id="insight-h" class="panel-title">Across your book</h2>
+        <span class="panel-meta">2 noticings this week</span>
+      </div>
+      <div class="insight">
+        <div class="insight-eyebrow"><span>Cross-room pattern</span><span class="preview-pill">PREVIEW</span></div>
+        <div class="insight-body">
+          <strong>Three buyers weighing Marine Parade</strong> right now — Sarah, David (investment angle), and Rachel. A
+          comparative read could be useful in any of those conversations.
+        </div>
+        <div class="insight-meta">Based on your last 14 days of conversations. <a class="insight-action" href="#">Open comparative read →</a></div>
+      </div>
+      <div class="insight">
+        <div class="insight-eyebrow"><span>Cross-room observation</span><span class="preview-pill">PREVIEW</span></div>
+        <div class="insight-body">
+          <strong>Four rooms are waiting on something from you</strong> — David's floor plans (day 3),
+          Edmund's yield projections, and two shortlists promised for this weekend.
+        </div>
+        <div class="insight-meta">Drawn from open commitments across your rooms. <a class="insight-action" href="#">Open David's room →</a></div>
+      </div>
+    </section>
+
+    <!-- Recent activity -->
+    <section class="panel" aria-labelledby="activity-h">
+      <div class="panel-header">
+        <h2 id="activity-h" class="panel-title">Recent activity</h2>
+        <a class="panel-link" href="#">See all →</a>
+      </div>
+      <ul class="activity-list">
+        <li class="activity-item">
+          <span class="activity-when">9:42 AM</span>
+          <div class="activity-body"><span class="activity-type">Forward</span><strong>4 WhatsApp messages</strong> arrived in pending tray</div>
+        </li>
+        <li class="activity-item">
+          <span class="activity-when">Yesterday</span>
+          <div class="activity-body"><span class="activity-type">Room</span><strong>David &amp; Mei Lin's room</strong> — 3 new facts from your weekly catch-up voice memo</div>
+        </li>
+        <li class="activity-item">
+          <span class="activity-when">Yesterday</span>
+          <div class="activity-body"><span class="activity-type">Confirm</span>You confirmed 2 forwards to <strong>Wendy Lim</strong></div>
+        </li>
+        <li class="activity-item">
+          <span class="activity-when">Sat</span>
+          <div class="activity-body"><span class="activity-type">Upload</span><strong>Sarah Tan's discovery transcript</strong> · processed in 38s · 5 facts added</div>
+        </li>
+        <li class="activity-item">
+          <span class="activity-when">Fri</span>
+          <div class="activity-body"><span class="activity-type">Room update</span><strong>Wendy's room published</strong> · comparable units + offer summary</div>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+</body>
+</html>

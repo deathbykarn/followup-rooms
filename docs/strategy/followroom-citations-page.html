@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FollowRoom — How receipts work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3EEE3;
+    --paper-warm: #F8F4EA;
+    --paper-deep: #EAE3D2;
+    --ink: #18150F;
+    --ink-soft: #322C22;
+    --ink-mid: #4E4636;
+    --muted: #7A6F58;
+    --rule: #CFC4AB;
+    --rule-soft: #DDD4BD;
+    --sage: #3B5345;
+    --sage-soft: #5A7060;
+    --clay: #9A6A45;
+    --gold: #B8923E;
+  }
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink-soft);
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.12rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content:""; position: fixed; inset:-10%; pointer-events:none; z-index:1;
+    background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.06 0 0 0 0 0.03 0 0 0 0.15 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity:.5; mix-blend-mode:multiply;
+  }
+  main { position: relative; z-index: 2; }
+  .display { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 460; line-height:.95; letter-spacing:-.025em; color:var(--ink); }
+  .eyebrow { font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:var(--sage); }
+  .mono { font-family:'JetBrains Mono',monospace; }
+  p { max-width: 40em; }
+  em { font-style: italic; }
+  strong { font-weight: 600; color: var(--ink); }
+
+  .wrap { max-width: 1080px; margin:0 auto; padding:0 clamp(1.5rem,5vw,4.5rem); }
+  section { padding: clamp(4rem,9vh,7rem) 0; border-bottom:1px solid var(--rule-soft); }
+  section:last-of-type { border-bottom:none; }
+
+  .section-head { display:grid; grid-template-columns:auto 1fr; gap:1.4rem; align-items:baseline; margin-bottom:3rem; padding-bottom:1rem; border-bottom:1px solid var(--rule); }
+  .section-num { font-family:'JetBrains Mono',monospace; font-size:.8rem; letter-spacing:.1em; color:var(--clay); font-weight:600; }
+  .section-title { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 40,'opsz' 60,'wght' 450; font-size:clamp(1.4rem,2.4vw,1.85rem); color:var(--ink); letter-spacing:-.01em; line-height:1.1; }
+  .section-tag { margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+
+  /* COVER */
+  .cover { min-height:90vh; display:flex; flex-direction:column; justify-content:space-between; padding:clamp(2.5rem,5vh,4rem) 0; border-bottom:2px solid var(--ink); }
+  .cover-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; }
+  .brand-mark { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 30,'opsz' 48,'wght' 500; font-size:1.05rem; letter-spacing:.03em; color:var(--ink); }
+  .brand-mark .dot { color:var(--clay); }
+  .stamp { border:1.5px solid var(--sage); color:var(--sage); padding:.4rem .9rem; font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; border-radius:2px; }
+  .cover-center { flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(2rem,6vh,4rem) 0; }
+  .cover-eyebrow { margin-bottom:1.6rem; }
+  .cover-title { font-size:clamp(3rem,9vw,6.5rem); margin-bottom:1.5rem; color:var(--ink); }
+  .cover-sub { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 100,'opsz' 80,'wght' 320; font-style:italic; font-size:clamp(1.3rem,2.3vw,1.85rem); line-height:1.3; max-width:26em; color:var(--ink-soft); }
+  .cover-bottom { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:2rem; padding-top:1.8rem; border-top:1px solid var(--rule); }
+  .cover-bottom .label { font-family:'JetBrains Mono',monospace; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:.45rem; }
+  .cover-bottom .value { font-family:'Fraunces',Georgia,serif; font-variation-settings:'opsz' 36,'wght' 420; font-size:1rem; color:var(--ink); line-height:1.3; }
+
+  /* PROMISE band */
+  .promise { background:var(--sage); color:var(--paper-warm); padding:clamp(5rem,13vh,9rem) 0; position:relative; overflow:hidden; }
+  .promise::before { content:""; position:absolute; inset:0; background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.92 0 0 0 0 0.85 0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); mix-blend-mode:screen; }
+  .promise .wrap { position:relative; z-index:2; }
+  .promise .eyebrow { color:var(--gold); margin-bottom:1.5rem; }
+  .promise-statement { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 360; font-style:italic; font-size:clamp(1.9rem,4.2vw,3.4rem); line-height:1.12; color:var(--paper-warm); max-width:20em; letter-spacing:-.015em; margin-bottom:1.5rem; }
+  .promise-note { font-size:1.05rem; color:rgba(248,244,234,.78); max-width:34em; line-height:1.55; }
+
+  .lead { font-family:'Fraunces',Georgia,serif; font-variation-settings:'SOFT' 100,'opsz' 60,'wght' 350; font-size:clamp(1.35rem,2.1vw,1.65rem); line-height:1.42; color:var(--ink); max-width:32em; margin-bottom:2rem; }
+  .lead em { color:var(--clay); font-style:italic; }
+  .body-copy { font-size:1.05rem; line-height:1.6; color:var(--ink-mid); max-width:38em; }
+  .body-copy + .body-copy { margin-top:1rem; }
+  .body-copy strong { color:var(--ink); }
+
+  /* FLOW DIAGRAM — conversation → memory → what you see */
+  .flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:1rem; align-items:stretch; margin:1rem 0 .5rem; }
+  .flow-step { display:flex; flex-direction:column; gap:.6rem; }
+  .flow-card { background:var(--paper-warm); border:1px solid var(--rule); border-radius:4px; padding:1.15rem 1.25rem; flex:1; display:flex; flex-direction:column; gap:.55rem; min-height:140px; }
+  .flow-card .fc-label { font-family:'JetBrains Mono',monospace; font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--clay); }
+  .flow-card .fc-body { font-family:'Fraunces',serif; font-variation-settings:'opsz' 40,'wght' 420; font-size:1.02rem; color:var(--ink); line-height:1.25; }
+  .flow-card .fc-quote { font-family:'Newsreader',serif; font-style:italic; font-size:.92rem; color:var(--ink-mid); line-height:1.4; }
+  .flow-arrow { align-self:center; font-family:'JetBrains Mono',monospace; font-size:1.5rem; color:var(--clay); }
+  .flow-cap { font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.04em; color:var(--muted); line-height:1.4; }
+
+  /* RECEIPT — the revealed quote, reused in mock + flow */
+  .receipt { border-left:3px solid var(--sage); background:rgba(59,83,69,.06); padding:.8rem 1rem; border-radius:0 3px 3px 0; }
+  .receipt .r-from { font-family:'JetBrains Mono',monospace; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--sage); margin-bottom:.4rem; }
+  .receipt .r-quote { font-family:'Fraunces',serif; font-variation-settings:'SOFT' 100,'opsz' 36,'wght' 380; font-style:italic; font-size:1.02rem; color:var(--ink); line-height:1.35; }
+
+  /* SEALED stamp diagram */
+  .sealed-flow { display:flex; flex-direction:column; align-items:center; gap:1rem; margin:1.5rem 0 .5rem; text-align:center; }
+  .sealed-node { font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.04em; color:var(--muted); }
+  .sealed-box { border:2px solid var(--ink); background:var(--paper-warm); border-radius:5px; padding:1.3rem 2.2rem; display:inline-flex; flex-direction:column; align-items:center; gap:.4rem; position:relative; }
+  .sealed-box .lock { font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--sage); border:1.5px solid var(--sage); padding:.3rem .8rem; border-radius:2px; }
+  .sealed-box .sb-title { font-family:'Fraunces',serif; font-variation-settings:'opsz' 48,'wght' 460; font-size:1.2rem; color:var(--ink); }
+  .down { font-family:'JetBrains Mono',monospace; color:var(--clay); font-size:1.3rem; }
+
+  /* DECISION diagram — no receipt, no memory */
+  .decision { display:flex; flex-direction:column; align-items:center; gap:.8rem; margin:1.5rem 0 .5rem; text-align:center; }
+  .dec-q { font-family:'Fraunces',serif; font-variation-settings:'opsz' 48,'wght' 450; font-size:1.15rem; color:var(--ink); }
+  .dec-branches { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; width:100%; max-width:620px; margin-top:.4rem; }
+  .dec-card { border:1px solid var(--rule); border-radius:4px; padding:1.2rem 1.3rem; background:var(--paper-warm); }
+  .dec-card .dec-label { font-family:'JetBrains Mono',monospace; font-size:.64rem; letter-spacing:.16em; text-transform:uppercase; margin-bottom:.5rem; }
+  .dec-card .dec-body { font-family:'Fraunces',serif; font-variation-settings:'opsz' 40,'wght' 430; font-size:1.05rem; color:var(--ink); line-height:1.25; }
+  .dec-card .dec-sub { font-size:.9rem; color:var(--ink-mid); line-height:1.45; margin-top:.4rem; }
+  .dec-card.yes { border-top:3px solid var(--sage); }
+  .dec-card.yes .dec-label { color:var(--sage); }
+  .dec-card.no { border-top:3px solid var(--clay); }
+  .dec-card.no .dec-label { color:var(--clay); }
+
+  /* APPROVAL flow */
+  .approve { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:1rem; align-items:center; margin:1.25rem 0 .5rem; }
+  .ap-node { border:1px solid var(--rule); border-radius:4px; background:var(--paper-warm); padding:1rem 1.1rem; text-align:center; font-family:'Fraunces',serif; font-variation-settings:'opsz' 40,'wght' 430; font-size:1rem; color:var(--ink); line-height:1.25; }
+  .ap-node.gate { border:2px solid var(--sage); color:var(--sage); }
+  .ap-arrow { text-align:center; font-family:'JetBrains Mono',monospace; font-size:1.4rem; color:var(--clay); }
+  .ap-caption { text-align:center; font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.04em; color:var(--muted); margin-top:.3rem; }
+
+  /* ROOM MOCK — the app screen */
+  .room { max-width:392px; margin:1.5rem auto .5rem; border:1px solid var(--rule); border-radius:16px; background:var(--paper-warm); box-shadow:0 24px 60px -28px rgba(24,21,15,.4); overflow:hidden; }
+  .room-bar { display:flex; align-items:center; justify-content:space-between; padding:.95rem 1.2rem; border-bottom:1px solid var(--rule); background:var(--paper-deep); }
+  .room-bar .rb-back { font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--muted); }
+  .room-bar .rb-name { font-family:'Fraunces',serif; font-variation-settings:'opsz' 40,'wght' 480; font-size:1rem; color:var(--ink); }
+  .room-label { font-family:'JetBrains Mono',monospace; font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); padding:1rem 1.2rem .3rem; }
+  .fact-row { padding:.9rem 1.2rem; border-bottom:1px solid var(--rule-soft); display:grid; grid-template-columns:1fr auto; gap:.6rem 1rem; align-items:start; }
+  .fact-row:last-child { border-bottom:none; }
+  .fact-row .ft { font-family:'JetBrains Mono',monospace; font-size:.58rem; letter-spacing:.14em; text-transform:uppercase; color:var(--clay); margin-bottom:.3rem; }
+  .fact-row .fv { font-family:'Fraunces',serif; font-variation-settings:'opsz' 44,'wght' 440; font-size:1.08rem; color:var(--ink); line-height:1.2; }
+  .fact-row .fv .fv-soft { display:block; font-family:'Newsreader',serif; font-style:italic; font-size:.92rem; color:var(--ink-mid); margin-top:.15rem; }
+  .fact-row .chev { font-family:'JetBrains Mono',monospace; color:var(--muted); font-size:.95rem; padding-top:.7rem; }
+  .fact-row.open { background:rgba(59,83,69,.05); }
+  .fact-row.open .chev { color:var(--sage); }
+  .fact-row .receipt { grid-column:1 / -1; margin-top:.65rem; }
+
+  /* PULL QUOTE — the dialogue beat */
+  .pull { border-top:1.5px solid var(--ink); border-bottom:1px solid var(--rule); padding:2rem 0; margin:2.5rem 0; }
+  .pull .pull-line { font-family:'Fraunces',serif; font-variation-settings:'SOFT' 100,'opsz' 100,'wght' 420; font-style:italic; font-size:clamp(1.5rem,3vw,2.1rem); color:var(--ink); line-height:1.2; max-width:24em; }
+  .pull .pull-attr { font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.1em; color:var(--muted); margin-top:1rem; text-transform:uppercase; }
+
+  /* MOMENTS grid */
+  .moments { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid var(--rule); margin-top:1rem; }
+  .moment { padding:1.8rem 1.6rem 1.8rem 0; border-bottom:1px solid var(--rule); border-right:1px solid var(--rule); }
+  .moment:nth-child(3n) { border-right:none; padding-right:0; }
+  .moment:not(:nth-child(3n)) { padding-right:1.6rem; }
+  .moment .mn { font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--clay); margin-bottom:.7rem; }
+  .moment h4 { font-family:'Fraunces',serif; font-variation-settings:'opsz' 48,'wght' 460; font-size:1.18rem; color:var(--ink); margin-bottom:.5rem; line-height:1.18; }
+  .moment p { font-size:.95rem; line-height:1.55; color:var(--ink-mid); max-width:none; }
+
+  .reco { margin-top:2.5rem; padding:1.75rem 2rem; background:var(--paper-warm); border-left:3px solid var(--clay); }
+  .reco h4 { font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--clay); margin-bottom:.8rem; }
+  .reco .pick-sub { font-family:'Fraunces',serif; font-variation-settings:'SOFT' 100,'opsz' 48,'wght' 330; font-style:italic; font-size:1.15rem; color:var(--ink-soft); line-height:1.4; max-width:36em; }
+
+  footer { padding:3rem 0 5rem; border-top:1px solid var(--rule); font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.08em; color:var(--muted); line-height:1.7; }
+  footer .foot-row { display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; padding-bottom:1.4rem; border-bottom:1px solid var(--rule-soft); margin-bottom:1.4rem; }
+  footer p { max-width:58em; font-size:.76rem; }
+  footer p + p { margin-top:.9rem; }
+
+  @media (max-width:860px){
+    .flow, .approve { grid-template-columns:1fr; }
+    .flow-arrow, .ap-arrow { transform:rotate(90deg); justify-self:center; }
+    .dec-branches, .moments { grid-template-columns:1fr; }
+    .moment { border-right:none; padding-right:0 !important; }
+    section { padding:3.5rem 0; }
+  }
+  @media print { body{background:#fff;} body::before{display:none;} .promise{background:#fff;color:#000;} .promise-statement,.promise-note{color:#000;} section{break-inside:avoid;} .room{box-shadow:none;} }
+
+  @keyframes rise { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+  .cover-title,.cover-sub,.cover-eyebrow,.cover-bottom { animation:rise 1s ease-out backwards; }
+  .cover-eyebrow{animation-delay:.1s;} .cover-title{animation-delay:.25s;} .cover-sub{animation-delay:.45s;} .cover-bottom{animation-delay:.65s;}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- COVER -->
+  <section class="cover wrap">
+    <div class="cover-top">
+      <div class="brand-mark">FollowRoom<span class="dot">·</span></div>
+      <div class="stamp">Operator trust · How receipts work</div>
+    </div>
+    <div class="cover-center">
+      <div class="cover-eyebrow eyebrow">The trust layer · for you, the agent</div>
+      <h1 class="display cover-title">Where every<br>detail comes<br>from.</h1>
+      <p class="cover-sub">You can't act on a memory you can't check. So every detail FollowRoom hands <em>you</em> comes with a receipt — the actual words, from the actual conversation. Your client gets a clean letter; the proof stays on your side.</p>
+    </div>
+    <div class="cover-bottom">
+      <div><div class="label">Who it's for</div><div class="value">You, the agent —<br>not the client</div></div>
+      <div><div class="label">The feeling</div><div class="value">Confidence, not<br>second-guessing</div></div>
+      <div><div class="label">In one line</div><div class="value">Nothing guessed.<br>Nothing floats free.</div></div>
+      <div><div class="label">The client sees</div><div class="value">A clean letter —<br>receipts stay with you</div></div>
+    </div>
+  </section>
+
+  <!-- PROMISE band -->
+  <section class="promise">
+    <div class="wrap">
+      <div class="eyebrow">The promise underneath</div>
+      <p class="promise-statement">FollowRoom remembers like a good assistant, not a rumour mill.</p>
+      <p class="promise-note">Every detail it hands you comes with the words behind it, the original is never altered, and you approve anything a client ever sees. The receipts are for <em>you</em> — so you never repeat something you're not sure of. The rest of this page shows how, and what it feels like on a Tuesday between viewings.</p>
+    </div>
+  </section>
+
+  <!-- 01 — TIED TO SOMETHING REAL -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Every detail is tied to something that was really said.</h2>
+      <span class="section-tag">The chain</span>
+    </div>
+
+    <p class="lead">When a detail gets saved — a budget, a worry, a promise you made — it doesn't get saved alone. It gets saved <em>with the quote behind it</em>.</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-card">
+          <div class="fc-label">The conversation</div>
+          <div class="fc-quote">&ldquo;We could go to 1.6 but only if my in-laws chip in&rdquo;</div>
+        </div>
+        <div class="flow-cap">What they actually said — kept word for word.</div>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">
+        <div class="flow-card">
+          <div class="fc-label">What we remember</div>
+          <div class="fc-body">Budget ~$1.6m — needs in-law help</div>
+          <div class="fc-quote">&hellip; saved together with the quote it came from.</div>
+        </div>
+        <div class="flow-cap">A clear detail, never separated from its source.</div>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">
+        <div class="flow-card">
+          <div class="fc-label">What you see</div>
+          <div class="fc-body">Budget ~$1.6m</div>
+          <div class="receipt"><div class="r-from">Tap to see the words</div><div class="r-quote">&ldquo;&hellip;1.6 but only if my in-laws&hellip;&rdquo;</div></div>
+        </div>
+        <div class="flow-cap">The proof sits one tap under the detail.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 — LOCKED FOREVER -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">The original is locked — forever.</h2>
+      <span class="section-tag">Source immutability</span>
+    </div>
+
+    <p class="lead">Once a conversation comes in, the original is sealed. We build the client's memory <em>from</em> it — but we never edit the original. Not us, not anyone.</p>
+
+    <div class="sealed-flow">
+      <div class="sealed-node">A conversation comes in</div>
+      <div class="down">&darr;</div>
+      <div class="sealed-box">
+        <div class="lock">&#9679; Sealed · read-only</div>
+        <div class="sb-title">The original</div>
+      </div>
+      <div class="down">&darr;</div>
+      <div class="sealed-node">Memories are built from it &mdash; but it is never touched</div>
+    </div>
+
+    <p class="body-copy" style="margin-top:2rem;">So the proof behind every detail stays exactly as it happened — even years later, even after a hundred more conversations. The thing a receipt points to can never quietly change underneath it.</p>
+  </section>
+
+  <!-- 03 — NO RECEIPT, NO MEMORY -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">No receipt, no memory.</h2>
+      <span class="section-tag">The rule</span>
+    </div>
+
+    <p class="lead">This is the rule that makes the whole thing trustworthy: if a detail can't be backed by the words behind it, <em>it never gets saved.</em> There is no &ldquo;trust me.&rdquo; There is only &ldquo;here's where I got that.&rdquo;</p>
+
+    <div class="decision">
+      <div class="dec-q">Can we show the words it came from?</div>
+      <div class="down">&darr;</div>
+      <div class="dec-branches">
+        <div class="dec-card yes">
+          <div class="dec-label">&#10003; Yes</div>
+          <div class="dec-body">Saved, with its quote</div>
+          <div class="dec-sub">It joins the client's memory, receipt attached.</div>
+        </div>
+        <div class="dec-card no">
+          <div class="dec-label">&#10007; No</div>
+          <div class="dec-body">Never saved</div>
+          <div class="dec-sub">We don't keep anything we can't back up.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — YOU DECIDE -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">You decide what your client ever sees.</h2>
+      <span class="section-tag">You stay in control</span>
+    </div>
+
+    <p class="lead">Remembering is automatic. Sharing is not. Nothing reaches your client until <em>you've</em> looked at it and approved it — quote and all.</p>
+
+    <div class="approve">
+      <div>
+        <div class="ap-node">A remembered detail</div>
+        <div class="ap-caption">captured for you</div>
+      </div>
+      <div class="ap-arrow">&rarr;</div>
+      <div>
+        <div class="ap-node gate">You review it</div>
+        <div class="ap-caption">nothing passes without your OK</div>
+      </div>
+      <div class="ap-arrow">&rarr;</div>
+      <div>
+        <div class="ap-node">Your client's room</div>
+        <div class="ap-caption">only what you approved</div>
+      </div>
+    </div>
+
+    <p class="body-copy" style="margin-top:2rem;">We never message your clients. The receipts — and the private guesses a machine might make about someone's mood or motives — stay on your side of the line; the client's room is a clean letter. <strong>The relationship is yours. We just help you remember it.</strong></p>
+  </section>
+
+  <!-- 05 — THE MOMENT -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">It's there the moment you need it.</h2>
+      <span class="section-tag">A Tuesday, between viewings</span>
+    </div>
+
+    <p class="lead">You don't go looking for receipts. They're already sitting next to every detail — so the proof is there in the half-second before you speak.</p>
+
+    <p class="body-copy">A client you last spoke to three weeks ago calls out of nowhere. <em>&ldquo;Still thinking about that Marine Parade place — is it still around?&rdquo;</em></p>
+    <p class="body-copy">Three weeks and forty conversations ago. Normally you'd stall, flip through notes, half-remember. Instead you open <strong>your record of them</strong> — your side, not theirs — while they're still talking:</p>
+
+    <div class="room">
+      <div class="room-bar">
+        <span class="rb-back">&lsaquo; Your clients</span>
+        <span class="rb-name">Wei Lin &amp; Marcus</span>
+        <span class="rb-back mono" style="color:var(--sage);">Your view</span>
+      </div>
+      <div class="room-label">What matters to them · with receipts</div>
+
+      <div class="fact-row open">
+        <div>
+          <div class="ft">Budget</div>
+          <div class="fv">~$1.6m <span class="fv-soft">— but only with in-law help</span></div>
+          <div class="receipt"><div class="r-from">From their WhatsApp · 3 Apr</div><div class="r-quote">&ldquo;We could go to 1.6 but only if my in-laws chip in&rdquo;</div></div>
+        </div>
+        <div class="chev">&#9662;</div>
+      </div>
+
+      <div class="fact-row">
+        <div>
+          <div class="ft">Area</div>
+          <div class="fv">Marine Parade, ground floor</div>
+        </div>
+        <div class="chev">&#8250;</div>
+      </div>
+
+      <div class="fact-row">
+        <div>
+          <div class="ft">You promised</div>
+          <div class="fv">Send the ABSD breakdown by Friday</div>
+        </div>
+        <div class="chev">&#8250;</div>
+      </div>
+    </div>
+
+    <p class="body-copy" style="margin-top:1.75rem;">So instead of <em>&ldquo;remind me which one?&rdquo;</em> you say: <strong>&ldquo;The ground-floor unit near your in-laws — and you'd mentioned 1.6 works if they help out. Has that changed?&rdquo;</strong></p>
+
+    <div class="pull">
+      <div class="pull-line">They go quiet for a second. Then: &ldquo;&hellip;yeah. Exactly that.&rdquo;</div>
+      <div class="pull-attr">You sounded like you'd spoken yesterday</div>
+    </div>
+
+    <p class="body-copy">That's the whole product in one moment. The detail, and the words behind it, were one tap away — in <em>your</em> view. What you said back to Wei Lin was a clean line, no receipt attached; the proof was just there to make you sure before you spoke.</p>
+  </section>
+
+  <!-- 06 — WHY IT MATTERS HERE -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Why the receipt matters <em>here</em> — not later.</h2>
+      <span class="section-tag">The payoff</span>
+    </div>
+
+    <p class="lead">The quote isn't there for an audit you'll never run. It's there so that when you're about to act on a detail — quote a number, walk into a viewing, send a follow-up — you can trust it <em>without second-guessing.</em></p>
+
+    <div class="moments">
+      <div class="moment">
+        <div class="mn">Before a viewing</div>
+        <h4>Walk in already on the same page.</h4>
+        <p>Glance at the room and see what they care about — and the words they said it in. No cold opens.</p>
+      </div>
+      <div class="moment">
+        <div class="mn">On a call</div>
+        <h4>Settle &ldquo;1.6 or 1.7?&rdquo; instantly.</h4>
+        <p>You're reading their own words, not your memory of them. The number is right because you can see where it came from.</p>
+      </div>
+      <div class="moment">
+        <div class="mn">Writing a follow-up</div>
+        <h4>Nothing you promised slips.</h4>
+        <p>Every promise is logged with the message it came from — so &ldquo;send the ABSD breakdown by Friday&rdquo; doesn't quietly disappear.</p>
+      </div>
+    </div>
+
+    <div class="reco">
+      <h4>The line that ties it together</h4>
+      <p class="pick-sub">You're never repeating a detail and hoping it's right. You're repeating it <em>because you can see exactly where it came from.</em></p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-row">
+        <span>FollowRoom · Operator trust — How receipts work · v0.2</span>
+        <span>khaniff@gmail.com · 2026-05-25</span>
+      </div>
+      <p>AUDIENCE — this page is <strong>operator-facing</strong>: receipts are the agent's trust tool, not a client-visible feature. The client's room is a clean letter; the source quotes live on the operator's side. (Re-scoped from the earlier client-facing draft after the design red-team flagged that the rooms don't render receipts to clients.) The positioning page's hero sub-line and the &ldquo;Receipts, always&rdquo; pillar are updated to match this scope.</p>
+      <p>PLACEMENT — best as a trust / &ldquo;how it works&rdquo; explainer inside the product or onboarding, or a section after the main landing page's safety block. Voice and lexicon follow <em>followroom-positioning.html</em> — adviser-calm, outcome-first, &ldquo;receipt&rdquo; as the everyday word for what we internally call citations. No mention of &ldquo;AI&rdquo;, &ldquo;digital&rdquo;, or any sibling product.</p>
+      <p>HONESTY GUARDRAIL — copy deliberately says &ldquo;the words they said it in&rdquo; / &ldquo;the exact quote&rdquo;, NOT &ldquo;verified word-for-word&rdquo;. Today the system attaches a quote and instructs the model to copy it verbatim, but it does not yet programmatically check that the quote is a literal substring of the original. Before this page can claim &ldquo;every quote is verified against the original, character for character&rdquo;, ship the small <em>_insert_fact</em> substring-check hardening — then the stronger claim becomes provably true. Until then, the page is true as written.</p>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>

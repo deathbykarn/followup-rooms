@@ -65,3 +65,6 @@ CLAUDE.local.md
 # Supabase local
 supabase/.temp/
 supabase/.branches/
+
+# Brainstorming visual companion (local mockups)
+.superpowers/

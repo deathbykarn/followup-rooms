@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wendy's room — Khaniff Lau</title>
+  <!-- Generic title — never leak the deal/unit/client into the tab, history, or link unfurl. -->
+  <title>Your sale · FollowRoom</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -17,459 +18,415 @@
       --bg-muted: #F5F2EB;
       --text-primary: #1A1815;
       --text-secondary: #5C574E;
-      --text-muted: #9B9489;
+      --text-muted: #6E685D;        /* darkened to pass WCAG AA (~5:1) for small captions/meta */
       --border-subtle: #E8E3D9;
-      --accent-gold: #9B7B3B;
+      --accent-gold: #9B7B3B;        /* decorative use only (borders, marks) */
+      --accent-gold-text: #7E6224;   /* AA-passing gold for small text (eyebrows, numerals) */
       --accent-deep: #1F4F4A;
       --attention-warm: #9B5B3B;
       --serif: 'Newsreader', Georgia, serif;
       --sans: 'Inter', -apple-system, system-ui, sans-serif;
+      --space-section: clamp(40px, 8vw, 56px);
+      --space-within: clamp(14px, 3vw, 20px);
+      --pad-x: clamp(20px, 5vw, 24px);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
-      background: var(--bg-page);
-      color: var(--text-primary);
-      font-family: var(--sans);
-      font-size: 17px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg-page); color: var(--text-primary);
+      font-family: var(--sans); font-size: 17px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
     }
-    .room {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 32px 24px 96px;
+    a:focus-visible, summary:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent-deep); outline-offset: 2px; border-radius: 2px;
     }
-    .operator-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border-subtle);
+    /* the scroll wrapper takes keyboard focus, so it needs a visible ring too */
+    .table-scroll:focus-visible {
+      outline: 2px solid var(--accent-deep); outline-offset: 2px; border-radius: 2px;
     }
-    .operator-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--accent-deep);
-      color: #FBFAF6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 500;
-      flex-shrink: 0;
+
+    /* Internal-use banner — so a stray screenshot is self-evidently not for distribution. */
+    .internal-banner {
+      background: #2B2620; color: #F3EEE3; font-family: var(--sans);
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      text-align: center; padding: 6px 12px;
     }
-    .operator-name {
-      font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: -0.005em;
-      line-height: 1.2;
-    }
-    .operator-tagline {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-top: 2px;
-    }
-    .room-title {
-      font-family: var(--serif);
-      font-size: 38px;
-      font-weight: 400;
-      letter-spacing: -0.015em;
-      margin: 56px 0 8px;
-      line-height: 1.1;
-    }
-    .room-subtitle {
-      color: var(--text-secondary);
-      font-size: 16px;
-      margin-bottom: 0;
-    }
-    section.block { margin-top: 56px; }
-    .section-heading {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 500;
-      letter-spacing: -0.005em;
-      margin: 0 0 20px;
-    }
-    .operator-note {
-      background: var(--bg-muted);
-      border-left: 2px solid var(--accent-gold);
-      padding: 22px 24px;
-      border-radius: 0 4px 4px 0;
-      line-height: 1.7;
-    }
+
+    /* ── Room shell ───────────────────────────────────────
+       Layout follows content: this sale room's genuinely-secondary content is light
+       (a short timeline + a reach card), so it's a single, generously-set reading column —
+       no manufactured sidebar. DOM order == reading order (no display:contents/order tricks). */
+    .room { max-width: 680px; margin: 0 auto; padding: clamp(24px, 5vw, 32px) var(--pad-x) clamp(80px, 12vw, 96px); }
+
+    /* ── Co-brand header ───────────────────────────────── */
+    .operator-header { display: flex; flex-direction: column; gap: 16px; padding-bottom: var(--space-within); border-bottom: 1px solid var(--border-subtle); }
+    .brand-row { display: flex; align-items: center; justify-content: space-between; gap: 14px 18px; flex-wrap: wrap; }
+    .team { display: flex; align-items: center; gap: 9px; }
+    .team-mark { width: 26px; height: 26px; border-radius: 6px; flex-shrink: 0; background: var(--accent-deep); color: var(--bg-page); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 500; font-size: 14px; line-height: 1; }
+    .team-name { font-weight: 600; font-size: clamp(13px, 2.4vw, 15px); letter-spacing: 0.01em; color: var(--text-primary); }
+    .agency { display: flex; align-items: center; gap: 8px; }
+    .agency-mark { display:flex; width:26px; height:26px; border-radius:6px; flex-shrink:0; background:var(--accent-deep); color:var(--bg-page); align-items:center; justify-content:center; font-family:var(--serif); font-weight:600; font-size:14px; line-height:1; }
+    .agency-name { font-weight: 600; font-size: clamp(13px, 2.4vw, 14px); letter-spacing: 0.01em; color: var(--text-primary); }
+    .agent-row { display: flex; align-items: center; gap: 14px; }
+    .operator-avatar { width: clamp(48px, 13vw, 58px); height: clamp(48px, 13vw, 58px); border-radius: 50%; flex-shrink: 0; background: var(--accent-deep); box-shadow: 0 0 0 1px var(--border-subtle), 0 2px 8px rgba(26,24,21,0.10); display:flex; align-items:center; justify-content:center; color:var(--bg-page); font-family:var(--serif); font-weight:500; font-size:clamp(17px,4vw,20px); }
+    .operator-id { min-width: 0; }
+    .operator-name { font-family: var(--serif); font-size: clamp(18px, 3.2vw, 20px); font-weight: 500; letter-spacing: -0.005em; line-height: 1.2; }
+    .operator-tagline { font-size: clamp(12px, 2.4vw, 13px); color: var(--text-secondary); margin-top: 2px; }
+
+    /* ── Room title — the DEAL (development only, no exact unit/stack) ────────── */
+    .room-head { margin-top: clamp(40px, 9vw, 48px); }
+    .room-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent-gold-text); margin-bottom: 10px; }
+    .room-title { font-family: var(--serif); font-size: clamp(28px, 7vw, 38px); font-weight: 400; letter-spacing: -0.015em; margin: 0 0 8px; line-height: 1.12; overflow-wrap: anywhere; }
+    .room-subtitle { color: var(--text-secondary); font-size: clamp(15px, 2.6vw, 16px); margin: 0; }
+
+    section.block { margin-top: var(--space-section); }
+    .section-heading { font-family: var(--serif); font-size: clamp(19px, 4vw, 22px); font-weight: 500; letter-spacing: -0.005em; margin: 0 0 var(--space-within); }
+
+    /* ── Operator note (first-person, the curated letter) ── */
+    .operator-note { background: var(--bg-muted); border-left: 2px solid var(--accent-gold); padding: clamp(18px, 4vw, 22px) clamp(18px, 4vw, 24px); border-radius: 0 4px 4px 0; line-height: 1.7; }
     .operator-note p { margin: 0 0 14px; }
     .operator-note p:last-child { margin-bottom: 0; }
 
-    /* Pending action — calm, gold-bordered, no badges */
-    .action-card {
-      display: flex;
-      gap: 14px;
-      padding: 18px 20px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-left: 2px solid var(--accent-gold);
-      border-radius: 0 4px 4px 0;
-      margin-bottom: 12px;
-      transition: border-color 0.15s;
-    }
-    .action-card:hover { border-color: var(--accent-gold); border-left-color: var(--accent-gold); }
-    .action-icon {
-      color: var(--accent-gold);
-      flex-shrink: 0;
-      padding-top: 2px;
-    }
-    .action-body { flex: 1; min-width: 0; }
-    .action-title {
-      font-weight: 500;
-      font-size: 16px;
-      color: var(--text-primary);
-      line-height: 1.4;
-    }
-    .action-meta {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-    .action-meta strong {
-      color: var(--text-secondary);
-      font-weight: 400;
-    }
-    .action-link {
-      color: var(--accent-deep);
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: none;
-      border-bottom: 1px solid var(--accent-deep);
-      padding-bottom: 1px;
-      align-self: flex-start;
-      flex-shrink: 0;
-    }
+    /* ── Anchor (transaction spine — collapsed; in the main flow, under the note) ── */
+    .anchor { border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg-card); overflow: hidden; }
+    .anchor > summary { list-style: none; cursor: pointer; padding: 15px clamp(16px, 4vw, 20px); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .anchor > summary::-webkit-details-marker { display: none; }
+    .anchor > summary::marker { content: ""; }
+    .anchor .caret { color: var(--text-muted); font-size: 12px; transition: transform 0.15s ease; flex-shrink: 0; }
+    .anchor[open] .caret { transform: rotate(90deg); }
+    .anchor .summary-text { font-size: clamp(14px, 2.6vw, 15px); color: var(--text-secondary); flex: 1; min-width: 0; }
+    .anchor .summary-text strong { color: var(--text-primary); font-weight: 500; }
+    .anchor .summary-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); flex-shrink: 0; }
+    .anchor-panel { padding: 4px clamp(16px, 4vw, 20px) clamp(16px, 4vw, 20px); border-top: 1px solid var(--border-subtle); margin-top: 2px; }
+    .anchor-eyebrow { font-size: 11px; letter-spacing: 0.05em; color: var(--text-muted); margin: 12px 0 14px; }
+    .anchor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: clamp(14px, 3vw, 16px) clamp(20px, 4vw, 28px); }
+    .anchor-cell .k { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+    .anchor-cell .v { font-size: clamp(14px, 2.6vw, 15px); color: var(--text-primary); margin-top: 3px; line-height: 1.4; }
 
-    /* Offers — comparative without flash */
-    .offer {
-      padding: 20px 0;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .offer:last-child { border-bottom: none; }
-    .offer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
-    }
-    .offer-buyer {
-      font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 500;
-    }
-    .offer-amount {
-      font-family: var(--serif);
-      font-size: 20px;
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-    .offer-detail {
-      font-size: 15px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin: 0;
-    }
-    .offer-tag {
-      display: inline-block;
-      font-size: 12px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-top: 8px;
-    }
+    /* ── Where we stand & next ─────────────────────────── */
+    .stand-line { color: var(--text-secondary); margin: 0 0 var(--space-within); }
+    .stand-line strong { color: var(--text-primary); font-weight: 500; }
+    .next-list { list-style: none; padding: 0; margin: 0; }
+    .next-item { display: flex; gap: 16px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+    .next-item:last-child { border-bottom: none; }
+    .next-num { font-family: var(--serif); font-size: 17px; color: var(--accent-gold-text); width: 20px; flex-shrink: 0; padding-top: 1px; }
+    .next-body { flex: 1; }
+    .next-meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 
-    /* Comparable table — minimal */
-    .comp-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-      font-size: 15px;
-    }
-    .comp-table th, .comp-table td {
-      text-align: left;
-      padding: 12px 8px 12px 0;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .comp-table th {
-      font-weight: 500;
-      color: var(--text-secondary);
-      font-size: 13px;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .comp-table td.psf {
-      color: var(--text-secondary);
-      font-feature-settings: 'tnum';
-    }
-    .comp-note {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 14px;
-      font-style: italic;
-    }
+    /* ── Offers received (comparative without flash) ─────
+       Same token system + fluid type as the rest of the room.
+       No badges, no red, no countdowns — status sits in muted gold. */
+    .offer { padding: clamp(16px, 4vw, 20px) 0; border-bottom: 1px solid var(--border-subtle); }
+    .offer:first-of-type { padding-top: 4px; }
+    .offer:last-child { border-bottom: none; padding-bottom: 0; }
+    .offer-header { display: flex; justify-content: space-between; align-items: baseline; gap: 6px 18px; flex-wrap: wrap; margin-bottom: 8px; }
+    .offer-buyer { font-family: var(--serif); font-size: clamp(16px, 3vw, 18px); font-weight: 500; }
+    .offer-amount { font-family: var(--serif); font-size: clamp(18px, 3.6vw, 20px); font-weight: 500; color: var(--text-primary); font-feature-settings: 'tnum'; }
+    .offer-detail { font-size: clamp(14px, 2.6vw, 15px); color: var(--text-secondary); line-height: 1.55; margin: 0; }
+    .offer-tag { display: inline-block; font-size: 11px; color: var(--accent-gold-text); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 10px; }
 
-    /* Viewings — quiet list */
-    .viewing-list { list-style: none; padding: 0; margin: 0; }
-    .viewing-item {
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      gap: 16px;
-      align-items: baseline;
-    }
-    .viewing-item:last-child { border-bottom: none; }
-    .viewing-date {
-      font-family: var(--serif);
-      font-size: 15px;
-      color: var(--accent-gold);
-      width: 80px;
-      flex-shrink: 0;
-    }
-    .viewing-body { flex: 1; }
-    .viewing-name { font-weight: 500; }
-    .viewing-meta {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-    .viewing-past .viewing-date,
-    .viewing-past .viewing-name { color: var(--text-muted); }
-    .viewing-past .viewing-name { font-weight: 400; }
+    /* ── Comparable units sold (minimal table) ───────────
+       No zebra stripes, no chart icons — just ruled rows.
+       Wrapped in .table-scroll (a focusable region) so narrow screens scroll
+       horizontally rather than crushing the columns. */
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .table-hint { display: none; font-size: 12px; color: var(--text-muted); margin: 0 0 8px; font-style: italic; }
+    .comp-table { width: 100%; min-width: 460px; border-collapse: collapse; margin-top: 4px; font-size: clamp(14px, 2.6vw, 15px); }
+    .comp-table th, .comp-table td { text-align: left; padding: 12px 14px 12px 0; border-bottom: 1px solid var(--border-subtle); vertical-align: baseline; }
+    .comp-table th { font-weight: 500; color: var(--text-muted); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .comp-table td { color: var(--text-primary); }
+    .comp-table td.num { color: var(--text-secondary); font-feature-settings: 'tnum'; white-space: nowrap; }
+    .comp-note { font-size: 13px; color: var(--text-muted); margin-top: 14px; font-style: italic; line-height: 1.6; }
+    /* show the scroll affordance only when the viewport is narrow enough that the table may overflow */
+    @media (max-width: 540px) { .table-hint { display: block; } }
 
-    .receipt {
-      color: var(--text-primary);
-      border-bottom: 1px dotted var(--text-muted);
-      cursor: help;
-      text-decoration: none;
-    }
-    .receipt:hover { border-bottom-color: var(--accent-gold); }
-    @media (hover: none) {
-      .receipt::after {
-        content: " · " attr(data-source);
-        color: var(--text-muted);
-        font-size: 13px;
-      }
-      .receipt { border-bottom: none; }
-    }
+    /* ── What we noted (synthesized memory — neutral, record register, NOT the operator's "I") ── */
+    .noted p { margin: 0 0 14px; }
+    .noted p:last-child { margin-bottom: 0; }
 
-    .footer {
-      margin-top: 80px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 13px;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
+    /* ── Timeline (on demand) ──────────────────────────── */
+    .timeline > summary { list-style: none; cursor: pointer; font-family: var(--serif); font-size: clamp(15px, 3vw, 16px); font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 10px; }
+    .timeline > summary::-webkit-details-marker { display: none; }
+    .timeline > summary::marker { content: ""; }
+    .timeline .caret { color: var(--text-muted); font-size: 12px; transition: transform 0.15s ease; }
+    .timeline[open] .caret { transform: rotate(90deg); }
+    .timeline-list { list-style: none; padding: 18px 0 0; margin: 0; }
+    .timeline-item { display: flex; gap: 16px; padding: 0 0 16px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-date { font-size: 13px; color: var(--text-muted); width: clamp(72px, 18vw, 92px); flex-shrink: 0; padding-top: 1px; }
+    .timeline-body { flex: 1; font-size: clamp(14px, 2.6vw, 15px); }
+    .timeline-note { font-size: 13px; color: var(--text-muted); margin-top: 14px; font-style: italic; }
+
+    /* ── Reach card ────────────────────────────────────── */
+    .reach-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 6px; padding: clamp(18px, 4vw, 24px); }
+    .reach-quiet { font-style: italic; color: var(--text-secondary); font-size: 15px; margin: 0 0 16px; line-height: 1.6; }
+    .reach-action { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent-deep); text-decoration: none; font-weight: 500; font-size: 15px; border-bottom: 1px solid var(--accent-deep); }
+
+    /* ── Footer ────────────────────────────────────────── */
+    .footer { margin-top: clamp(56px, 12vw, 80px); padding-top: var(--space-within); border-top: 1px solid var(--border-subtle); font-size: 13px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
     .footer .tended { color: var(--text-secondary); }
-    .footer .attribution {
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    @media (max-width: 480px) {
-      .room { padding: 24px 20px 80px; }
-      .room-title { font-size: 32px; margin-top: 48px; }
-      section.block { margin-top: 48px; }
-      .offer-header { flex-direction: column; gap: 4px; }
-      .action-card { flex-wrap: wrap; }
-      .action-link { width: 100%; padding-top: 8px; }
-      .comp-table { font-size: 14px; }
+    .footer .attribution { font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+    @media print {
+      .internal-banner { display: none; }
+      /* reveal collapsed details so the printout / PDF isn't missing the anchor + timeline */
+      details > *:not(summary) { display: revert !important; }
+      .reach-action { min-height: 0; }
     }
   </style>
 </head>
 <body>
+  <div class="internal-banner">Design mockup · sample data</div>
   <main class="room">
 
+    <!-- Co-brand. SAMPLE DATA: fictional agency (Meridian Realty) + fictional team (Eastview) + fictional agent
+         (Marcus Lim, initials avatar). Self-contained — no external logo hotlink or stock photo. -->
     <header class="operator-header">
-      <div class="operator-avatar" aria-hidden="true">KL</div>
-      <div>
-        <div class="operator-name">Khaniff Lau</div>
-        <div class="operator-tagline">Your advisor for the Marina One sale</div>
+      <div class="brand-row">
+        <div class="team">
+          <span class="team-mark" aria-hidden="true">E</span>
+          <span class="team-name">Eastview Property Group</span>
+        </div>
+        <div class="agency" aria-label="Meridian Realty">
+          <span class="agency-mark" aria-hidden="true">M</span>
+          <span class="agency-name">Meridian Realty</span>
+        </div>
+      </div>
+      <div class="agent-row">
+        <div class="operator-avatar" aria-hidden="true">ML</div>
+        <div class="operator-id">
+          <div class="operator-name">Marcus Lim</div>
+          <div class="operator-tagline">Senior Associate Director · Marine Parade &amp; East Coast</div>
+        </div>
       </div>
     </header>
 
-    <h1 class="room-title">Wendy's room</h1>
-    <p class="room-subtitle">Marina One #28-04 · sale in progress · week of 19 May.</p>
+    <!-- Room title = the DEAL, the development only — the exact unit/stack (#28-04) never appears here,
+         only inside the anchor cells. -->
+    <div class="room-head">
+      <div class="room-eyebrow">Your sale</div>
+      <h1 class="room-title">Sale · Marina One</h1>
+      <p class="room-subtitle">For Wendy Lim — where your sale stands this week, and the decision in front of us.</p>
+    </div>
 
-    <!-- Operator note — calm "here's where we are this week" -->
-    <section class="block" aria-labelledby="note-heading">
+    <!-- Single column · reading order = DOM order:
+         note → anchor → where we stand → offers → comparable units → what we noted → timeline → reach -->
+    <section class="block s-note" aria-labelledby="note-heading">
       <h2 id="note-heading" class="section-heading">Where we are this week</h2>
       <div class="operator-note">
         <p>
-          Wendy — two solid offers came in over the weekend. Both buyers
-          viewed twice and have financing in order, so neither is a tyre-kicker.
+          Wendy — here's where we are this week. Two solid offers came in over the
+          weekend. Both buyers viewed your unit twice and have their financing in
+          order, so neither is testing the water.
         </p>
         <p>
-          The higher offer is conditional on a 14-day extension to complete
-          their HDB sale, so the question for you is whether the extra $70k
-          is worth the wait. I've drafted my recommendation alongside the
-          OTP — we should discuss before Friday.
+          The higher offer is conditional on a 14-day extension so they can complete
+          their own HDB sale first. The real question for you is whether the extra
+          ~$70,000 is worth that short wait. I've set out both side by side below, with
+          my reading of each, so you can decide without having to chase the detail.
         </p>
         <p>
-          Next room update goes out Friday evening after the offer deadline,
-          so you'll see the final state of play before the weekend.
+          Nothing needs deciding this minute. Take the weekend with it — I'll send the
+          next room update Friday so you have the full picture before we talk.
         </p>
       </div>
     </section>
 
-    <!-- Pending actions — calm, no badges -->
-    <section class="block" aria-labelledby="actions-heading">
-      <h2 id="actions-heading" class="section-heading">Needs your attention</h2>
-
-      <div class="action-card">
-        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="4" y="3" width="16" height="18" rx="1.5" /><path d="M8 8h8M8 12h8M8 16h5" />
-        </svg>
-        <div class="action-body">
-          <div class="action-title">Review OTP draft with my recommendation</div>
-          <div class="action-meta"><strong>By Friday 5pm</strong> · I'll incorporate your changes before sending to the higher offer</div>
+    <!-- Anchor — the listing, in the main flow directly under the note (it's primary content
+         for a sale; reading order = visual order on every device). Display-as-captured: only
+         cells with real data, no N/A / TBD. The exact unit #28-04 may live here, never in the title. -->
+    <section class="block s-anchor" aria-label="The listing">
+      <details class="anchor">
+        <summary>
+          <span class="caret" aria-hidden="true">▸</span>
+          <span class="summary-text"><strong>Marina One #28-04 · 3-bed</strong> · asking around $2.9M</span>
+          <span class="summary-label">The listing</span>
+        </summary>
+        <div class="anchor-panel">
+          <div class="anchor-eyebrow">Home for sale · the listing</div>
+          <div class="anchor-grid">
+            <div class="anchor-cell"><div class="k">Address</div><div class="v">Marina One Residences, #28-04</div></div>
+            <div class="anchor-cell"><div class="k">Property type</div><div class="v">Condominium · high floor</div></div>
+            <div class="anchor-cell"><div class="k">Size</div><div class="v">3-bedroom · around 1,100 sqft</div></div>
+            <div class="anchor-cell"><div class="k">Outlook</div><div class="v">Marina Bay view</div></div>
+            <div class="anchor-cell"><div class="k">Asking</div><div class="v">Around $2.9M</div></div>
+            <div class="anchor-cell"><div class="k">Status</div><div class="v">2 offers received</div></div>
+          </div>
         </div>
-        <a class="action-link" href="#">Open</a>
-      </div>
-
-      <div class="action-card">
-        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
-        </svg>
-        <div class="action-body">
-          <div class="action-title">Confirm preferred completion window</div>
-          <div class="action-meta"><strong>Before Friday</strong> · Affects how I phrase the counter to the lower offer</div>
-        </div>
-        <a class="action-link" href="#">Open</a>
-      </div>
-
-      <div class="action-card">
-        <svg class="action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M20 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" />
-        </svg>
-        <div class="action-body">
-          <div class="action-title">Decide on lawyer for completion</div>
-          <div class="action-meta">No deadline yet · I can recommend two firms we've worked with</div>
-        </div>
-        <a class="action-link" href="#">Open</a>
-      </div>
+      </details>
     </section>
 
-    <!-- Offers received -->
-    <section class="block" aria-labelledby="offers-heading">
-      <h2 id="offers-heading" class="section-heading">Offers received</h2>
-
-      <div class="offer">
-        <div class="offer-header">
-          <div class="offer-buyer">Buyer A · Singapore PR couple</div>
-          <div class="offer-amount">S$2,920,000</div>
-        </div>
-        <p class="offer-detail">
-          Offer received
-          <a class="receipt" data-source="WhatsApp from buyer's agent, 17 May">Saturday morning</a>,
-          conditional on a 14-day extension to complete their HDB sale.
-          Financing pre-approved with DBS.
-        </p>
-        <span class="offer-tag">Higher · conditional</span>
-      </div>
-
-      <div class="offer">
-        <div class="offer-header">
-          <div class="offer-buyer">Buyer B · Foreign buyer (Hong Kong)</div>
-          <div class="offer-amount">S$2,850,000</div>
-        </div>
-        <p class="offer-detail">
-          Offer received
-          <a class="receipt" data-source="forwarded by buyer's agent, 18 May">Sunday evening</a>,
-          unconditional. Buyer is ABSD-paying and ready to exercise OTP within 7 days.
-        </p>
-        <span class="offer-tag">Lower · clean</span>
-      </div>
-    </section>
-
-    <!-- Comparable units sold — minimal table -->
-    <section class="block" aria-labelledby="comp-heading">
-      <h2 id="comp-heading" class="section-heading">Comparable units sold</h2>
-      <table class="comp-table">
-        <thead>
-          <tr>
-            <th scope="col">Unit</th>
-            <th scope="col">Sold</th>
-            <th scope="col">Price</th>
-            <th scope="col" class="psf">PSF</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Marina One #22-08 · 2BR</td>
-            <td>Mar 2026</td>
-            <td>S$2,810,000</td>
-            <td class="psf">$2,650</td>
-          </tr>
-          <tr>
-            <td>Marina One #25-12 · 2BR</td>
-            <td>Feb 2026</td>
-            <td>S$2,895,000</td>
-            <td class="psf">$2,720</td>
-          </tr>
-          <tr>
-            <td>V on Shenton #31-05 · 2BR</td>
-            <td>Jan 2026</td>
-            <td>S$2,650,000</td>
-            <td class="psf">$2,485</td>
-          </tr>
-          <tr>
-            <td>Wallich Residence #38-02 · 2BR</td>
-            <td>Apr 2026</td>
-            <td>S$3,150,000</td>
-            <td class="psf">$2,890</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="comp-note">
-        Both current offers sit comfortably within the recent transaction band.
-        Buyer A's $2.92M is at the higher end; reasonable given your high-floor stack premium.
+    <section class="block s-stand" aria-labelledby="next-heading">
+      <h2 id="next-heading" class="section-heading">Where we stand, and what's next</h2>
+      <p class="stand-line">
+        <strong>Right now:</strong> two offers are on the table and both are genuine.
+        The next move is yours — a sense of which way you're leaning so I can shape
+        the reply.
       </p>
-    </section>
-
-    <!-- Viewings -->
-    <section class="block" aria-labelledby="viewings-heading">
-      <h2 id="viewings-heading" class="section-heading">Viewings this fortnight</h2>
-      <ul class="viewing-list">
-        <li class="viewing-item">
-          <div class="viewing-date">Sat 24 May</div>
-          <div class="viewing-body">
-            <div class="viewing-name">Repeat viewing · Buyer A's spouse</div>
-            <div class="viewing-meta">2:30pm · already pre-arranged, your unit will be staged</div>
+      <ul class="next-list">
+        <li class="next-item">
+          <span class="next-num">1.</span>
+          <div class="next-body">
+            <div>Have a look at both offers below and tell me where your instinct sits — the price or the certainty.</div>
+            <div class="next-meta">Whenever you've had a quiet moment</div>
           </div>
         </li>
-        <li class="viewing-item viewing-past">
-          <div class="viewing-date">Sun 18 May</div>
-          <div class="viewing-body">
-            <div class="viewing-name">Buyer B · second viewing</div>
-            <div class="viewing-meta">Completed</div>
+        <li class="next-item">
+          <span class="next-num">2.</span>
+          <div class="next-body">
+            <div>I'll go back to your preferred buyer to firm up terms, and keep the other warm as a fallback.</div>
+            <div class="next-meta">Once I hear from you</div>
           </div>
         </li>
-        <li class="viewing-item viewing-past">
-          <div class="viewing-date">Sat 17 May</div>
-          <div class="viewing-body">
-            <div class="viewing-name">Buyer A · second viewing</div>
-            <div class="viewing-meta">Completed</div>
+        <li class="next-item">
+          <span class="next-num">3.</span>
+          <div class="next-body">
+            <div>We line up the OTP and completion timeline together — no signing anything until you're comfortable.</div>
+            <div class="next-meta">After we've chosen a buyer</div>
           </div>
         </li>
       </ul>
     </section>
 
+    <!-- Offers summary — substantial primary content, in the main flow. Calm: no red, no badges -->
+    <section class="block s-offers" aria-labelledby="offers-heading">
+      <h2 id="offers-heading" class="section-heading">The two offers, side by side</h2>
+
+      <div class="offer">
+        <div class="offer-header">
+          <div class="offer-buyer">Buyer A · Singapore PR couple</div>
+          <div class="offer-amount">around S$2.92M</div>
+        </div>
+        <p class="offer-detail">
+          Came in Saturday morning, conditional on a 14-day extension to let them
+          complete their own HDB sale first. Financing appears pre-approved with DBS, and
+          both partners have now viewed twice. The higher number, with a little patience asked of you.
+        </p>
+        <span class="offer-tag">Higher · conditional on timing</span>
+      </div>
+
+      <div class="offer">
+        <div class="offer-header">
+          <div class="offer-buyer">Buyer B · overseas buyer (Hong Kong)</div>
+          <div class="offer-amount">around S$2.85M</div>
+        </div>
+        <p class="offer-detail">
+          Came in Sunday evening, described as fully unconditional. The buyer looks ready
+          to exercise the OTP within seven days and has the funds in place. Around $70,000
+          less than Buyer A, but clean and quick, with nothing left to depend on.
+        </p>
+        <span class="offer-tag">Lower · clean and immediate</span>
+      </div>
+    </section>
+
+    <!-- Comparable units — primary content, in the main flow; minimal table, no stripes/icons.
+         The scroll wrapper is a focusable region so keyboard users can scroll the table. -->
+    <section class="block s-comps" aria-labelledby="comp-heading">
+      <h2 id="comp-heading" class="section-heading">How that compares</h2>
+      <p class="table-hint" id="comp-hint" aria-hidden="true">Scroll sideways to see every column →</p>
+      <div class="table-scroll" role="region" tabindex="0" aria-label="Comparable units sold, scrollable table" aria-describedby="comp-hint">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th scope="col">Unit</th>
+              <th scope="col">Sold</th>
+              <th scope="col">Price</th>
+              <th scope="col">PSF</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Marina One #22-08 · 3-bed</td>
+              <td>Mar 2026</td>
+              <td class="num">around S$2.81M</td>
+              <td class="num">$2,650</td>
+            </tr>
+            <tr>
+              <td>Marina One #25-12 · 3-bed</td>
+              <td>Feb 2026</td>
+              <td class="num">around S$2.90M</td>
+              <td class="num">$2,720</td>
+            </tr>
+            <tr>
+              <td>V on Shenton #31-05 · 3-bed</td>
+              <td>Jan 2026</td>
+              <td class="num">around S$2.65M</td>
+              <td class="num">$2,485</td>
+            </tr>
+            <tr>
+              <td>Wallich Residence #38-02 · 3-bed</td>
+              <td>Apr 2026</td>
+              <td class="num">around S$3.15M</td>
+              <td class="num">$2,890</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="comp-note">
+        Both of your offers sit comfortably within the recent transaction band for the
+        area. Buyer A's offer is toward the higher end — fair, given your high-floor
+        stack and the bay outlook.
+      </p>
+    </section>
+
+    <!-- Synthesized memory — neutral record register (no first-person "I/we", to stay distinct
+         from the operator's note above). Extracted figures hedged, not stated as hard fact. -->
+    <section class="block s-noted noted" aria-labelledby="memory-heading">
+      <h2 id="memory-heading" class="section-heading">What we noted</h2>
+      <p>
+        The sale is of a 3-bedroom at Marina One on a high floor with the bay view, at a
+        guide of around $2.9M, with a preference for a clean exit rather than a
+        drawn-out completion.
+      </p>
+      <p>
+        Timing matters, but the right buyer ranks ahead of the fastest one. The plan
+        noted was to keep the place lightly staged for any repeat viewings while the
+        offers stay live.
+      </p>
+      <p>
+        Being settled before the year-end family trip came up as a preference, and it's
+        been kept in mind for the completion windows.
+      </p>
+    </section>
+
+    <section class="block s-timeline" aria-labelledby="timeline-heading">
+      <details class="timeline">
+        <summary>
+          <span class="caret" aria-hidden="true">▸</span>
+          <span id="timeline-heading">Our history together</span>
+        </summary>
+        <ul class="timeline-list">
+          <li class="timeline-item">
+            <span class="timeline-date">18 May</span>
+            <span class="timeline-body">Buyer B's second viewing in the evening; their unconditional offer followed the same night.</span>
+          </li>
+          <li class="timeline-item">
+            <span class="timeline-date">17 May</span>
+            <span class="timeline-body">Buyer A's second viewing on Saturday morning; their conditional offer came in shortly after.</span>
+          </li>
+          <li class="timeline-item">
+            <span class="timeline-date">10 May</span>
+            <span class="timeline-body">Listing went live and the first viewings were arranged for both interested buyers.</span>
+          </li>
+        </ul>
+        <p class="timeline-note">I'll add to this as we go — every viewing, offer, and decision will live here.</p>
+      </details>
+    </section>
+
+    <section class="block s-reach" aria-labelledby="reach-heading">
+      <h2 id="reach-heading" class="section-heading">Anytime you need me</h2>
+      <div class="reach-card">
+        <p class="reach-quiet">
+          If a question comes up over the weekend — about either buyer, the timing, or
+          anything in the offers — just message me directly. You don't need to wait for
+          Friday's update.
+        </p>
+        <a class="reach-action" href="https://wa.me/6591234567" rel="noopener" aria-label="Message Marcus on WhatsApp">WhatsApp Marcus →</a>
+      </div>
+    </section>
+
     <footer class="footer">
-      <div class="tended">Next room update Friday evening.</div>
+      <div class="tended">Next room update Friday evening, after the offer deadline.</div>
       <div class="attribution">FollowRoom</div>
     </footer>
 

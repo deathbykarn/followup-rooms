@@ -1,0 +1,1836 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FollowRoom — A Thesis Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F1E8D2;
+    --paper-deep: #E8DDC0;
+    --paper-soft: #EAE0C5;
+    --paper-warm: #F6EFDD;
+    --ink: #14110C;
+    --ink-soft: #2E2820;
+    --ink-mid: #4A4135;
+    --muted: #786A52;
+    --rule: #C9BC9F;
+    --rule-soft: #DACFAF;
+    --accent: #B14820;
+    --accent-deep: #7E3414;
+    --forest: #1F3326;
+    --forest-soft: #2D4632;
+    --highlight: #F0CB6E;
+    --shadow-warm: rgba(80, 50, 20, 0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'ss01' 1;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+    font-size: 1.1rem;
+    line-height: 1.65;
+    font-weight: 400;
+    color: var(--ink-soft);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Paper grain */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -10%;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0 0.02 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+
+  /* Subtle vignette */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(40, 25, 10, 0.08) 100%);
+    z-index: 1;
+  }
+
+  main { position: relative; z-index: 2; }
+
+  /* Typography */
+  .display {
+    font-family: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    font-variation-settings: 'SOFT' 100, 'opsz' 144, 'wght' 480;
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+  .display-italic {
+    font-variation-settings: 'SOFT' 100, 'opsz' 144, 'wght' 380;
+    font-style: italic;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 0, 'opsz' 144, 'wght' 360;
+    font-variant-numeric: tabular-nums;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+
+  p { max-width: 38em; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(177, 72, 32, 0.35);
+    transition: border-color 0.2s ease;
+  }
+  a:hover { border-color: var(--accent); }
+
+  em { font-style: italic; }
+  strong { font-weight: 540; color: var(--ink); }
+
+  /* Layout */
+  .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    position: relative;
+  }
+
+  section {
+    padding: clamp(5rem, 11vh, 10rem) 0;
+    position: relative;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  section:last-of-type { border-bottom: none; }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: baseline;
+    margin-bottom: 3.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 50, 'opsz' 60, 'wght' 460;
+    font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+
+  .section-marker-right {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* --- COVER --- */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(2.5rem, 5vh, 4rem) 0 clamp(3rem, 6vh, 5rem);
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .stamp {
+    display: inline-block;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    padding: 0.4rem 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transform: rotate(-1.5deg);
+    background: rgba(177, 72, 32, 0.03);
+  }
+
+  .brand-mark {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 30, 'opsz' 48, 'wght' 500;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .brand-mark .dot { color: var(--accent); }
+
+  .meta-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .cover-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 6vh, 5rem) 0;
+  }
+
+  .cover-eyebrow {
+    margin-bottom: 1.8rem;
+    color: var(--forest);
+  }
+
+  .cover-title {
+    font-size: clamp(4rem, 13vw, 11rem);
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+
+  .cover-sub {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 100, 'opsz' 80, 'wght' 320;
+    font-style: italic;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.25;
+    max-width: 26em;
+    color: var(--ink-soft);
+    margin-bottom: 2.5rem;
+  }
+
+  .cover-sub .acc {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .cover-bottom {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .meta-block .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .meta-block .value {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 36, 'wght' 420;
+    font-size: 1rem;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+
+  /* --- PROVOCATION --- */
+  .provocation {
+    background: var(--ink);
+    color: var(--paper);
+    padding: clamp(7rem, 18vh, 12rem) 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .provocation::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9 0 0 0 0 0.85 0 0 0 0 0.75 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 1;
+    mix-blend-mode: screen;
+  }
+
+  .provocation .wrap { position: relative; z-index: 2; }
+
+  .provocation .eyebrow { color: var(--highlight); margin-bottom: 2rem; }
+
+  .quote-mark {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'wght' 380;
+    font-size: clamp(7rem, 16vw, 14rem);
+    line-height: 0.6;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .provocation-quote {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 100, 'opsz' 144, 'wght' 320;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    line-height: 1.12;
+    color: var(--paper);
+    max-width: 22em;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.015em;
+  }
+
+  .provocation-attr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--highlight);
+  }
+
+  /* --- VOICES (two columns) --- */
+  .voices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: stretch;
+    border: 1px solid var(--rule);
+    background: var(--paper-warm);
+  }
+
+  .voice {
+    padding: clamp(2.5rem, 5vw, 4rem);
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .voice:last-child { border-right: none; }
+
+  .voice-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .voice-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 48, 'wght' 480;
+    font-size: 1.65rem;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .voice-context {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    font-style: italic;
+    line-height: 1.45;
+  }
+
+  .voice-q {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 100, 'opsz' 80, 'wght' 360;
+    font-style: italic;
+    font-size: 1.4rem;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 0.6em;
+    border-left: 2px solid var(--accent);
+  }
+
+  .voice-take {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .voice-take strong { color: var(--ink); }
+
+  /* --- STAT GRID --- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2.5rem 3rem;
+    margin: 3rem 0;
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .stat .stat-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 50, 'opsz' 144, 'wght' 360;
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    line-height: 0.95;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.6rem;
+  }
+  .stat .stat-num .currency { font-size: 0.6em; vertical-align: top; opacity: 0.7; margin-right: 0.05em; }
+  .stat .stat-num .unit { font-size: 0.45em; opacity: 0.6; font-style: italic; margin-left: 0.15em; }
+
+  .stat .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat .stat-note {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: var(--ink-mid);
+    max-width: 22em;
+  }
+
+  /* --- LEAD / BODY --- */
+  .lead {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 100, 'opsz' 60, 'wght' 360;
+    font-size: clamp(1.4rem, 2.2vw, 1.7rem);
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 30em;
+    margin-bottom: 2rem;
+  }
+  .lead em { color: var(--accent); font-style: italic; }
+
+  .body-col {
+    column-count: 1;
+    max-width: 38em;
+  }
+  .body-col p + p { margin-top: 1.1rem; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+  .two-col p { max-width: none; }
+
+  /* --- PHASE BLOCKS --- */
+  .phase {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 4rem;
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .phase:first-of-type { padding-top: 0; border-top: none; }
+
+  .phase-meta .phase-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .phase-meta .phase-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 50, 'opsz' 80, 'wght' 460;
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    line-height: 1.05;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    margin-bottom: 1.25rem;
+  }
+  .phase-meta .phase-name em {
+    font-variation-settings: 'SOFT' 100, 'opsz' 80, 'wght' 380;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .phase-meta .phase-window {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .phase-meta .phase-window span:first-child { color: var(--ink); font-weight: 600; }
+
+  .phase-body p { margin-bottom: 1rem; }
+
+  .phase-bullets {
+    margin-top: 1.5rem;
+    padding-left: 0;
+    list-style: none;
+  }
+  .phase-bullets li {
+    position: relative;
+    padding-left: 2.2rem;
+    margin-bottom: 0.9rem;
+    font-size: 1.02rem;
+    line-height: 1.55;
+  }
+  .phase-bullets li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .phase-target {
+    margin-top: 2rem;
+    padding: 1.5rem 1.75rem;
+    background: var(--paper-warm);
+    border-left: 3px solid var(--accent);
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 36, 'wght' 380;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .phase-target strong { color: var(--accent); font-style: normal; font-weight: 540; }
+
+  /* --- ECON / NUMBERS TABLE --- */
+  .econ-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 2.5rem;
+    border: 1px solid var(--rule);
+    background: var(--paper-warm);
+  }
+
+  .econ-cell {
+    padding: 2.25rem 2rem;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .econ-cell:nth-child(2n) { border-right: none; }
+  .econ-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+  .econ-cell .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .econ-cell .value {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 50, 'opsz' 80, 'wght' 360;
+    font-size: clamp(2.2rem, 3.5vw, 3rem);
+    line-height: 0.95;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.75rem;
+  }
+  .econ-cell .value .small { font-size: 0.55em; opacity: 0.65; font-style: italic; margin-left: 0.2em; }
+  .econ-cell .value .currency { font-size: 0.5em; vertical-align: top; opacity: 0.6; margin-right: 0.08em; }
+
+  .econ-cell .breakdown {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--ink-mid);
+  }
+
+  .econ-cell .breakdown ul { list-style: none; padding: 0; }
+  .econ-cell .breakdown li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.32rem 0;
+    border-bottom: 1px dashed var(--rule-soft);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .econ-cell .breakdown li:last-child { border-bottom: none; }
+  .econ-cell .breakdown li .item { color: var(--ink-mid); }
+  .econ-cell .breakdown li .cost { color: var(--ink); font-weight: 500; }
+
+  /* --- PRICING TABLE --- */
+  .tier-table {
+    margin-top: 2.5rem;
+    border-top: 1.5px solid var(--ink);
+  }
+
+  .tier-row {
+    display: grid;
+    grid-template-columns: 1.6fr 0.9fr 2fr 1fr;
+    gap: 2.5rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .tier-row.featured { background: linear-gradient(90deg, transparent, var(--paper-warm) 30%, var(--paper-warm) 70%, transparent); margin: 0 -1.5rem; padding: 2rem 1.5rem; border-bottom: 1px solid var(--rule); }
+
+  .tier-row.head {
+    padding: 1rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .tier-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 48, 'wght' 480;
+    font-size: 1.5rem;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .tier-name .marker {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--paper);
+    border: 1px solid var(--accent);
+    padding: 0.18rem 0.5rem;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+  .tier-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  .tier-price {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 50, 'opsz' 80, 'wght' 380;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .tier-price .currency { font-size: 0.55em; opacity: 0.6; vertical-align: top; margin-right: 0.06em; }
+  .tier-price .unit { font-family: 'JetBrains Mono', monospace; font-size: 0.45em; letter-spacing: 0.05em; color: var(--muted); margin-left: 0.3em; font-style: normal; }
+
+  .tier-limits {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--ink-mid);
+  }
+  .tier-limits ul { list-style: none; padding: 0; }
+  .tier-limits li { padding-left: 1.1em; position: relative; margin-bottom: 0.15rem; }
+  .tier-limits li::before { content: "·"; position: absolute; left: 0.2em; color: var(--accent); font-weight: bold; }
+
+  .tier-audience {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* --- JOURNEY CHART --- */
+  .journey-wrap {
+    margin-top: 3rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .journey-chart {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .journey-legend {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .journey-legend .swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    border-radius: 2px;
+  }
+
+  .milestone-grid {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .milestone {
+    padding: 1.5rem 1.5rem 1.5rem 0;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .milestone:last-child { border-right: none; }
+  .milestone .m-month {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .milestone .m-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 50, 'opsz' 80, 'wght' 380;
+    font-size: 1.7rem;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.025em;
+  }
+  .milestone .m-num .currency { font-size: 0.55em; opacity: 0.6; vertical-align: top; margin-right: 0.06em; }
+  .milestone .m-detail {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--ink-mid);
+  }
+
+  /* --- MOATS --- */
+  .moats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+    margin-top: 3rem;
+    border-top: 1.5px solid var(--ink);
+  }
+  .moat {
+    padding: 2.25rem 2rem 2.25rem 0;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .moat:last-child { border-right: none; }
+  .moat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .moat-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 48, 'wght' 460;
+    font-size: 1.35rem;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.8rem;
+  }
+  .moat-body { font-size: 0.97rem; line-height: 1.55; color: var(--ink-mid); }
+
+  /* --- RISKS --- */
+  .risks-section {
+    background: var(--ink);
+    color: var(--paper);
+    padding: clamp(5rem, 11vh, 9rem) 0;
+    border-top: 2px solid var(--ink);
+  }
+  .risks-section .section-head { border-color: rgba(241, 232, 210, 0.18); }
+  .risks-section .section-num { color: var(--highlight); }
+  .risks-section .section-title { color: var(--paper); font-style: italic; font-variation-settings: 'SOFT' 100, 'opsz' 60, 'wght' 380; }
+  .risks-section .section-marker-right { color: rgba(241, 232, 210, 0.5); }
+
+  .risks-intro {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 100, 'opsz' 60, 'wght' 340;
+    font-size: 1.35rem;
+    line-height: 1.45;
+    color: rgba(241, 232, 210, 0.85);
+    max-width: 32em;
+    margin-bottom: 4rem;
+    font-style: italic;
+  }
+  .risks-intro em { color: var(--highlight); font-style: italic; }
+
+  .risks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 0;
+    border-top: 1px solid rgba(241, 232, 210, 0.18);
+  }
+  .risk {
+    padding: 1.8rem 2rem 1.8rem 0;
+    border-bottom: 1px solid rgba(241, 232, 210, 0.18);
+    border-right: 1px solid rgba(241, 232, 210, 0.18);
+  }
+  .risk:last-child { border-right: none; }
+  .risk-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .risk-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .risk-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 48, 'wght' 460;
+    font-size: 1.1rem;
+    line-height: 1.25;
+    color: var(--paper);
+  }
+  .risk-body {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: rgba(241, 232, 210, 0.75);
+    padding-left: 0;
+  }
+  .risk-body strong { color: var(--highlight); font-weight: 500; }
+
+  /* --- CLOSING --- */
+  .closing {
+    padding: clamp(7rem, 16vh, 12rem) 0;
+    text-align: left;
+  }
+  .closing-q {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 100, 'opsz' 144, 'wght' 340;
+    font-style: italic;
+    font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+    line-height: 1.1;
+    color: var(--ink);
+    max-width: 18em;
+    margin-bottom: 3rem;
+    letter-spacing: -0.015em;
+  }
+  .closing-q em { color: var(--accent); }
+
+  .next-30 {
+    margin-top: 4rem;
+    border-top: 2px solid var(--ink);
+    padding-top: 2.5rem;
+  }
+  .next-30 h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .next-30 ol {
+    list-style: none;
+    counter-reset: nextcounter;
+    padding: 0;
+    max-width: 38em;
+  }
+  .next-30 ol li {
+    counter-increment: nextcounter;
+    position: relative;
+    padding: 1rem 0 1rem 3rem;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 36, 'wght' 380;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .next-30 ol li::before {
+    content: counter(nextcounter, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    padding: 3rem 0 5rem;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  footer .foot-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule-soft);
+    margin-bottom: 1.5rem;
+  }
+  footer p { max-width: 50em; font-size: 0.78rem; line-height: 1.7; }
+  footer .cite { display: block; padding: 0.4rem 0; border-bottom: 1px dashed var(--rule-soft); }
+  footer .cite:last-child { border-bottom: none; }
+  footer .cite .key { color: var(--accent); margin-right: 1rem; display: inline-block; min-width: 2.5em; }
+
+  /* --- Responsive --- */
+  @media (max-width: 880px) {
+    .voices { grid-template-columns: 1fr; }
+    .voice { border-right: none; border-bottom: 1px solid var(--rule); }
+    .voice:last-child { border-bottom: none; }
+    .two-col { grid-template-columns: 1fr; gap: 1.5rem; }
+    .phase { grid-template-columns: 1fr; gap: 1.5rem; }
+    .econ-grid { grid-template-columns: 1fr; }
+    .econ-cell { border-right: none; }
+    .tier-row { grid-template-columns: 1fr; gap: 0.75rem; padding: 1.5rem 0; }
+    .tier-row.head { display: none; }
+    .tier-row.featured { margin: 0 -1rem; padding: 1.5rem 1rem; }
+    .milestone { border-right: none; }
+    .moats { grid-template-columns: 1fr; }
+    .moat { border-right: none; }
+    .risks-grid { grid-template-columns: 1fr; }
+    .risk { border-right: none; }
+    section { padding: 4rem 0; }
+    .cover { padding: 2rem 0; }
+    p { max-width: 100%; }
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    body::before, body::after { display: none; }
+    section { break-inside: avoid; page-break-inside: avoid; padding: 2rem 0; }
+    .provocation, .risks-section { background: white; color: black; }
+    .provocation .provocation-quote, .risks-section .section-title, .risks-section .risks-intro, .risks-section .risk-title, .risks-section .risk-body { color: black; }
+  }
+
+  /* Subtle entrance */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .cover-title, .cover-sub, .cover-eyebrow, .cover-bottom { animation: riseIn 1.2s ease-out backwards; }
+  .cover-eyebrow { animation-delay: 0.1s; }
+  .cover-title { animation-delay: 0.25s; }
+  .cover-sub { animation-delay: 0.5s; }
+  .cover-bottom { animation-delay: 0.75s; }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ============ COVER ============ -->
+  <section class="cover wrap">
+    <div class="cover-top">
+      <div class="brand-mark">FollowRoom<span class="dot">·</span></div>
+      <div class="stamp">Founder Thesis · Internal</div>
+    </div>
+
+    <div class="cover-center">
+      <div class="cover-eyebrow eyebrow">A Brief on Building &middot; SG 2026</div>
+      <h1 class="display cover-title">FollowRoom</h1>
+      <p class="cover-sub">
+        The case for building the <span class="acc">digital follow-up auntie</span> — a relationship memory layer for the salespeople who live or die by what they remember between meetings.
+      </p>
+    </div>
+
+    <div class="cover-bottom">
+      <div class="meta-block">
+        <div class="label">Prepared for</div>
+        <div class="value">Khaniff Lau, Founder</div>
+      </div>
+      <div class="meta-block">
+        <div class="label">Dated</div>
+        <div class="value">19 May 2026, Singapore</div>
+      </div>
+      <div class="meta-block">
+        <div class="label">Source material</div>
+        <div class="value">Two validated conversations<br>Scott Ng &middot; Suresh @ Showsuite</div>
+      </div>
+      <div class="meta-block">
+        <div class="label">Status</div>
+        <div class="value">Phase 4 shipped &middot; pre-pilot</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROVOCATION ============ -->
+  <section class="provocation">
+    <div class="wrap">
+      <div class="eyebrow">The provocation</div>
+      <span class="quote-mark">&ldquo;</span>
+      <p class="provocation-quote">
+        Don&rsquo;t pay three thousand dollars for your auntie. Pay a hundred and fifty for one that never forgets a client conversation.
+      </p>
+      <div class="provocation-attr">— The pitch, in one sentence</div>
+    </div>
+  </section>
+
+  <!-- ============ 01 TWO VOICES ============ -->
+  <section class="wrap" id="voices">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Two qualified strangers, two unprompted endorsements.</h2>
+      <span class="section-marker-right">Validation</span>
+    </div>
+
+    <p class="lead">
+      The strongest signal isn&rsquo;t that two industry people liked the idea. It&rsquo;s that <em>each one, asked cold, independently redesigned a different half of FollowRoom from scratch</em> &mdash; and what they drew matched the doctrine already written into the codebase.
+    </p>
+
+    <div class="voices">
+      <article class="voice">
+        <div class="voice-role">Operator &middot; The user</div>
+        <h3 class="voice-name">Scott Ng</h3>
+        <p class="voice-context">
+          12-year veteran realtor. Just joined Keller Williams Singapore. Background in advertising, graphic, and UI design. Refuses HDB and cold-call agencies. Targets business owners, ages 35&ndash;60, commercial sector. Self-funds Hollyland mics and runs a manual CRM out of Apple Contacts. The ceiling user, not the median &mdash; but his judgement is hard-won.
+        </p>
+        <p class="voice-q">
+          If your audio can be transcribed into timestamps&hellip; and it becomes a dedicated link shared between the client and you&hellip; you&rsquo;re simplifying Salesforce. I give it to you.
+        </p>
+        <p class="voice-take">
+          Scott designed <strong>the product</strong> on the call: per-meeting encrypted shareable link, timestamped diarised transcript, threaded follow-ups inside the link, co-branded surface, cross-meeting memory. He had no idea this was already the spine of FollowRoom&rsquo;s codebase.
+        </p>
+      </article>
+
+      <article class="voice">
+        <div class="voice-role">Market sensor &middot; The seller</div>
+        <h3 class="voice-name">Suresh @ Showsuite</h3>
+        <p class="voice-context">
+          Industry-side &mdash; sells tech into Singapore agencies. Tracks who&rsquo;s adopting what across PropNex, ERA, Huttons, Orange Tea, and the rising KW. Has the Rolodex Khaniff doesn&rsquo;t. Background in logistics software and blockchain. Observer, not operator; means he hears every agent&rsquo;s complaint and remembers which ones got paid.
+        </p>
+        <p class="voice-q">
+          Don&rsquo;t sell it as AI &mdash; they will burn you and bury you. Sell it as the digital auntie. A hundred a month, two hundred a month. People pay for that.
+        </p>
+        <p class="voice-take">
+          Suresh designed <strong>the go-to-market</strong>: don&rsquo;t lead with tech, lead with personnel-cost relief. Anchor price against the $3K/month PA, not against software. And in Singapore real estate, you don&rsquo;t pilot bottom-up with the tech-curious smalls &mdash; you wedge through the kingpin and ride the wave.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ 02 THE PAIN ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">What the relationship-driven salesperson is actually losing.</h2>
+      <span class="section-marker-right">The pain</span>
+    </div>
+
+    <p class="lead">
+      Deals don&rsquo;t close because of a bad pitch. They close because the client felt remembered. They die when the operator forgets the wife&rsquo;s preference for Marine Parade, the bonus-season hesitation, the parents who live around the corner.
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-label">SG registered salespersons</div>
+        <div class="stat-num">31,500<span class="unit">+</span></div>
+        <div class="stat-note">Active RES + REA registrations with the Council for Estate Agencies. Add adjacent verticals (insurance, private banking, IFAs) and the relationship-sales operator population in SG alone clears 80,000. <sup>[1]</sup></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Avg active clients per top-quartile agent</div>
+        <div class="stat-num">120<span class="unit">±60</span></div>
+        <div class="stat-note">Spread across WhatsApp, Telegram, voice notes, viewings, family events. Pre-meeting recall is mostly mental archaeology and Apple Contacts notes.</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Cost of a part-time PA in SG</div>
+        <div class="stat-num"><span class="currency">S$</span>3,000<span class="unit">/mo</span></div>
+        <div class="stat-note">Per Suresh&rsquo;s framing. The auntie at the office handling 20 inbound calls a day. She still can&rsquo;t replay last month&rsquo;s viewing for you on demand.</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">KW Singapore agents outperforming peers</div>
+        <div class="stat-num">90<span class="unit">vs 12,000</span></div>
+        <div class="stat-note">Per Suresh: 90 Keller Williams Singapore agents outperforming agencies with 1,000&ndash;4,000+ rosters. Tech and presence beat headcount. <sup>[2]</sup></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <p>
+          The pain Scott described isn&rsquo;t volume &mdash; it&rsquo;s <strong>texture</strong>. He doesn&rsquo;t need more leads. He needs every conversation he&rsquo;s ever had with a client to be one click away when the client&rsquo;s nephew calls about a unit in Marina One. That memory currently lives in his head and three apps, and it costs him commercially every time it slips.
+        </p>
+      </div>
+      <div>
+        <p>
+          The pain Suresh described isn&rsquo;t Scott&rsquo;s pain &mdash; it&rsquo;s the median agent&rsquo;s. They cannot triage their inbound. They cannot remember which lead asked which question. They can&rsquo;t consistently follow up. The auntie they hire to fix this is expensive and forgets too. AI doing the auntie&rsquo;s job &mdash; <em>not the agent&rsquo;s</em> &mdash; is the wedge.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 WHAT IT IS ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">What FollowRoom actually is.</h2>
+      <span class="section-marker-right">Positioning</span>
+    </div>
+
+    <p class="lead">
+      A relationship memory layer that ingests forwarded WhatsApp messages and meeting transcripts silently, builds a client-specific room with evidence receipts under every claim, and lets the operator publish a polished follow-up surface that the client actually opens.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <p>
+          The operator owns the relationship. FollowRoom owns the memory. The WhatsApp endpoint is silent &mdash; never outbound, never auto-replying, never sitting between operator and client without invitation. The dashboard is for the operator&rsquo;s internal review and approval. The shareable link is for the client.
+        </p>
+        <p>
+          Every extracted fact links to the specific message or transcript timestamp it came from. Receipts are not a feature &mdash; they are the trust architecture. A claim without a source never reaches a client surface.
+        </p>
+      </div>
+      <div>
+        <p>
+          What FollowRoom is <em>not</em>, by deliberate constraint: not a CRM (Salesforce is plenty heavy for that). Not a lead generation tool (Canva, Buffer, and the agency&rsquo;s production team own that). Not a sales coach (Gong analyses, FollowRoom witnesses). Not an AI bot that messages clients (forever-frozen invariant).
+        </p>
+        <p>
+          The principles are old. The execution is the product: silent ingestion via WhatsApp Cloud API, AssemblyAI Universal-2 diarisation, Anthropic-powered extraction, internal/client-facing memory as separate stores with Tier-3 inference filters on the publish path.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 PHASES ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">The three-phase arc: Wedge, Wave, Horizon.</h2>
+      <span class="section-marker-right">The build sequence</span>
+    </div>
+
+    <p class="lead">
+      Three commitments, three time horizons, three different shapes of risk. Each phase pays for the next.
+    </p>
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <div class="phase-meta">
+        <div class="phase-tag">Phase 1</div>
+        <h3 class="phase-name">The <em>Wedge</em><br>&mdash; the Meeting Room.</h3>
+        <div class="phase-window">
+          <span>0 &ndash; 6 months</span>
+          <span>Pilot &middot; SG real estate</span>
+          <span>Target: 20 paid seats</span>
+        </div>
+      </div>
+      <div class="phase-body">
+        <p>
+          Operator forwards a WhatsApp message; it threads into the right client&rsquo;s room. Operator uploads a meeting recording; ninety seconds later, a timestamped diarised digest appears, with extracted facts each linked back to source. Operator reviews, edits, approves &mdash; then hits Send. A co-branded, encrypted shareable link reaches the client. Every link compounds the memory.
+        </p>
+
+        <p style="margin-top:0.6rem;">
+          The pitch is exactly what Scott drew on the call. The price anchor is exactly what Suresh prescribed. The architecture is already eighty percent built.
+        </p>
+
+        <ul class="phase-bullets">
+          <li><strong>Already shipped:</strong> WhatsApp Cloud API ingestion (live, smoke gated on Business Verification), AssemblyAI Universal-2 transcription with diarisation, Anthropic-powered extraction + matching, operator dashboard, internal+client-facing profile split.</li>
+          <li><strong>Next 90 days:</strong> Business Verification approval, threaded room timeline UI (per Scott&rsquo;s redesign), co-branded link templates, public room slug + passcode hardening, onboarding flow for non-Scott-tier users.</li>
+          <li><strong>Pilot cohort:</strong> Scott + 4 other KW Singapore agents he can introduce. KW pre-selects for entrepreneurial mindset &mdash; the right early-adopter shape.</li>
+        </ul>
+
+        <p class="phase-target">
+          <strong>Exit criteria:</strong> 20 paying seats at $149/mo Pro &middot; $3,000 MRR &middot; 3 unprompted referrals from pilot agents &middot; 1 written case study from KW Singapore.
+        </p>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-meta">
+        <div class="phase-tag">Phase 2</div>
+        <h3 class="phase-name">The <em>Wave</em><br>&mdash; curation &amp; cluster.</h3>
+        <div class="phase-window">
+          <span>6 &ndash; 18 months</span>
+          <span>SG real estate expansion</span>
+          <span>Target: 250 paid seats</span>
+        </div>
+      </div>
+      <div class="phase-body">
+        <p>
+          Phase 1 made FollowRoom useful at one meeting per relationship. Phase 2 makes it useful from the first contact. The extraction pipeline already understands client facts &mdash; teach it intent, budget, timeline, urgency from first-contact forwards. Now the digital auntie does both jobs: triages the inbound, remembers the conversation.
+        </p>
+
+        <p style="margin-top:0.6rem;">
+          GTM in Phase 2 leans on Suresh&rsquo;s wave dynamics. KW cluster proven means kingpin attention. Suresh has lines into PropNex top performers and Huttons&rsquo; high-output desks. One top performer adopts and the wave moves through their agency, not via central IT but via WhatsApp screenshots passed between colleagues.
+        </p>
+
+        <ul class="phase-bullets">
+          <li><strong>Product extensions:</strong> first-contact intent extraction (budget / timeline / property type / urgency); auto-triage in the pending forwards tray; cross-client pattern surfaces (&ldquo;three of your active leads mentioned affordability this week&rdquo; &mdash; witness, never coach).</li>
+          <li><strong>GTM extensions:</strong> KW Singapore agency partnership; PropNex top-performer outreach via Suresh; lightweight Team tier for small agency teams; first paid case study placement.</li>
+          <li><strong>Defensibility:</strong> referral economics, embedded memory (switching cost rises monthly per active client), branded shareable links operating as inbound marketing for the operator.</li>
+        </ul>
+
+        <p class="phase-target">
+          <strong>Exit criteria:</strong> 250 paid seats &middot; $37,500 MRR &middot; $20K/month net profit hit &middot; 2 verticals validated for Phase 3 (private banking lead + insurance lead) &middot; one outbound channel proven (Suresh-network, organic, or paid).
+        </p>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-meta">
+        <div class="phase-tag">Phase 3</div>
+        <h3 class="phase-name">The <em>Horizon</em><br>&mdash; vertical &amp; geographic.</h3>
+        <div class="phase-window">
+          <span>18 &ndash; 36 months</span>
+          <span>Cross-vertical &middot; cross-geo</span>
+          <span>Target: 500&ndash;1,000 paid seats</span>
+        </div>
+      </div>
+      <div class="phase-body">
+        <p>
+          The relationship-sales shape is the same across real estate, insurance, private banking, IFAs, business brokers, and luxury hospitality concierge. The compliance shape isn&rsquo;t. Phase 3 is the deliberate, vertical-by-vertical hardening: PDPA + GDPR + MAS overlays for private banking; SG insurance regulatory data residency; structured handoffs to compliance officers.
+        </p>
+
+        <p style="margin-top:0.6rem;">
+          Geographic expansion follows the SG-buyer corridor before it goes broader. Perth comes first (high SG-buyer concentration, same time zone, less hardball than SG), then Hong Kong (similar regulatory tempo, similar WhatsApp behaviour), then Dubai (luxury hospitality and private banking concentration). The product doesn&rsquo;t change &mdash; the proof points stack.
+        </p>
+
+        <ul class="phase-bullets">
+          <li><strong>Vertical hardening:</strong> insurance compliance overlay, private banking confidentiality controls, IFA suitability documentation flows, business broker deal-stage memory.</li>
+          <li><strong>Geographic expansion:</strong> Perth corridor pilot (3-month softer-pulse validation), Hong Kong, Dubai.</li>
+          <li><strong>Platform extensions (only if pulled, not pushed):</strong> Telegram ingestion parity, voice memo ingestion via iOS Shortcut, optional structured handoff to existing CRMs.</li>
+        </ul>
+
+        <p class="phase-target">
+          <strong>Outcome:</strong> a defensible, focused, profitable operator-tooling company with $50K&ndash;$150K/month profit &middot; LineOS&rsquo;s commercial spear delivered &middot; clear acquisition or growth-equity optionality if external capital becomes useful.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 UNIT ECONOMICS ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Unit economics &mdash; what each seat is actually worth.</h2>
+      <span class="section-marker-right">The math</span>
+    </div>
+
+    <p class="lead">
+      Software-margin business with infrastructure costs orders of magnitude smaller than the price point. The killer constraint is not gross margin &mdash; it&rsquo;s acquisition motion. The numbers below are conservative; AI input cost has more downside risk than upside.
+    </p>
+
+    <div class="econ-grid">
+      <div class="econ-cell">
+        <div class="label">Fixed monthly infrastructure</div>
+        <div class="value"><span class="currency">$</span>75<span class="small">/mo</span></div>
+        <div class="breakdown">
+          <ul>
+            <li><span class="item">Render (FastAPI backend, Starter)</span><span class="cost">$25</span></li>
+            <li><span class="item">Vercel Pro (Next.js frontend)</span><span class="cost">$20</span></li>
+            <li><span class="item">Supabase Pro (DB + storage + auth)</span><span class="cost">$25</span></li>
+            <li><span class="item">Domain + email + monitoring</span><span class="cost">$5</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="econ-cell">
+        <div class="label">Variable cost per active seat / month</div>
+        <div class="value">~<span class="currency">$</span>10<span class="small">/seat</span></div>
+        <div class="breakdown">
+          <ul>
+            <li><span class="item">Anthropic API (Sonnet, w/ caching)</span><span class="cost">$5.00</span></li>
+            <li><span class="item">AssemblyAI Universal-2 (~4 hr/seat)</span><span class="cost">$2.60</span></li>
+            <li><span class="item">Storage + bandwidth (Supabase)</span><span class="cost">$1.00</span></li>
+            <li><span class="item">WhatsApp Cloud API outbound</span><span class="cost">$0.50</span></li>
+            <li><span class="item">Headroom / buffer</span><span class="cost">$0.90</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="econ-cell">
+        <div class="label">Gross margin per seat (at Pro $149)</div>
+        <div class="value">93<span class="small">%</span></div>
+        <div class="breakdown">
+          Revenue $149 &minus; COGS $10 = <strong style="color:var(--accent);">$139 contribution per seat per month</strong>. Margin is high enough that the binding constraint is acquisition cost, not infrastructure. Every seat past the first eighty-four covers founder draw <em>and</em> contributes to net profit.
+        </div>
+      </div>
+
+      <div class="econ-cell">
+        <div class="label">Breakeven seat count</div>
+        <div class="value">84<span class="small">seats</span></div>
+        <div class="breakdown">
+          With Khaniff drawing $10K/month founder compensation, FollowRoom covers all costs at <strong>84 paying seats</strong> (blended $135 ARPU, $12 variable, $75 infra, $10K founder). Without founder draw counted, structural breakeven is one seat. <sup>[3]</sup>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 PRICING TIERS ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Four tiers, one anchor.</h2>
+      <span class="section-marker-right">Pricing</span>
+    </div>
+
+    <p class="lead">
+      Pro is the anchor. Solo is the discovery wedge for new agents and the curious. Team and Agency are the wave-capture motion for agencies that want their top desks on the same memory layer.
+    </p>
+
+    <div class="tier-table">
+      <div class="tier-row head">
+        <div>Tier &middot; Audience</div>
+        <div>Price</div>
+        <div>What&rsquo;s included</div>
+        <div></div>
+      </div>
+
+      <div class="tier-row">
+        <div>
+          <div class="tier-name">Solo</div>
+          <div class="tier-sub">New agents, side-hustlers, side-vertical operators.</div>
+        </div>
+        <div class="tier-price"><span class="currency">$</span>79<span class="unit">/ mo</span></div>
+        <div class="tier-limits">
+          <ul>
+            <li>1 operator seat</li>
+            <li>2 hours transcription / month</li>
+            <li>50 active client rooms</li>
+            <li>Basic shareable link (FollowRoom-branded footer)</li>
+          </ul>
+        </div>
+        <div class="tier-audience">Discovery wedge. Converts to Pro by month 3 in most cohorts.</div>
+      </div>
+
+      <div class="tier-row featured">
+        <div>
+          <div class="tier-name">Pro <span class="marker">Anchor</span></div>
+          <div class="tier-sub">The Scott Ng tier. Top-quartile operators with active 50+ client books.</div>
+        </div>
+        <div class="tier-price"><span class="currency">$</span>149<span class="unit">/ mo</span></div>
+        <div class="tier-limits">
+          <ul>
+            <li>1 operator seat</li>
+            <li>Unlimited transcription &amp; rooms</li>
+            <li>Co-branded shareable links (name, face, agency)</li>
+            <li>Phase 2: lead curation + intent extraction</li>
+            <li>Priority extraction queue</li>
+          </ul>
+        </div>
+        <div class="tier-audience">$149 vs $3,000 PA. The frame Suresh prescribed.</div>
+      </div>
+
+      <div class="tier-row">
+        <div>
+          <div class="tier-name">Team</div>
+          <div class="tier-sub">3+ seats &middot; small agency desks operating together.</div>
+        </div>
+        <div class="tier-price"><span class="currency">$</span>129<span class="unit">/ seat / mo</span></div>
+        <div class="tier-limits">
+          <ul>
+            <li>Everything in Pro</li>
+            <li>Shared client pool &amp; lead reassignment</li>
+            <li>Team admin + role controls</li>
+            <li>Custom agency branding on shareable links</li>
+          </ul>
+        </div>
+        <div class="tier-audience">Captures the desk-level wave inside an agency.</div>
+      </div>
+
+      <div class="tier-row">
+        <div>
+          <div class="tier-name">Agency</div>
+          <div class="tier-sub">20+ seats &middot; whole-agency rollout (KW desk, Huttons unit, PropNex team).</div>
+        </div>
+        <div class="tier-price">Custom<span class="unit">from $99 / seat</span></div>
+        <div class="tier-limits">
+          <ul>
+            <li>Everything in Team</li>
+            <li>SSO, audit logs, data residency options</li>
+            <li>White-label link surfaces</li>
+            <li>Dedicated success contact + onboarding</li>
+            <li>Compliance overlay (Phase 3 verticals)</li>
+          </ul>
+        </div>
+        <div class="tier-audience">Top of funnel for the kingpin motion.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 07 THE JOURNEY ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">07</span>
+      <h2 class="section-title">The journey to $20,000 / month in profit.</h2>
+      <span class="section-marker-right">The path</span>
+    </div>
+
+    <p class="lead">
+      The target is $20K monthly net profit on top of a $10K founder draw. That requires roughly <em>215 paying seats at Pro</em> or <em>245 seats at blended $135 ARPU</em>. The chart below traces a realistic-not-optimistic path: pilot in months 0&ndash;6, KW cluster + first wave in months 6&ndash;18, breakthrough in months 18&ndash;24.
+    </p>
+
+    <div class="journey-wrap">
+      <svg class="journey-chart" viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Revenue trajectory chart showing MRR growth from month 0 to month 36">
+        <defs>
+          <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#B14820" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#B14820" stop-opacity="0"/>
+          </linearGradient>
+          <pattern id="grid" width="100" height="50" patternUnits="userSpaceOnUse">
+            <path d="M 100 0 L 0 0 0 50" fill="none" stroke="#C9BC9F" stroke-width="0.5" opacity="0.4"/>
+          </pattern>
+        </defs>
+
+        <!-- background -->
+        <rect x="80" y="40" width="980" height="380" fill="url(#grid)"/>
+
+        <!-- Y-axis labels -->
+        <g font-family="JetBrains Mono, monospace" font-size="11" fill="#786A52" text-anchor="end">
+          <text x="72" y="424">$0</text>
+          <text x="72" y="348">$20K</text>
+          <text x="72" y="272">$40K</text>
+          <text x="72" y="196">$60K</text>
+          <text x="72" y="120">$80K</text>
+          <text x="72" y="44">$100K</text>
+        </g>
+
+        <!-- X-axis labels (months) -->
+        <g font-family="JetBrains Mono, monospace" font-size="11" fill="#786A52" text-anchor="middle">
+          <text x="80" y="445">M0</text>
+          <text x="244" y="445">M6</text>
+          <text x="407" y="445">M12</text>
+          <text x="570" y="445">M18</text>
+          <text x="733" y="445">M24</text>
+          <text x="897" y="445">M30</text>
+          <text x="1060" y="445">M36</text>
+        </g>
+
+        <!-- $30K profit-zone threshold (= $20K net + $10K founder + costs) -->
+        <line x1="80" y1="306" x2="1060" y2="306" stroke="#1F3326" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.7"/>
+        <text x="1055" y="298" font-family="JetBrains Mono, monospace" font-size="10" fill="#1F3326" text-anchor="end" font-weight="600">
+          $30K MRR · $20K profit / mo threshold
+        </text>
+
+        <!-- $10K founder-breakeven threshold -->
+        <line x1="80" y1="382" x2="1060" y2="382" stroke="#786A52" stroke-width="1" stroke-dasharray="2 4" opacity="0.5"/>
+        <text x="1055" y="374" font-family="JetBrains Mono, monospace" font-size="10" fill="#786A52" text-anchor="end">
+          $10K MRR · founder-draw breakeven
+        </text>
+
+        <!-- Phase shading -->
+        <rect x="80" y="40" width="163" height="380" fill="#B14820" opacity="0.04"/>
+        <rect x="243" y="40" width="490" height="380" fill="#1F3326" opacity="0.04"/>
+        <rect x="733" y="40" width="327" height="380" fill="#7E3414" opacity="0.04"/>
+
+        <text x="161" y="60" font-family="JetBrains Mono, monospace" font-size="10" fill="#B14820" text-anchor="middle" letter-spacing="2">PHASE 1</text>
+        <text x="488" y="60" font-family="JetBrains Mono, monospace" font-size="10" fill="#1F3326" text-anchor="middle" letter-spacing="2">PHASE 2</text>
+        <text x="896" y="60" font-family="JetBrains Mono, monospace" font-size="10" fill="#7E3414" text-anchor="middle" letter-spacing="2">PHASE 3</text>
+
+        <!-- Area fill under curve -->
+        <!-- Data points: x = 80 + (month/36)*980; y = 420 - (mrr/100000)*380 -->
+        <!-- M0: 0, M3: 750, M6: 3000, M9: 5250, M12: 9000, M15: 15000, M18: 22500, M21: 30000, M24: 37500, M30: 57000, M36: 82500 -->
+        <path d="
+          M 80 420
+          L 162 417
+          L 244 409
+          L 325 400
+          L 407 386
+          L 488 363
+          L 570 335
+          L 651 306
+          L 733 277
+          L 897 203
+          L 1060 107
+          L 1060 420 L 80 420 Z
+        " fill="url(#areaGrad)"/>
+
+        <!-- Main curve -->
+        <path d="
+          M 80 420
+          L 162 417
+          L 244 409
+          L 325 400
+          L 407 386
+          L 488 363
+          L 570 335
+          L 651 306
+          L 733 277
+          L 897 203
+          L 1060 107
+        " fill="none" stroke="#B14820" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Milestone dots + labels -->
+        <g font-family="JetBrains Mono, monospace" font-size="10" fill="#14110C">
+          <!-- M3: $750 -->
+          <circle cx="162" cy="417" r="4" fill="#B14820"/>
+          <text x="167" y="412" font-size="10" fill="#14110C">5 seats</text>
+
+          <!-- M6: $3K -->
+          <circle cx="244" cy="409" r="5" fill="#B14820" stroke="#F1E8D2" stroke-width="1.5"/>
+          <text x="252" y="404" font-weight="600">$3K · 20 seats</text>
+          <text x="252" y="416" fill="#786A52" font-size="9">Pilot complete</text>
+
+          <!-- M12: $9K -->
+          <circle cx="407" cy="386" r="5" fill="#B14820" stroke="#F1E8D2" stroke-width="1.5"/>
+          <text x="415" y="381" font-weight="600">$9K · 60 seats</text>
+          <text x="415" y="393" fill="#786A52" font-size="9">KW cluster</text>
+
+          <!-- M18: $22.5K -->
+          <circle cx="570" cy="335" r="6" fill="#1F3326" stroke="#F1E8D2" stroke-width="2"/>
+          <text x="578" y="330" font-weight="600">$22.5K · 150 seats</text>
+          <text x="578" y="342" fill="#786A52" font-size="9">PropNex wave begins</text>
+
+          <!-- M24: $37.5K -->
+          <circle cx="733" cy="277" r="7" fill="#B14820" stroke="#F0CB6E" stroke-width="2.5"/>
+          <text x="741" y="269" font-weight="700" fill="#B14820">$37.5K · 250 seats</text>
+          <text x="741" y="282" fill="#1F3326" font-size="10" font-weight="600">$20K PROFIT HIT</text>
+
+          <!-- M30: $57K -->
+          <circle cx="897" cy="203" r="5" fill="#7E3414" stroke="#F1E8D2" stroke-width="1.5"/>
+          <text x="905" y="198" font-weight="600">$57K · 380 seats</text>
+          <text x="905" y="210" fill="#786A52" font-size="9">Verticals enter</text>
+
+          <!-- M36: $82.5K -->
+          <circle cx="1060" cy="107" r="5" fill="#7E3414" stroke="#F1E8D2" stroke-width="1.5"/>
+          <text x="1050" y="102" font-weight="600" text-anchor="end">$82K · 550 seats</text>
+          <text x="1050" y="114" fill="#786A52" font-size="9" text-anchor="end">SG · AU · HK</text>
+        </g>
+      </svg>
+
+      <div class="journey-legend">
+        <span><span class="swatch" style="background:#B14820;"></span>MRR trajectory</span>
+        <span><span class="swatch" style="background:#1F3326; opacity:0.7;"></span>$20K profit threshold</span>
+        <span><span class="swatch" style="background:#786A52; opacity:0.5;"></span>Founder-draw breakeven</span>
+      </div>
+
+      <div class="milestone-grid">
+        <div class="milestone">
+          <div class="m-month">M0&ndash;6 · Phase 1</div>
+          <div class="m-num"><span class="currency">$</span>3K<span style="font-size:0.5em; opacity:0.6;"> MRR</span></div>
+          <div class="m-detail">20 seats. KW Singapore pilot complete. Case study published. First three unprompted referrals.</div>
+        </div>
+        <div class="milestone">
+          <div class="m-month">M12 · Phase 2 begins</div>
+          <div class="m-num"><span class="currency">$</span>9K</div>
+          <div class="m-detail">60 seats. KW cluster expansion. Lead curation shipping. First PropNex top performer onboarded via Suresh.</div>
+        </div>
+        <div class="milestone">
+          <div class="m-month">M18 · Cross founder-draw</div>
+          <div class="m-num"><span class="currency">$</span>22.5K</div>
+          <div class="m-detail">150 seats. Wave effect inside PropNex / Huttons desks. Approaching profit zone.</div>
+        </div>
+        <div class="milestone">
+          <div class="m-month">M24 · Target hit</div>
+          <div class="m-num" style="color:var(--accent);"><span class="currency">$</span>37.5K</div>
+          <div class="m-detail"><strong style="color:var(--accent);">$20K/mo net profit achieved.</strong> 250 paying seats. Verticals validated for Phase 3.</div>
+        </div>
+        <div class="milestone">
+          <div class="m-month">M36 · Phase 3 maturity</div>
+          <div class="m-num"><span class="currency">$</span>82K<span style="font-size:0.5em; opacity:0.6;"> MRR</span></div>
+          <div class="m-detail">550+ seats across SG, Perth corridor, HK. Insurance + private banking verticals contributing.</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 2.5rem; max-width: 38em; font-size: 1rem; color: var(--ink-mid); line-height: 1.65;">
+      The trajectory assumes 1.5% net penetration of SG&rsquo;s 31,500 RES roster by month 36, well within the wave dynamics Suresh described. Even if the slope is half this steep, $20K/mo profit lands by month 30 instead of 24 &mdash; still a defensible single-founder business.
+    </p>
+  </section>
+
+  <!-- ============ 08 MOATS ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="section-num">08</span>
+      <h2 class="section-title">Why this is defensible, even when copied.</h2>
+      <span class="section-marker-right">The moats</span>
+    </div>
+
+    <p class="lead">
+      The product is copyable. Most products are. The moats are structural, slow to assemble, and uncomfortable to imitate because they impose constraints on the imitator that competitors rarely accept.
+    </p>
+
+    <div class="moats">
+      <div class="moat">
+        <div class="moat-num">M / 01</div>
+        <h3 class="moat-title">Memory compounds with use.</h3>
+        <p class="moat-body">
+          Every forwarded message and uploaded meeting deepens the client room. After six months of active use, an operator&rsquo;s switching cost is six months of accumulated relationship texture, not a database export. Competitors enter at month zero of every relationship they touch &mdash; we enter at month thirty.
+        </p>
+      </div>
+
+      <div class="moat">
+        <div class="moat-num">M / 02</div>
+        <h3 class="moat-title">Trust architecture as features.</h3>
+        <p class="moat-body">
+          Tier-3 inference filter (no emotion / family-dynamics speculation in client surfaces), evidence receipts under every published claim, operator-approval gates, zero third-party analytics on client rooms, append-only sources. These read as &ldquo;features&rdquo; in marketing, but they are invariants in code. Most competitors won&rsquo;t accept these constraints &mdash; they&rsquo;ll ship the convenient version, and the convenient version is the version that breaches trust.
+        </p>
+      </div>
+
+      <div class="moat">
+        <div class="moat-num">M / 03</div>
+        <h3 class="moat-title">WhatsApp-native silent ingestion.</h3>
+        <p class="moat-body">
+          The operator doesn&rsquo;t change channels. Most CRMs fail at this activation step. FollowRoom&rsquo;s silent forwarding inbox is the lowest-friction onboarding path in the category: forward a message, the system handles the rest. The architectural commitments behind it (Cloud API + dedup + caption pairing + operator linking) take quarters to build and require a regulatory posture (Meta Business Verification, PDPA) that competitors must replicate end-to-end.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 09 RISKS ============ -->
+  <section class="risks-section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num">09</span>
+        <h2 class="section-title">Risks &mdash; honestly named.</h2>
+        <span class="section-marker-right">What could break this</span>
+      </div>
+
+      <p class="risks-intro">
+        Two qualified strangers endorsed the product and the GTM. <em>That is not the same as evidence the business will work.</em> These are the failure modes worth naming early, while there is still time to design against them.
+      </p>
+
+      <div class="risks-grid">
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 01</span>
+            <h4 class="risk-title">TAM concentration in SG real estate.</h4>
+          </div>
+          <p class="risk-body">
+            SG has ~31,500 registered salespersons. 1&ndash;3% penetration is meaningful for a profitable focused business but not venture-scale on its own. Phase 3 vertical and geographic expansion is required for upside &mdash; and each vertical compounds compliance, integration, and onboarding cost. <strong>Mitigation:</strong> price tiers and unit economics designed for profitability before scale, so we don&rsquo;t need TAM-scale outcomes to be viable.
+          </p>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 02</span>
+            <h4 class="risk-title">Meta dependency on WhatsApp Cloud API.</h4>
+          </div>
+          <p class="risk-body">
+            The silent ingestion spine sits on Meta&rsquo;s rails. Policy changes, Business Verification friction, rate limits, or worse, a category-wide enforcement action could disrupt onboarding or operations. <strong>Mitigation:</strong> ingestion architecture is channel-agnostic at the boundary &mdash; Telegram parity is a known Phase 2.5 lift, email-forwarding ingestion is a weekend project. Diversify post Phase 1 proof.
+          </p>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 03</span>
+            <h4 class="risk-title">The &ldquo;Scott is the ceiling user&rdquo; problem.</h4>
+          </div>
+          <p class="risk-body">
+            Scott runs Hollyland mics and writes his own meeting minutes. The median KW agent &mdash; let alone the median PropNex agent &mdash; will not adopt without serious hand-holding. Phase 1 onboarding UX is mission-critical and currently underbuilt. <strong>Mitigation:</strong> pilot cohort is hand-selected; design partner onboarding includes live setup; instrument activation funnel from day one of pilot.
+          </p>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 04</span>
+            <h4 class="risk-title">AI input cost volatility.</h4>
+          </div>
+          <p class="risk-body">
+            Anthropic + AssemblyAI pricing is not fixed. A 2&times; price increase on either compresses gross margin from 93% to ~88%. Survivable, but real. <strong>Mitigation:</strong> prompt caching reduces extraction cost ~70%; AssemblyAI has competitive replacements; transcription is the larger variable and the easier swap.
+          </p>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 05</span>
+            <h4 class="risk-title">Single-founder execution ceiling.</h4>
+          </div>
+          <p class="risk-body">
+            Khaniff is also commitments to Decades. FollowRoom is the commercial spear, not the only spear. Real concurrency cap. <strong>Mitigation:</strong> ship the wedge with the existing codebase; design Phase 1 to be operationally light (low-touch onboarding, async support); first revenue funds first non-founder hire (likely customer success / SDR hybrid).
+          </p>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 06</span>
+            <h4 class="risk-title">Top-down GTM sales-cycle length.</h4>
+          </div>
+          <p class="risk-body">
+            Suresh&rsquo;s &ldquo;wave through PropNex&rdquo; works at the desk level, not the procurement level. Agency-wide deals are 6&ndash;18 month cycles. <strong>Mitigation:</strong> per-seat economics work at $149 &mdash; never depend on agency-level deal closure to hit milestones. Bottom-up adoption, top-down legitimisation.
+          </p>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 07</span>
+            <h4 class="risk-title">Compliance creep in Phase 3 verticals.</h4>
+          </div>
+          <p class="risk-body">
+            Insurance and private banking demand PDPA, GDPR, MAS oversight, data-residency proofs. Each vertical adds development cost and slows the per-seat unit economics that look pristine in SG real estate. <strong>Mitigation:</strong> never enter a vertical without one paid design partner and a clear compliance scope; budget compliance work into Phase 3 plans, not Phase 2.
+          </p>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 08</span>
+            <h4 class="risk-title">Khaniff&rsquo;s sample bias.</h4>
+          </div>
+          <p class="risk-body">
+            Scott + Suresh + the warm SG real estate Rolodex is a friendly room. Confirmation bias is real. <strong>Mitigation:</strong> deliberately collect 10+ qualified rejections before exiting Phase 1 pilot. A rejection that says &ldquo;I&rsquo;ve already built this myself&rdquo; is fine; a rejection that says &ldquo;I don&rsquo;t want a memory layer&rdquo; should pause the build.
+          </p>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 09</span>
+            <h4 class="risk-title">No production smoke test yet.</h4>
+          </div>
+          <p class="risk-body">
+            Plan 4 ingestion is code-validated but not consumer-network validated &mdash; Meta test numbers can&rsquo;t receive from arbitrary WhatsApp users. Phase 1 launch depends on Business Verification approval (exogenous timeline). <strong>Mitigation:</strong> BV application initiated immediately; pilot launch contingent on BV; have manual upload path as fallback during BV gap.
+          </p>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head">
+            <span class="risk-num">R / 10</span>
+            <h4 class="risk-title">Adjacent-tool competitors (Salesforce + KW).</h4>
+          </div>
+          <p class="risk-body">
+            KW has Salesforce-customised CRM with global rollout. PropNex may build internally. Adjacent threats include Gong, HubSpot, Notion-for-sales, channel-specific CRMs. <strong>Mitigation:</strong> stay sharper, smaller, channel-native, trust-first. Compete on what they won&rsquo;t accept: silent ingestion, Tier-3 filter, evidence receipts. Don&rsquo;t become Salesforce; we&rsquo;d lose.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 10 CLOSING ============ -->
+  <section class="wrap closing">
+    <div class="section-head">
+      <span class="section-num">10</span>
+      <h2 class="section-title">The verdict, and what to do next.</h2>
+      <span class="section-marker-right">Closing</span>
+    </div>
+
+    <p class="closing-q">
+      Two qualified strangers, asked cold, drew the same picture <em>you had already written into the codebase</em>. The work is no longer discovery. It is execution &mdash; and execution is what the doctrine is built for.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <p>
+          The business is meaningful. The product instinct was correct. The unit economics make a path to $20K/month profit at month 24 plausible-not-optimistic. The GTM is legible. The risks are honest and most are designable-against, not existential.
+        </p>
+        <p style="margin-top: 1rem;">
+          The remaining question is not whether to build &mdash; that question was answered in the two conversations. The remaining question is how disciplined the wedge will be. Stay narrow. Phase 1 is one product (the meeting room), one geo (SG), one vertical (real estate), one cohort (KW + Scott&rsquo;s referrals), one tier as anchor ($149 Pro).
+        </p>
+      </div>
+      <div>
+        <p>
+          The product&rsquo;s soul is restraint. The principle &mdash; <em>celebration over correction, witness not coach, never auto-publish</em> &mdash; is what gives FollowRoom its trust position and what keeps it from drifting into the CRM swamp. Restraint as the primary skill, per the constitution.
+        </p>
+        <p style="margin-top: 1rem;">
+          Build the digital follow-up auntie. Wedge through KW. Price at $149. Stay out of lead generation, video, and social. Earn the SG real estate proof point. Then expand &mdash; in the order the market hands you, not in the order the roadmap fantasises.
+        </p>
+      </div>
+    </div>
+
+    <div class="next-30">
+      <h3>The next 30 days</h3>
+      <ol>
+        <li>Submit Meta Business Verification for the WhatsApp Cloud API. <em>Gating dependency for Phase 1 launch.</em></li>
+        <li>Ship the threaded room timeline UI per Scott&rsquo;s redesign &mdash; replace the current profile-style client-facing view.</li>
+        <li>Ship co-branded shareable link templates (operator name, face, agency logo).</li>
+        <li>Recruit five pilot agents from KW Singapore. Scott is design partner 1. Three more from his referrals; one from Suresh&rsquo;s PropNex contacts as a controlled-variable test.</li>
+        <li>Write the Phase 1 pilot one-pager &mdash; one paragraph, the $149-vs-$3K-PA frame, the meeting-room demo screenshot.</li>
+        <li>Set up activation, retention, and revenue instrumentation before any seat goes live.</li>
+        <li>Open a kill-switch line in the decision ledger: if 10+ qualified rejections specifically reject the memory layer concept (not the implementation), pause and re-spec.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-row">
+        <span>FollowRoom &middot; Founder Thesis Brief &middot; v0.1</span>
+        <span>khaniff@gmail.com &middot; 2026-05-19</span>
+      </div>
+
+      <p style="margin-bottom: 1.5rem; color: var(--ink-mid);">
+        <strong style="color: var(--ink);">Citations &amp; notes.</strong> Figures are best-available 2026 estimates unless otherwise specified. Verify before external use.
+      </p>
+
+      <div>
+        <div class="cite">
+          <span class="key">[1]</span> Council for Estate Agencies (CEA), Singapore &mdash; annual public statistics on registered Real Estate Salespersons (RES) and Real Estate Agencies (REA). Adjacent verticals (insurance, financial advisory, private banking) sourced from MAS and LIA annual reports.
+        </div>
+        <div class="cite">
+          <span class="key">[2]</span> Keller Williams Singapore launched mid-2025 under Melvin Lim (PropertyLimBrothers). Roster and performance metrics per industry interviews; KW agent count: ~90 as of mid-2026.
+        </div>
+        <div class="cite">
+          <span class="key">[3]</span> Breakeven math assumes blended ARPU $135 (mix of Solo $79 / Pro $149 / Team $129 / Agency from $99), variable cost $12/seat conservative, fixed infra $75/mo, founder draw $10K/mo. $20K profit target requires 245 seats at blended $135, or 215 seats if mix is Pro-heavy at $149.
+        </div>
+        <div class="cite">
+          <span class="key">[i]</span> Cost estimates: Render (render.com/pricing), Vercel (vercel.com/pricing), Supabase (supabase.com/pricing), Anthropic API (anthropic.com/pricing), AssemblyAI (assemblyai.com/pricing) &mdash; all as of May 2026, USD.
+        </div>
+        <div class="cite">
+          <span class="key">[ii]</span> Source transcripts: <em>docs/meetings/Real Estate AI Strategy Meeting with Scott_otter_ai_transcript.txt</em> and <em>docs/meetings/showsuite suresh catchup_otter_ai_transcript.txt</em>.
+        </div>
+        <div class="cite">
+          <span class="key">[iii]</span> Architectural invariants drawn from <em>PROJECT_DEV_SOUL.md</em> &mdash; FollowRoom constitution adapted from Decades doctrine.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>

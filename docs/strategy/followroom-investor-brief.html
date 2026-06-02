@@ -1,0 +1,1721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FollowRoom — Investor Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F3EA;
+    --bg-warm: #EFE9DA;
+    --bg-card: #FFFFFF;
+    --ink: #0D0B07;
+    --ink-soft: #29251D;
+    --ink-mid: #4A4337;
+    --muted: #756B57;
+    --rule: #DDD2B6;
+    --rule-soft: #E8DFC9;
+    --accent: #DD4A1A;
+    --accent-soft: #F2B89C;
+    --accent-deep: #952F0D;
+    --teal: #0E3A30;
+    --teal-soft: #2C5A4C;
+    --good: #2A6E47;
+    --warn: #B07C1B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'ss01' 1, 'cv01' 1, 'cv11' 1;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Hanken Grotesk', system-ui, sans-serif;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    font-weight: 400;
+    color: var(--ink-soft);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  main { position: relative; }
+
+  /* Typography */
+  .display {
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-variation-settings: 'opsz' 96, 'wght' 540;
+    line-height: 0.93;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .serif-italic {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .num {
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-variation-settings: 'opsz' 96, 'wght' 460;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+  }
+
+  strong { font-weight: 600; color: var(--ink); }
+  em { font-style: italic; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+
+  /* Layout */
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+  }
+
+  section { padding: clamp(3.5rem, 7vh, 6rem) 0; position: relative; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-head .num-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .section-head h2 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 48, 'wght' 480;
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    flex: 1;
+  }
+  .section-head h2 .light {
+    color: var(--muted);
+    font-style: italic;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
+    font-size: 0.9em;
+  }
+  .section-head .tag-right {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* === HERO === */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.5rem, 3vh, 2.5rem) 0 clamp(2rem, 4vh, 3.5rem);
+    background:
+      radial-gradient(ellipse at 85% 15%, rgba(221, 74, 26, 0.07), transparent 50%),
+      radial-gradient(ellipse at 10% 90%, rgba(14, 58, 48, 0.05), transparent 55%);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 24, 'wght' 580;
+    font-size: 1.1rem;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .brand-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(221, 74, 26, 0.15);
+  }
+
+  .stage-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    background: rgba(221, 74, 26, 0.08);
+    border: 1px solid rgba(221, 74, 26, 0.3);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .stage-tag .pulse {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .hero-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(1rem, 4vh, 3rem) 0;
+  }
+
+  .hero-eyebrow {
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.6rem, 7vw, 5.6rem);
+    margin-bottom: 1.5rem;
+    max-width: 18ch;
+    color: var(--ink);
+  }
+  .hero-title .em {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+    font-variation-settings: normal;
+    letter-spacing: -0.015em;
+  }
+
+  .hero-sub {
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    line-height: 1.5;
+    color: var(--ink-mid);
+    max-width: 48ch;
+    margin-bottom: 3rem;
+  }
+  .hero-sub strong { color: var(--ink); font-weight: 600; }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-stat {
+    padding: 1.5rem 1.5rem 1.5rem 0;
+    border-right: 1px solid var(--rule);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  .hero-stat .val {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 96, 'wght' 480;
+    font-size: clamp(1.7rem, 2.5vw, 2.1rem);
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.3rem;
+  }
+  .hero-stat .val .currency { font-size: 0.6em; opacity: 0.55; vertical-align: top; margin-right: 0.05em; }
+  .hero-stat .val .small { font-size: 0.5em; opacity: 0.55; margin-left: 0.2em; font-style: italic; }
+  .hero-stat .sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* === TAKE === */
+  .take-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .take-card {
+    background: var(--bg-card);
+    padding: 1.75rem 1.75rem 2rem;
+  }
+  .take-card .num-bg {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 2.6rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .take-card h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 48, 'wght' 540;
+    font-size: 1.15rem;
+    color: var(--ink);
+    margin-bottom: 0.7rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .take-card p {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ink-mid);
+  }
+
+  /* === GRID UTILITIES === */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .four-col {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .lead-p {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 48, 'wght' 420;
+    font-size: clamp(1.15rem, 1.7vw, 1.4rem);
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 40ch;
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+  }
+  .lead-p em { color: var(--accent); font-style: italic; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+
+  /* === MARKET CARDS === */
+  .market-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .market-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .market-card.featured { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .market-card.featured .market-label { color: var(--accent-soft); }
+  .market-card.featured .market-val { color: var(--bg); }
+  .market-card.featured .market-note { color: rgba(247, 243, 234, 0.7); }
+
+  .market-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+  .market-val {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 96, 'wght' 460;
+    font-size: clamp(2.2rem, 3.5vw, 2.8rem);
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.8rem;
+  }
+  .market-val .small { font-size: 0.45em; opacity: 0.55; margin-left: 0.15em; font-style: italic; }
+  .market-note {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--ink-mid);
+  }
+
+  /* === WHY NOW === */
+  .why-now {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .why-cell {
+    padding: 1.75rem 1.5rem 1.75rem 0;
+    border-right: 1px solid var(--rule);
+  }
+  .why-cell:last-child { border-right: none; padding-right: 0; }
+  .why-num {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+  .why-cell h4 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 36, 'wght' 540;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.005em;
+  }
+  .why-cell p { font-size: 0.85rem; line-height: 1.5; color: var(--ink-mid); }
+
+  /* === PRODUCT FLOW === */
+  .flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: stretch;
+    gap: 0;
+    margin-top: 1.5rem;
+  }
+  .flow-step {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    padding: 1.5rem 1.25rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .flow-step .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .flow-step h4 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 36, 'wght' 560;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .flow-step p { font-size: 0.85rem; color: var(--ink-mid); line-height: 1.5; }
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    padding: 0 0.4rem;
+  }
+
+  /* === QUOTE CARDS === */
+  .quote-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .quote-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    padding: 2rem 2rem 1.75rem;
+    position: relative;
+  }
+  .quote-card::before {
+    content: "\201C";
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--accent);
+    opacity: 0.25;
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+  }
+  .quote-card .quote-body {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+    letter-spacing: -0.005em;
+  }
+  .quote-card .attr {
+    border-top: 1px solid var(--rule);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .quote-card .attr .name {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 24, 'wght' 580;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+  .quote-card .attr .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .quote-card .takeaway {
+    margin-top: 0.9rem;
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+  }
+  .quote-card .takeaway strong { color: var(--accent); font-weight: 600; }
+
+  /* === TRACTION === */
+  .traction-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .traction-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    padding: 1.25rem 1.25rem 1.4rem;
+  }
+  .traction-card .check {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--good);
+    margin-bottom: 0.7rem;
+    font-weight: 600;
+  }
+  .traction-card .check::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: var(--good);
+    border-radius: 50%;
+  }
+  .traction-card h4 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 36, 'wght' 540;
+    font-size: 1rem;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+  .traction-card p {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--ink-mid);
+  }
+
+  /* === ECON === */
+  .econ-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .econ-tile {
+    background: var(--bg-card);
+    padding: 1.5rem 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .econ-tile .e-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .econ-tile .e-val {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 96, 'wght' 480;
+    font-size: clamp(1.9rem, 2.8vw, 2.4rem);
+    color: var(--ink);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+  }
+  .econ-tile .e-val .currency { font-size: 0.55em; opacity: 0.5; vertical-align: top; margin-right: 0.06em; }
+  .econ-tile .e-val .small { font-size: 0.45em; opacity: 0.55; margin-left: 0.2em; font-style: italic; }
+  .econ-tile .e-note {
+    margin-top: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    line-height: 1.45;
+  }
+
+  /* === CHART === */
+  .chart-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    padding: clamp(1rem, 2.5vw, 2rem);
+    margin-top: 1.5rem;
+  }
+  .chart-wrap svg { width: 100%; height: auto; display: block; }
+  .milestone-strip {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .ms {
+    padding: 1.1rem 1.1rem 1.1rem 0;
+    border-right: 1px solid var(--rule);
+  }
+  .ms:last-child { border-right: none; }
+  .ms .ms-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.45rem;
+  }
+  .ms .ms-num {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 60, 'wght' 480;
+    font-size: 1.35rem;
+    line-height: 0.95;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+  }
+  .ms .ms-num .currency { font-size: 0.55em; opacity: 0.55; vertical-align: top; margin-right: 0.05em; }
+  .ms .ms-detail { font-size: 0.78rem; line-height: 1.4; color: var(--ink-mid); }
+
+  /* === THE ASK === */
+  .ask-section {
+    background: var(--ink);
+    color: var(--bg);
+    padding: clamp(4rem, 8vh, 6rem) 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .ask-section::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 60%;
+    height: 140%;
+    background: radial-gradient(ellipse at center, rgba(221, 74, 26, 0.18), transparent 60%);
+    pointer-events: none;
+  }
+  .ask-section .wrap { position: relative; z-index: 2; }
+  .ask-section .section-head { border-color: rgba(247, 243, 234, 0.18); }
+  .ask-section .section-head h2 { color: var(--bg); }
+  .ask-section .section-head h2 .light { color: rgba(247, 243, 234, 0.6); }
+  .ask-section .section-head .num-tag { color: var(--accent-soft); }
+  .ask-section .section-head .tag-right { color: rgba(247, 243, 234, 0.55); }
+
+  .ask-headline {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 96, 'wght' 460;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1;
+    color: var(--bg);
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .ask-headline em {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent-soft);
+    font-variation-settings: normal;
+  }
+
+  .ask-sub {
+    font-size: 1.05rem;
+    color: rgba(247, 243, 234, 0.75);
+    max-width: 38em;
+    margin-bottom: 3rem;
+    line-height: 1.55;
+  }
+
+  .ask-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(247, 243, 234, 0.18);
+    border-bottom: 1px solid rgba(247, 243, 234, 0.18);
+    margin-bottom: 3rem;
+  }
+  .ask-tile {
+    padding: 1.5rem 1.5rem 1.5rem 0;
+    border-right: 1px solid rgba(247, 243, 234, 0.18);
+  }
+  .ask-tile:last-child { border-right: none; padding-right: 0; }
+  .ask-tile .a-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 0.55rem;
+  }
+  .ask-tile .a-val {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 60, 'wght' 480;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--bg);
+    letter-spacing: -0.025em;
+    margin-bottom: 0.35rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .ask-tile .a-note {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: rgba(247, 243, 234, 0.7);
+  }
+
+  .use-of-funds {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  .use-of-funds h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 1rem;
+  }
+  .use-of-funds .bar-list { display: flex; flex-direction: column; gap: 0.85rem; }
+  .use-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-size: 0.92rem;
+    color: rgba(247, 243, 234, 0.92);
+  }
+  .use-bar .b-label { flex: 0 0 38%; font-family: 'Hanken Grotesk', sans-serif; }
+  .use-bar .b-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(247, 243, 234, 0.1);
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+  }
+  .use-bar .b-fill { height: 100%; background: var(--accent); border-radius: 100px; }
+  .use-bar .b-pct {
+    flex: 0 0 3.5em;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .milestones-funded h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 1rem;
+  }
+  .milestones-funded ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  .milestones-funded li {
+    display: grid;
+    grid-template-columns: 5em 1fr;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(247, 243, 234, 0.12);
+    font-size: 0.92rem;
+    color: rgba(247, 243, 234, 0.85);
+    line-height: 1.4;
+  }
+  .milestones-funded li:last-child { border-bottom: none; }
+  .milestones-funded li .m-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--accent-soft);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* === RETURN SCENARIOS === */
+  .return-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .return-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    padding: 1.75rem 1.75rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .return-card.base { border-color: var(--accent); border-width: 1.5px; }
+  .return-card.base::after {
+    content: "Base case";
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(221, 74, 26, 0.1);
+    border: 1px solid var(--accent);
+    padding: 0.25rem 0.55rem;
+    border-radius: 100px;
+  }
+  .return-card .r-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .return-card.base .r-label { color: var(--accent); }
+  .return-card .r-mult {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 96, 'wght' 480;
+    font-size: 3.5rem;
+    line-height: 0.9;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+    margin-bottom: 0.8rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .return-card .r-mult .small { font-size: 0.4em; opacity: 0.55; font-style: italic; margin-left: 0.15em; }
+  .return-card h4 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 36, 'wght' 560;
+    font-size: 1.05rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.005em;
+  }
+  .return-card .r-detail {
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    margin-bottom: 1rem;
+  }
+  .return-card .r-path {
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* === TEAM === */
+  .team-block {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    padding: 2.25rem 2.25rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .team-meta .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+  }
+  .team-meta h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 96, 'wght' 540;
+    font-size: 2.5rem;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+    line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+  .team-meta .loc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+  .team-bio p { margin-bottom: 0.8rem; font-size: 0.97rem; line-height: 1.6; }
+  .team-bio p:last-child { margin-bottom: 0; }
+  .team-bio strong { color: var(--ink); }
+
+  /* === RISKS COMPACT === */
+  .risks-compact {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .risk-row {
+    display: grid;
+    grid-template-columns: 6em 1fr;
+    gap: 1.2rem;
+    padding: 1.2rem 1.5rem 1.2rem 0;
+    border-bottom: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    align-items: start;
+  }
+  .risk-row:nth-child(2n) { border-right: none; padding-right: 0; }
+
+  .risk-row .r-name {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 24, 'wght' 600;
+    font-size: 0.85rem;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  .risk-row .r-name .badge {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--warn);
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+  .risk-row .r-mit {
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--ink-mid);
+  }
+  .risk-row .r-mit strong { color: var(--good); font-weight: 600; }
+
+  /* === CTA === */
+  .cta-section {
+    padding: clamp(4rem, 9vh, 7rem) 0;
+    text-align: left;
+    background: var(--bg);
+  }
+  .cta-headline {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 96, 'wght' 480;
+    font-size: clamp(2.3rem, 4.8vw, 4rem);
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    max-width: 18ch;
+    margin-bottom: 2rem;
+  }
+  .cta-headline em {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: normal;
+    font-weight: 400;
+  }
+
+  .cta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--rule);
+  }
+  .cta-card .c-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+  }
+  .cta-card .c-val {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-variation-settings: 'opsz' 48, 'wght' 540;
+    font-size: 1.4rem;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.015em;
+  }
+  .cta-card .c-detail {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-mid);
+  }
+
+  /* === FOOTER === */
+  footer {
+    padding: 2.5rem 0 4rem;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  footer .foot-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule-soft);
+    margin-bottom: 1.5rem;
+  }
+  footer p { max-width: 60em; font-size: 0.74rem; line-height: 1.7; }
+
+  /* Responsive */
+  @media (max-width: 920px) {
+    .two-col, .three-col, .four-col { grid-template-columns: 1fr; gap: 1rem; }
+    .take-grid, .market-grid, .traction-row, .econ-row, .return-grid { grid-template-columns: 1fr; }
+    .why-now { grid-template-columns: 1fr 1fr; }
+    .flow { grid-template-columns: 1fr; }
+    .flow-arrow { display: none; }
+    .quote-row { grid-template-columns: 1fr; }
+    .ask-grid { grid-template-columns: 1fr 1fr; }
+    .use-of-funds { grid-template-columns: 1fr; }
+    .team-block { grid-template-columns: 1fr; gap: 1.5rem; }
+    .risks-compact { grid-template-columns: 1fr; }
+    .risk-row { border-right: none; padding-right: 0; }
+    .cta-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .milestone-strip { grid-template-columns: 1fr 1fr; }
+    .ms:nth-child(2n) { border-right: none; }
+  }
+
+  @media print {
+    body { background: white; }
+    section { break-inside: avoid; page-break-inside: avoid; padding: 1.5rem 0; }
+    .ask-section { background: white; color: black; }
+    .ask-section .ask-headline, .ask-section .section-head h2, .ask-section .ask-sub, .ask-section .ask-tile, .ask-section .a-val { color: black; }
+  }
+
+  /* Entrance */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-title, .hero-sub, .hero-stats { animation: rise 1s ease-out backwards; }
+  .hero-title { animation-delay: 0.15s; }
+  .hero-sub { animation-delay: 0.3s; }
+  .hero-stats { animation-delay: 0.45s; }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <div class="brand"><span class="brand-dot"></span> FollowRoom</div>
+        <div class="stage-tag"><span class="pulse"></span> Pre-seed · Singapore · 2026</div>
+      </div>
+    </div>
+
+    <div class="wrap hero-body">
+      <div class="hero-eyebrow eyebrow">Investor brief · 5-minute read</div>
+      <h1 class="display hero-title">
+        Memory infrastructure for <span class="em">relationship-driven</span> sales.
+      </h1>
+      <p class="hero-sub">
+        FollowRoom silently captures forwarded WhatsApp messages and meeting transcripts, builds a client-specific room with evidence receipts under every claim, and gives salespeople a polished client-facing follow-up surface they actually publish. <strong>Already built. Already validated. Ready to ship to paying customers.</strong>
+      </p>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="label">Round</div>
+          <div class="val"><span class="currency">$</span>350K<span class="small">SAFE</span></div>
+          <div class="sub">$3M post-money cap</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Use of funds</div>
+          <div class="val">18<span class="small">months runway</span></div>
+          <div class="sub">To $20K/mo profit</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Gross margin</div>
+          <div class="val">93<span class="small">%</span></div>
+          <div class="sub">$10 COGS on $149 ARPU</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Validation</div>
+          <div class="val">2 / 2</div>
+          <div class="sub">Independent unprompted endorsements</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 01 THE TAKE ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">01</span>
+      <h2>The take <span class="light">— in three sentences.</span></h2>
+      <span class="tag-right">Synopsis</span>
+    </div>
+
+    <div class="take-grid">
+      <div class="take-card">
+        <div class="num-bg">i.</div>
+        <h3>We replace the $3K&#8239;/&#8239;mo PA for the salespeople who live or die by what they remember between meetings.</h3>
+        <p>Forwarded WhatsApp → diarised transcripts → AI-extracted facts → operator-approved client-facing room. Built on WhatsApp Cloud API, AssemblyAI, and Anthropic. Silent ingestion. Evidence receipts. No outbound. <strong>The operator owns the relationship. We own the memory.</strong></p>
+      </div>
+      <div class="take-card">
+        <div class="num-bg">ii.</div>
+        <h3>Two qualified strangers, asked cold, designed FollowRoom from scratch.</h3>
+        <p>A 12-year veteran realtor designed the product (&ldquo;I give it to you&rdquo;). An industry-side enterprise seller designed the go-to-market (&ldquo;Sell it as the digital auntie, not as AI&rdquo;). What they drew matches the architecture and pricing already in the codebase. <strong>Product&ndash;market resonance before a single demo.</strong></p>
+      </div>
+      <div class="take-card">
+        <div class="num-bg">iii.</div>
+        <h3>Software-margin economics with a profitable path that doesn&rsquo;t need venture-scale outcomes.</h3>
+        <p>93% gross margin per seat. 84 paying seats covers founder draw. 215 seats hits $20K/month net profit. Singapore real estate alone (31,500 registered salespersons) supports the trajectory with 1.5% penetration. <strong>Floor is a profitable focused business. Upside is cross-vertical expansion.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 MARKET ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">02</span>
+      <h2>The market <span class="light">— sized for both floor and ceiling.</span></h2>
+      <span class="tag-right">TAM / SAM / SOM</span>
+    </div>
+
+    <p class="lead-p">
+      Relationship-driven salespeople are <em>~80K operators in Singapore alone</em>, ~500K across SG-adjacent markets, and the category has been waiting for a memory layer that respects how they actually work.
+    </p>
+
+    <div class="market-grid">
+      <div class="market-card">
+        <div class="market-label">SOM &middot; SG real estate &middot; year 1&ndash;2</div>
+        <div class="market-val">31,500<span class="small">RES</span></div>
+        <div class="market-note">Registered Real Estate Salespersons with CEA Singapore. 1.5% penetration = 470 seats. Phase 1 + 2 target sits comfortably inside this. <sup>[1]</sup></div>
+      </div>
+      <div class="market-card featured">
+        <div class="market-label">SAM &middot; SG relationship sales &middot; year 2&ndash;3</div>
+        <div class="market-val">~80K<span class="small">operators</span></div>
+        <div class="market-note">Real estate + insurance (~12K) + financial advisory (~10K) + private banking + business brokers. Same WhatsApp behaviour, same memory pain.</div>
+      </div>
+      <div class="market-card">
+        <div class="market-label">TAM &middot; SG + AU + HK + Dubai corridor</div>
+        <div class="market-val">~500K<span class="small">operators</span></div>
+        <div class="market-note">Markets with high-trust relationship sales and SG-style WhatsApp behaviour. Phase 3 horizon. Each geo unlocks via the SG playbook adapted.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 WHY NOW ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">03</span>
+      <h2>Why now <span class="light">— four enabling shifts converged in 2024&ndash;26.</span></h2>
+      <span class="tag-right">Timing</span>
+    </div>
+
+    <div class="why-now">
+      <div class="why-cell">
+        <div class="why-num">a.</div>
+        <h4>WhatsApp Cloud API matured.</h4>
+        <p>Meta&rsquo;s Cloud API + Business Verification became the standard route for compliant ingestion. The category prerequisite finally exists. <sup>[2]</sup></p>
+      </div>
+      <div class="why-cell">
+        <div class="why-num">b.</div>
+        <h4>Diarised transcription crossed productizable thresholds.</h4>
+        <p>AssemblyAI Universal-2 and equivalents at &lt;$1/hr made real-time relationship capture economically viable for a $149/mo seat.</p>
+      </div>
+      <div class="why-cell">
+        <div class="why-num">c.</div>
+        <h4>Claude / Sonnet + prompt caching collapsed extraction cost.</h4>
+        <p>Structured fact extraction at ~$5/seat/mo with caching. Two years ago, the same workload was 10&times; the cost.</p>
+      </div>
+      <div class="why-cell">
+        <div class="why-num">d.</div>
+        <h4>Singapore real estate&rsquo;s &ldquo;agents as entrepreneurs&rdquo; turn.</h4>
+        <p>KW Singapore (90 agents, mid-2025 launch) outperforms PropNex (~12K) on transaction-per-agent. Branding + memory beats numbers-game. The buyer is finally ready.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 PRODUCT ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">04</span>
+      <h2>The product <span class="light">— in four steps.</span></h2>
+      <span class="tag-right">Already built</span>
+    </div>
+
+    <p class="lead-p">
+      The operator forwards. FollowRoom remembers. The client opens a polished, branded room they keep coming back to.
+    </p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">STEP 01</div>
+        <h4>Silent ingestion.</h4>
+        <p>Operator forwards a WhatsApp message or uploads a meeting recording. No friction, no channel change.</p>
+      </div>
+      <div class="flow-arrow">&rsaquo;</div>
+      <div class="flow-step">
+        <div class="step-num">STEP 02</div>
+        <h4>Memory built.</h4>
+        <p>AssemblyAI diarises. Claude extracts facts, each linked to the source message or transcript timestamp.</p>
+      </div>
+      <div class="flow-arrow">&rsaquo;</div>
+      <div class="flow-step">
+        <div class="step-num">STEP 03</div>
+        <h4>Operator approves.</h4>
+        <p>Dashboard surfaces extracted facts. Operator accepts, rejects, edits. Tier-3 inferences never reach client surfaces.</p>
+      </div>
+      <div class="flow-arrow">&rsaquo;</div>
+      <div class="flow-step">
+        <div class="step-num">STEP 04</div>
+        <h4>Client opens.</h4>
+        <p>Co-branded shareable link. Threaded follow-up timeline. Every claim traces to evidence. The client keeps coming back.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 VALIDATION ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">05</span>
+      <h2>Validation <span class="light">— two qualified strangers, both unprompted.</span></h2>
+      <span class="tag-right">Signal</span>
+    </div>
+
+    <div class="quote-row">
+      <div class="quote-card">
+        <div class="quote-body">
+          If your audio can be transcribed into timestamps&hellip; and becomes a dedicated link shared between the client and you&hellip; you&rsquo;re simplifying Salesforce. I give it to you.
+        </div>
+        <div class="attr">
+          <div class="name">Scott Ng</div>
+          <div class="role">12-year veteran realtor &middot; KW Singapore</div>
+        </div>
+        <div class="takeaway">
+          Designed <strong>the product</strong> on the call: shareable encrypted link, timestamped diarised transcript, threaded follow-ups, co-branded surface. Matches the architecture already in our codebase.
+        </div>
+      </div>
+
+      <div class="quote-card">
+        <div class="quote-body">
+          Don&rsquo;t sell it as AI &mdash; they will burn you and bury you. Sell it as the digital auntie. A hundred a month, two hundred a month. People pay for that.
+        </div>
+        <div class="attr">
+          <div class="name">Suresh</div>
+          <div class="role">Enterprise seller &middot; SG real estate tech</div>
+        </div>
+        <div class="takeaway">
+          Designed <strong>the go-to-market</strong> on the call: lead with personnel-cost relief, anchor against $3K PA, wave-through-kingpin distribution. Holds the SG Rolodex we&rsquo;ll need.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 TRACTION ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">06</span>
+      <h2>What&rsquo;s already shipped <span class="light">— money raised goes to growth, not build.</span></h2>
+      <span class="tag-right">Traction</span>
+    </div>
+
+    <p class="lead-p">
+      Three months of solo execution have already produced the full stack. We are <em>days, not quarters</em>, from a paying pilot.
+    </p>
+
+    <div class="traction-row">
+      <div class="traction-card">
+        <div class="check">Live</div>
+        <h4>WhatsApp Cloud API ingestion</h4>
+        <p>HMAC-verified webhook on Render. Inbound dedup, caption pairing, operator linking via /link CODE handshake.</p>
+      </div>
+      <div class="traction-card">
+        <div class="check">Live</div>
+        <h4>Transcription &amp; extraction pipeline</h4>
+        <p>AssemblyAI Universal-2 with diarisation. Claude-powered structured extraction with evidence receipts.</p>
+      </div>
+      <div class="traction-card">
+        <div class="check">Live</div>
+        <h4>Operator dashboard + client room</h4>
+        <p>Next.js 16 on Vercel. Supabase Auth + RLS. Internal/client-facing memory as separate stores per the invariants.</p>
+      </div>
+      <div class="traction-card">
+        <div class="check">Live</div>
+        <h4>Test coverage &amp; CI</h4>
+        <p>130 backend tests (pytest), 15 frontend unit (Vitest), 4 E2E specs. GitHub Actions on every PR.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 07 UNIT ECONOMICS ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">07</span>
+      <h2>Unit economics <span class="light">— software margins, profitable per seat from day one.</span></h2>
+      <span class="tag-right">The math</span>
+    </div>
+
+    <div class="econ-row">
+      <div class="econ-tile">
+        <div class="e-label">ARPU (Pro anchor)</div>
+        <div class="e-val"><span class="currency">$</span>149<span class="small">/mo</span></div>
+        <div class="e-note">Anchored against $3K PA, not against software. Blended ARPU $135 at maturity mix.</div>
+      </div>
+      <div class="econ-tile">
+        <div class="e-label">COGS per seat</div>
+        <div class="e-val"><span class="currency">$</span>10<span class="small">/mo</span></div>
+        <div class="e-note">$5 Anthropic + $2.6 AssemblyAI (4hr/seat) + $1 storage + $0.5 WA + $0.9 buffer.</div>
+      </div>
+      <div class="econ-tile">
+        <div class="e-label">Gross margin</div>
+        <div class="e-val">93<span class="small">%</span></div>
+        <div class="e-note">$139 contribution per seat per month. Acquisition cost is the binding constraint, not infrastructure.</div>
+      </div>
+      <div class="econ-tile">
+        <div class="e-label">Breakeven (w/ founder draw)</div>
+        <div class="e-val">84<span class="small">seats</span></div>
+        <div class="e-note">$10K/mo founder + $75 infra covered. Structural breakeven without founder draw is 1 seat.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 08 PATH ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">08</span>
+      <h2>Path to $20K/month profit <span class="light">— Month 24 base case.</span></h2>
+      <span class="tag-right">Trajectory</span>
+    </div>
+
+    <p class="lead-p">
+      The target requires <em>215 paying seats at Pro</em> &mdash; ~0.7% of SG&rsquo;s registered salespersons. Below is the plan; the dashed line is the $20K/mo profit threshold ($30K MRR after costs &amp; founder draw).
+    </p>
+
+    <div class="chart-wrap">
+      <svg viewBox="0 0 1100 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Revenue trajectory">
+        <defs>
+          <linearGradient id="ig" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#DD4A1A" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#DD4A1A" stop-opacity="0"/>
+          </linearGradient>
+          <pattern id="igrid" width="100" height="50" patternUnits="userSpaceOnUse">
+            <path d="M 100 0 L 0 0 0 50" fill="none" stroke="#DDD2B6" stroke-width="0.5" opacity="0.5"/>
+          </pattern>
+        </defs>
+
+        <rect x="80" y="30" width="980" height="350" fill="url(#igrid)"/>
+
+        <!-- Y axis -->
+        <g font-family="JetBrains Mono, monospace" font-size="11" fill="#756B57" text-anchor="end">
+          <text x="72" y="384">$0</text>
+          <text x="72" y="314">$20K</text>
+          <text x="72" y="244">$40K</text>
+          <text x="72" y="174">$60K</text>
+          <text x="72" y="104">$80K</text>
+          <text x="72" y="34">$100K</text>
+        </g>
+
+        <!-- X axis -->
+        <g font-family="JetBrains Mono, monospace" font-size="11" fill="#756B57" text-anchor="middle">
+          <text x="80" y="405">M0</text>
+          <text x="244" y="405">M6</text>
+          <text x="407" y="405">M12</text>
+          <text x="570" y="405">M18</text>
+          <text x="733" y="405">M24</text>
+          <text x="897" y="405">M30</text>
+          <text x="1060" y="405">M36</text>
+        </g>
+
+        <!-- $30K profit threshold -->
+        <line x1="80" y1="279" x2="1060" y2="279" stroke="#DD4A1A" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.7"/>
+        <text x="1055" y="271" font-family="JetBrains Mono, monospace" font-size="10" fill="#DD4A1A" text-anchor="end" font-weight="600">
+          $30K MRR · $20K profit / month
+        </text>
+
+        <!-- $10K founder breakeven -->
+        <line x1="80" y1="349" x2="1060" y2="349" stroke="#756B57" stroke-width="1" stroke-dasharray="2 4" opacity="0.5"/>
+        <text x="1055" y="341" font-family="JetBrains Mono, monospace" font-size="10" fill="#756B57" text-anchor="end">
+          $10K MRR · founder-draw breakeven
+        </text>
+
+        <!-- Phase bands -->
+        <rect x="80" y="30" width="163" height="350" fill="#DD4A1A" opacity="0.04"/>
+        <rect x="243" y="30" width="490" height="350" fill="#0E3A30" opacity="0.04"/>
+        <rect x="733" y="30" width="327" height="350" fill="#952F0D" opacity="0.04"/>
+
+        <text x="161" y="50" font-family="JetBrains Mono, monospace" font-size="10" fill="#DD4A1A" text-anchor="middle" letter-spacing="2">PHASE 1</text>
+        <text x="488" y="50" font-family="JetBrains Mono, monospace" font-size="10" fill="#0E3A30" text-anchor="middle" letter-spacing="2">PHASE 2</text>
+        <text x="896" y="50" font-family="JetBrains Mono, monospace" font-size="10" fill="#952F0D" text-anchor="middle" letter-spacing="2">PHASE 3</text>
+
+        <!-- Area + line -->
+        <path d="M 80 380 L 162 377 L 244 369 L 325 360 L 407 348 L 488 326 L 570 300 L 651 273 L 733 245 L 897 175 L 1060 84 L 1060 380 L 80 380 Z" fill="url(#ig)"/>
+        <path d="M 80 380 L 162 377 L 244 369 L 325 360 L 407 348 L 488 326 L 570 300 L 651 273 L 733 245 L 897 175 L 1060 84" fill="none" stroke="#DD4A1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Milestones -->
+        <g font-family="JetBrains Mono, monospace" font-size="10" fill="#0D0B07">
+          <circle cx="244" cy="369" r="5" fill="#DD4A1A" stroke="#F7F3EA" stroke-width="1.5"/>
+          <text x="252" y="364" font-weight="600">$3K · 20 seats</text>
+          <text x="252" y="376" fill="#756B57" font-size="9">Pilot complete</text>
+
+          <circle cx="407" cy="348" r="5" fill="#DD4A1A" stroke="#F7F3EA" stroke-width="1.5"/>
+          <text x="415" y="343" font-weight="600">$9K · 60 seats</text>
+          <text x="415" y="355" fill="#756B57" font-size="9">KW cluster</text>
+
+          <circle cx="570" cy="300" r="5" fill="#0E3A30" stroke="#F7F3EA" stroke-width="1.5"/>
+          <text x="578" y="295" font-weight="600">$22.5K · 150 seats</text>
+          <text x="578" y="307" fill="#756B57" font-size="9">PropNex wave</text>
+
+          <circle cx="733" cy="245" r="7" fill="#DD4A1A" stroke="#F2B89C" stroke-width="2.5"/>
+          <text x="741" y="237" font-weight="700" fill="#DD4A1A">$37.5K · 250 seats</text>
+          <text x="741" y="250" fill="#0E3A30" font-size="10" font-weight="700">$20K PROFIT HIT</text>
+
+          <circle cx="1060" cy="84" r="5" fill="#952F0D" stroke="#F7F3EA" stroke-width="1.5"/>
+          <text x="1050" y="79" font-weight="600" text-anchor="end">$82K · 550 seats</text>
+          <text x="1050" y="91" fill="#756B57" font-size="9" text-anchor="end">Verticals + geo</text>
+        </g>
+      </svg>
+
+      <div class="milestone-strip">
+        <div class="ms">
+          <div class="ms-mark">Month 6</div>
+          <div class="ms-num"><span class="currency">$</span>3K MRR</div>
+          <div class="ms-detail">Pilot complete. 20 paying seats. First case study.</div>
+        </div>
+        <div class="ms">
+          <div class="ms-mark">Month 12</div>
+          <div class="ms-num"><span class="currency">$</span>9K MRR</div>
+          <div class="ms-detail">KW cluster expansion. Lead curation live.</div>
+        </div>
+        <div class="ms">
+          <div class="ms-mark">Month 18</div>
+          <div class="ms-num"><span class="currency">$</span>22.5K MRR</div>
+          <div class="ms-detail">Wave effect. PropNex top performers. Crossing breakeven.</div>
+        </div>
+        <div class="ms">
+          <div class="ms-mark">Month 24</div>
+          <div class="ms-num" style="color:var(--accent);"><span class="currency">$</span>37.5K MRR</div>
+          <div class="ms-detail"><strong>$20K/month profit hit.</strong> 250 seats.</div>
+        </div>
+        <div class="ms">
+          <div class="ms-mark">Month 36</div>
+          <div class="ms-num"><span class="currency">$</span>82K MRR</div>
+          <div class="ms-detail">Cross-vertical + Perth/HK corridor. ~550 seats.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 09 THE ASK ============ -->
+  <section class="ask-section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num-tag">09</span>
+        <h2>The ask <span class="light">— $350K · 18 months · 4 milestones.</span></h2>
+        <span class="tag-right">Investment</span>
+      </div>
+
+      <h2 class="ask-headline">
+        $350K SAFE buys <em>the runway to profitability</em>, not the runway to fundraise again.
+      </h2>
+      <p class="ask-sub">
+        This round funds the Phase 1 pilot, the Phase 2 cluster, and reaches the $20K/month profit milestone in month 24. We do not plan a Series A. We plan to grow on cashflow, with optional growth capital only if Phase 3 expansion compresses the timeline.
+      </p>
+
+      <div class="ask-grid">
+        <div class="ask-tile">
+          <div class="a-label">Round size</div>
+          <div class="a-val">$350,000</div>
+          <div class="a-note">SAFE, post-money cap $3M, MFN. Open to angel syndication.</div>
+        </div>
+        <div class="ask-tile">
+          <div class="a-label">Runway</div>
+          <div class="a-val">18 months</div>
+          <div class="a-note">Through Month 18 milestone ($22.5K MRR &middot; founder-draw breakeven).</div>
+        </div>
+        <div class="ask-tile">
+          <div class="a-label">Vehicle</div>
+          <div class="a-val">SAFE / SCRA</div>
+          <div class="a-note">Singapore-friendly structure. Can accept SAFE, KISS, or convertible note.</div>
+        </div>
+        <div class="ask-tile">
+          <div class="a-label">Profitability target</div>
+          <div class="a-val">Month 24</div>
+          <div class="a-note">No follow-on round assumed. Subsequent capital is optional.</div>
+        </div>
+      </div>
+
+      <div class="use-of-funds">
+        <div>
+          <h4>Use of funds &middot; 18 months</h4>
+          <div class="bar-list">
+            <div class="use-bar"><span class="b-label">Founder draw</span><span class="b-track"><span class="b-fill" style="width:51%;"></span></span><span class="b-pct">51%</span></div>
+            <div class="use-bar"><span class="b-label">First hire (CS / SDR, M6+)</span><span class="b-track"><span class="b-fill" style="width:17%;"></span></span><span class="b-pct">17%</span></div>
+            <div class="use-bar"><span class="b-label">GTM &amp; marketing tests</span><span class="b-track"><span class="b-fill" style="width:10%;"></span></span><span class="b-pct">10%</span></div>
+            <div class="use-bar"><span class="b-label">AI + infra buffer</span><span class="b-track"><span class="b-fill" style="width:8%;"></span></span><span class="b-pct">8%</span></div>
+            <div class="use-bar"><span class="b-label">Legal, compliance, BV</span><span class="b-track"><span class="b-fill" style="width:6%;"></span></span><span class="b-pct">6%</span></div>
+            <div class="use-bar"><span class="b-label">Contingency buffer</span><span class="b-track"><span class="b-fill" style="width:8%;"></span></span><span class="b-pct">8%</span></div>
+          </div>
+        </div>
+
+        <div class="milestones-funded">
+          <h4>Milestones this round funds</h4>
+          <ul>
+            <li><span class="m-tag">M1</span><span>Meta Business Verification cleared &middot; outbound + media unlocked.</span></li>
+            <li><span class="m-tag">M6</span><span>20 paying seats &middot; $3K MRR &middot; KW Singapore case study published.</span></li>
+            <li><span class="m-tag">M12</span><span>60 paying seats &middot; $9K MRR &middot; lead curation shipped &middot; first PropNex top performer.</span></li>
+            <li><span class="m-tag">M18</span><span>150 paying seats &middot; $22.5K MRR &middot; founder-draw breakeven &middot; second vertical scoped.</span></li>
+            <li><span class="m-tag">M24</span><span>250 seats &middot; <strong>$20K/month net profit</strong> &middot; follow-on capital is optional.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 10 RETURN SCENARIOS ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">10</span>
+      <h2>Return profile <span class="light">— three scenarios, honestly named.</span></h2>
+      <span class="tag-right">Outcomes</span>
+    </div>
+
+    <p class="lead-p">
+      At $3M post-money cap, $350K = ~11.7% ownership. Below: cash-on-cash return scenarios <em>before</em> dilution from any optional Phase 3 growth round.
+    </p>
+
+    <div class="return-grid">
+      <div class="return-card">
+        <div class="r-label">Floor &middot; lifestyle business</div>
+        <div class="r-mult">3&ndash;5<span class="small">&times;</span></div>
+        <h4>Profitable focused company.</h4>
+        <p class="r-detail">
+          Phase 1 + 2 only. SG real estate proof point. $20K&ndash;$40K/month profit by year 3. Founder returns capital via dividend recap or buyout. 3&ndash;5&times; cash return over 4&ndash;6 years.
+        </p>
+        <div class="r-path">PATH &middot; SG penetration only &middot; no vertical expansion &middot; founder buyout via cashflow</div>
+      </div>
+
+      <div class="return-card base">
+        <div class="r-label">Base &middot; cross-vertical play</div>
+        <div class="r-mult">15&ndash;30<span class="small">&times;</span></div>
+        <h4>Strategic acquisition by year 5.</h4>
+        <p class="r-detail">
+          Phase 1 + 2 + selective Phase 3 verticals (insurance, IFA). $5M&ndash;$15M ARR by year 5. Strategic acquisition by Salesforce, HubSpot, Zoho, or regional player at 4&ndash;8&times; ARR. 15&ndash;30&times; on pre-seed price.
+        </p>
+        <div class="r-path">PATH &middot; SG + 2 verticals + AU corridor &middot; $30M&ndash;$80M acquisition</div>
+      </div>
+
+      <div class="return-card">
+        <div class="r-label">Bull &middot; category platform</div>
+        <div class="r-mult">50<span class="small">&times;+</span></div>
+        <h4>Operator-tooling platform.</h4>
+        <p class="r-detail">
+          Full Phase 3. Cross-vertical, cross-geo. $30M+ ARR by year 7. Growth equity at year 5 (optional, founder-controlled). Acquisition at $200M+ or continued private compounding. 50&times;+ on pre-seed price.
+        </p>
+        <div class="r-path">PATH &middot; 4 verticals + 3 geos &middot; LineOS platform realisation</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 11 TEAM ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">11</span>
+      <h2>Founder <span class="light">— operator-turned-builder, with the network.</span></h2>
+      <span class="tag-right">Team</span>
+    </div>
+
+    <div class="team-block">
+      <div class="team-meta">
+        <div class="role">Founder &middot; Solo &middot; Full-time</div>
+        <h3>Khaniff Lau</h3>
+        <div class="loc">Singapore &middot; khaniff@gmail.com</div>
+      </div>
+      <div class="team-bio">
+        <p>
+          Former real estate operator with an active Singapore network across KW, PropNex, ERA, and adjacent agencies &mdash; the warm Rolodex the Phase 1 pilot is built around. Background spans business development, sales, and software. Building FollowRoom solo today; first hire (customer success / SDR hybrid) funded post-pilot.
+        </p>
+        <p>
+          FollowRoom inherits a battle-tested doctrine from a prior 37-day sprint (Decades): <strong>184 PRs, 71 migrations, 65+ architectural decisions, 5 crises that became permanent policy.</strong> The product&rsquo;s invariants &mdash; silent ingestion, evidence receipts, Tier-3 inference filter, operator-approved publishing &mdash; are not aspirational; they are encoded in code and CI.
+        </p>
+        <p>
+          The thesis is part of a broader operator-tooling theme (codename <em>LineOS</em>). FollowRoom is the commercial spear. <strong>This round funds FollowRoom specifically and exclusively.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 12 RISKS ============ -->
+  <section class="wrap">
+    <div class="section-head">
+      <span class="num-tag">12</span>
+      <h2>Risks <span class="light">— named, with mitigations.</span></h2>
+      <span class="tag-right">What could break this</span>
+    </div>
+
+    <p class="lead-p">
+      We do not pretend any of these aren&rsquo;t real. Each is designed-against; none, in our judgement, is existential. <em>The most dangerous risks in early-stage companies are the unnamed ones.</em>
+    </p>
+
+    <div class="risks-compact">
+      <div class="risk-row">
+        <div class="r-name"><span class="badge">R-01</span>TAM concentration</div>
+        <div class="r-mit">SG real estate alone is ~31,500 operators. Phase 3 vertical/geo expansion adds upside but complexity. <strong>Mitigated:</strong> unit economics work at small scale; profitability does not depend on TAM-scale outcomes.</div>
+      </div>
+      <div class="risk-row">
+        <div class="r-name"><span class="badge">R-02</span>Meta dependency</div>
+        <div class="r-mit">Silent ingestion sits on WhatsApp Cloud API rails. Policy or rate-limit shifts could disrupt onboarding. <strong>Mitigated:</strong> ingestion is channel-agnostic at the boundary; Telegram + email forwarding parity is a Phase 2.5 lift.</div>
+      </div>
+      <div class="risk-row">
+        <div class="r-name"><span class="badge">R-03</span>Median-user activation</div>
+        <div class="r-mit">Our design partner Scott is a ceiling user. Median agents need more hand-holding. <strong>Mitigated:</strong> pilot cohort hand-selected; live setup support; activation funnel instrumented from day one.</div>
+      </div>
+      <div class="risk-row">
+        <div class="r-name"><span class="badge">R-04</span>AI cost volatility</div>
+        <div class="r-mit">Anthropic + AssemblyAI pricing not fixed. A 2&times; increase compresses margin to ~88%. <strong>Mitigated:</strong> prompt caching reduces extraction ~70%; transcription is a swappable commodity.</div>
+      </div>
+      <div class="risk-row">
+        <div class="r-name"><span class="badge">R-05</span>Single-founder bandwidth</div>
+        <div class="r-mit">Khaniff is solo to Month 6. <strong>Mitigated:</strong> first revenue funds first hire. Phase 1 designed to be operationally light. Doctrine + tooling reduces solo execution risk vs. typical pre-seed.</div>
+      </div>
+      <div class="risk-row">
+        <div class="r-name"><span class="badge">R-06</span>GTM cycle length</div>
+        <div class="r-mit">Agency-level deals are 6&ndash;18 month cycles. <strong>Mitigated:</strong> per-seat economics ($149) close at the individual level. Bottom-up adoption, top-down legitimisation. We never depend on agency-level deals.</div>
+      </div>
+      <div class="risk-row">
+        <div class="r-name"><span class="badge">R-07</span>Compliance creep</div>
+        <div class="r-mit">Phase 3 verticals (insurance, private banking) require PDPA, GDPR, MAS overlays. <strong>Mitigated:</strong> never enter a vertical without a paid design partner; compliance cost is in Phase 3 budget, not Phase 2.</div>
+      </div>
+      <div class="risk-row">
+        <div class="r-name"><span class="badge">R-08</span>Adjacent incumbents</div>
+        <div class="r-mit">Salesforce (KW partner), HubSpot, agency-internal builds. <strong>Mitigated:</strong> stay sharper, smaller, channel-native, trust-first. Compete on what they won&rsquo;t accept: silent ingestion, Tier-3 filter, evidence receipts.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="cta-section">
+    <div class="wrap">
+      <h2 class="cta-headline">
+        Built, validated, and <em>days from paying customers.</em><br/>
+        Let&rsquo;s talk.
+      </h2>
+
+      <p class="lead-p" style="margin-bottom: 0;">
+        We&rsquo;re raising a $350K pre-seed SAFE at $3M post-money cap to ship Phase 1 and reach $20K/month profit by Month 24. Open to angel checks $25K&ndash;$150K. Closing the round in the next eight weeks.
+      </p>
+
+      <div class="cta-grid">
+        <div class="cta-card">
+          <div class="c-label">Email</div>
+          <div class="c-val">khaniff@gmail.com</div>
+          <div class="c-detail">Direct line. Replied to within 24 hours.</div>
+        </div>
+        <div class="cta-card">
+          <div class="c-label">Next step</div>
+          <div class="c-val">30-min call</div>
+          <div class="c-detail">Includes live demo, Phase 1 plan, and any references to Scott + Suresh on request.</div>
+        </div>
+        <div class="cta-card">
+          <div class="c-label">Data room access</div>
+          <div class="c-val">On request</div>
+          <div class="c-detail">Codebase, decision ledger, financial model, current run-rate, design-partner pipeline.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-row">
+        <span>FollowRoom &middot; Investor Brief &middot; v0.1</span>
+        <span>khaniff@gmail.com &middot; 2026-05-19</span>
+      </div>
+      <p style="margin-bottom: 1rem; color: var(--ink-mid);">
+        <strong style="color: var(--ink);">Citations &amp; sources.</strong>
+        <sup>[1]</sup> Council for Estate Agencies (CEA), Singapore &mdash; annual public RES/REA registration statistics, 2025/26. <sup>[2]</sup> Meta WhatsApp Business Platform documentation; Cloud API and Business Verification process. Cost estimates from public pricing pages (Render, Vercel, Supabase, Anthropic, AssemblyAI) as of May 2026. Unit economics derived in <em>docs/strategy/followroom-thesis-brief.html</em> (founder thesis) and underlying model. All projections are illustrative and not a guarantee of performance.
+      </p>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>

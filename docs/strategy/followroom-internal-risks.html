@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FollowRoom — Internal Risk Register (Founder Only)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#1A1712;--paper-2:#221E18;--panel:#262119;
+    --ink:#F1E9D9;--ink-soft:#D8CDB8;--ink-mid:#B3A88F;--muted:#8A7E66;
+    --rule:#3A3327;--rule-soft:#2E2820;
+    --warn:#D98A3D;--danger:#D4593B;--ok:#7FA06A;--gold:#D9B25A;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink-soft);font-family:'Newsreader',Georgia,serif;font-size:1.08rem;line-height:1.62;-webkit-font-smoothing:antialiased;font-feature-settings:'kern' 1,'liga' 1;position:relative;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:-10%;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.9 0 0 0 0 0.78 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.6;mix-blend-mode:screen;}
+  main{position:relative;z-index:2;}
+  .display{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 144,'wght' 440;line-height:.95;letter-spacing:-.025em;color:var(--ink);}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--warn);}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  p{max-width:42em;}em{font-style:italic;}strong{font-weight:600;color:var(--ink);}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4.5rem);}
+  section{padding:clamp(3.5rem,8vh,5.5rem) 0;border-bottom:1px solid var(--rule);}
+  section:last-of-type{border-bottom:none;}
+  .section-head{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:baseline;margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .section-num{font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.1em;color:var(--warn);font-weight:600;}
+  .section-title{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 40,'opsz' 60,'wght' 450;font-size:clamp(1.4rem,2.4vw,1.9rem);color:var(--ink);letter-spacing:-.01em;line-height:1.1;}
+  .section-tag{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+  .lead{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 60,'wght' 350;font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.42;color:var(--ink);max-width:34em;margin-bottom:2rem;}
+  .lead em{color:var(--warn);font-style:italic;}
+
+  /* COVER */
+  .cover{min-height:96vh;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(2.5rem,5vh,4rem) 0;border-bottom:2px solid var(--danger);}
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;}
+  .brand-mark{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 30,'opsz' 48,'wght' 500;font-size:1.05rem;letter-spacing:.03em;color:var(--ink);}
+  .brand-mark .dot{color:var(--danger);}
+  .stamp{border:1.5px solid var(--danger);color:var(--danger);padding:.4rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;}
+  .cover-center{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(2rem,5vh,4rem) 0;}
+  .cover-eyebrow{margin-bottom:1.5rem;}
+  .cover-title{font-size:clamp(2.6rem,7vw,5.4rem);margin-bottom:1.5rem;color:var(--ink);max-width:18ch;}
+  .cover-title .em{font-family:'Fraunces';font-style:italic;font-variation-settings:'opsz' 144,'wght' 350;color:var(--danger);}
+  .cover-sub{font-family:'Fraunces',Georgia,serif;font-variation-settings:'SOFT' 100,'opsz' 80,'wght' 320;font-style:italic;font-size:clamp(1.2rem,2vw,1.6rem);line-height:1.3;max-width:28em;color:var(--ink-soft);}
+  .cover-bottom{padding-top:1.8rem;border-top:1px solid var(--rule);font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);line-height:1.8;}
+  .cover-bottom b{color:var(--warn);}
+
+  .intro-note{background:var(--panel);border:1px solid var(--rule);border-left:3px solid var(--warn);padding:1.8rem 2rem;margin-top:1rem;font-size:1rem;line-height:1.6;}
+  .intro-note strong{color:var(--warn);}
+
+  /* lethality scale */
+  .scale{display:flex;gap:0;margin-top:1.5rem;border:1px solid var(--rule);}
+  .sc{flex:1;padding:1rem 1.2rem;border-right:1px solid var(--rule);}
+  .sc:last-child{border-right:none;}
+  .sc .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:.5rem;vertical-align:middle;}
+  .sc .lab{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);}
+  .sc .desc{font-size:.82rem;color:var(--muted);margin-top:.4rem;line-height:1.4;}
+
+  /* RISK CARD */
+  .risk{border:1px solid var(--rule);background:var(--paper-2);margin-bottom:1.5rem;overflow:hidden;}
+  .risk-top{display:flex;align-items:baseline;gap:1rem;padding:1.5rem 1.8rem 1rem;border-bottom:1px solid var(--rule);flex-wrap:wrap;}
+  .risk-id{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.1em;font-weight:600;}
+  .risk.fatal .risk-id{color:var(--danger);}
+  .risk.serious .risk-id{color:var(--warn);}
+  .risk-name{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 40,'opsz' 60,'wght' 480;font-size:1.4rem;color:var(--ink);line-height:1.1;flex:1;min-width:220px;letter-spacing:-.01em;}
+  .lethality{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;padding:.25rem .6rem;border-radius:100px;white-space:nowrap;}
+  .lethality.fatal{color:var(--danger);border:1px solid var(--danger);background:rgba(212,89,59,.08);}
+  .lethality.serious{color:var(--warn);border:1px solid var(--warn);background:rgba(217,138,61,.08);}
+  .risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+  .rg{padding:1.3rem 1.8rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+  .rg:nth-child(2n){border-right:none;}
+  .rg:nth-last-child(-n+2){border-bottom:none;}
+  .rg.full{grid-column:1 / -1;border-right:none;}
+  .rg .gl{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.6rem;}
+  .rg.why .gl{color:var(--danger);}
+  .rg.now .gl{color:var(--muted);}
+  .rg.right .gl{color:var(--ok);}
+  .rg.watch .gl{color:var(--gold);}
+  .rg p{font-size:.92rem;line-height:1.55;color:var(--ink-soft);max-width:none;}
+  .rg.watch p{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--gold);line-height:1.5;letter-spacing:.01em;}
+
+  /* psych traps */
+  .traps{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:1rem;}
+  .trap{background:var(--paper-2);border:1px solid var(--rule);padding:1.5rem 1.6rem;}
+  .trap h4{font-family:'Fraunces',serif;font-variation-settings:'opsz' 48,'wght' 500;font-size:1.15rem;color:var(--ink);margin-bottom:.5rem;line-height:1.15;}
+  .trap .tell{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--danger);margin-bottom:.7rem;}
+  .trap p{font-size:.9rem;line-height:1.5;color:var(--ink-mid);max-width:none;}
+
+  /* dashboard */
+  .dash{width:100%;border-collapse:collapse;margin-top:1rem;}
+  .dash th,.dash td{text-align:left;padding:.8rem 1rem;border-bottom:1px solid var(--rule);font-size:.92rem;vertical-align:top;}
+  .dash thead th{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+  .dash td .metric{font-family:'Fraunces',serif;font-variation-settings:'opsz' 36,'wght' 520;color:var(--ink);font-size:1rem;}
+  .dash td.good{color:var(--ok);font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:600;}
+  .dash td.bad{color:var(--danger);font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:600;}
+  .dash td .desc{color:var(--ink-mid);font-size:.86rem;line-height:1.45;}
+
+  .killswitch{background:rgba(212,89,59,.08);border:1.5px solid var(--danger);padding:1.8rem 2rem;margin-top:2rem;}
+  .killswitch h4{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--danger);margin-bottom:.9rem;}
+  .killswitch p{font-size:1rem;line-height:1.6;color:var(--ink);max-width:none;}
+  .killswitch strong{color:var(--danger);}
+
+  .summary{background:var(--panel);border:1px solid var(--rule);border-left:3px solid var(--gold);padding:2rem 2.25rem;margin-top:1rem;}
+  .summary p{font-family:'Fraunces',serif;font-variation-settings:'SOFT' 100,'opsz' 48,'wght' 340;font-style:italic;font-size:1.2rem;line-height:1.5;color:var(--ink);max-width:none;}
+  .summary p+p{margin-top:1rem;}
+  .summary strong{color:var(--gold);font-style:normal;font-weight:600;}
+
+  footer{padding:3rem 0 5rem;border-top:1px solid var(--rule);font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--muted);line-height:1.7;}
+  footer .foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule);margin-bottom:1.4rem;}
+  footer p{max-width:60em;font-size:.75rem;}
+
+  @media (max-width:860px){
+    .risk-grid,.traps{grid-template-columns:1fr;}
+    .rg{border-right:none;}
+    .scale{flex-direction:column;}.sc{border-right:none;border-bottom:1px solid var(--rule);}
+    section{padding:3rem 0;}
+  }
+  @media print{body{background:#fff;color:#111;}body::before{display:none;}.risk,.trap,.summary,.killswitch,.intro-note{background:#fff;}*{color:#111 !important;}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .cover-title,.cover-sub,.cover-eyebrow,.cover-bottom{animation:rise 1s ease-out backwards;}
+  .cover-eyebrow{animation-delay:.1s;}.cover-title{animation-delay:.25s;}.cover-sub{animation-delay:.45s;}.cover-bottom{animation-delay:.65s;}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- COVER -->
+  <section class="cover wrap">
+    <div class="cover-top">
+      <div class="brand-mark">FollowRoom<span class="dot">·</span></div>
+      <div class="stamp">Internal · Founder Only · Do Not Circulate</div>
+    </div>
+    <div class="cover-center">
+      <div class="cover-eyebrow eyebrow">Risk register · the unvarnished version</div>
+      <h1 class="display cover-title">What kills this, <span class="em">and what you have to get right.</span></h1>
+      <p class="cover-sub">Read this when you're tempted to believe your own pitch. The investor docs are honest but polished. This one isn't polished &mdash; it's the list of things that, if you get them wrong, mean FollowRoom doesn't make it.</p>
+    </div>
+    <div class="cover-bottom">
+      <b>For:</b> Khaniff &middot; <b>Not for:</b> investors, advisors, the deck &middot; <b>Reviewed:</b> monthly, honestly &middot; 2026-05-20
+    </div>
+  </section>
+
+  <!-- 00 HOW TO READ -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">00</span><h2 class="section-title">How to read this.</h2><span class="section-tag">Orientation</span></div>
+    <p class="lead">Most startups don't die from the risk they listed on slide 19. They die from <em>the obvious thing the founder kept reframing as fine.</em> This document refuses the reframe.</p>
+    <div class="intro-note"><strong>The rule:</strong> a risk only counts as &ldquo;managed&rdquo; when there's a number you're watching that would tell you it's going wrong <em>before</em> it's fatal. &ldquo;I'll keep an eye on it&rdquo; is not management. Every risk below has a <span style="color:var(--gold);">Watch this</span> line. If you can't honestly report that number this month, the risk is unmanaged &mdash; treat it as red.</div>
+    <div class="scale">
+      <div class="sc"><span class="dot" style="background:var(--danger);"></span><span class="lab">Fatal</span><div class="desc">Get this wrong and the business doesn't exist. The few things that actually matter.</div></div>
+      <div class="sc"><span class="dot" style="background:var(--warn);"></span><span class="lab">Serious</span><div class="desc">Won't kill you alone, but compounds with others and drains time/credibility.</div></div>
+      <div class="sc"><span class="dot" style="background:var(--ok);"></span><span class="lab">Get-it-right</span><div class="desc">The behaviour or proof that converts the risk from open to closed.</div></div>
+    </div>
+  </section>
+
+  <!-- 01 FATAL RISKS -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">01</span><h2 class="section-title">The fatal few.</h2><span class="section-tag">These are the business</span></div>
+    <p class="lead">Five risks that actually decide whether FollowRoom lives. Spend your attention here. Everything in section 02 is secondary to these.</p>
+
+    <!-- F1 -->
+    <div class="risk fatal">
+      <div class="risk-top"><span class="risk-id">F-01</span><span class="risk-name">Endorsement is not adoption is not revenue.</span><span class="lethality fatal">Fatal</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it kills you</div><p>Scott said &ldquo;I give it to you&rdquo; about the <em>idea</em>. That is the single most over-trusted signal in early startups. &ldquo;I love it&rdquo; costs nothing and predicts almost nothing. If your validation is enthusiasm and not weekly active use plus a credit card, you've validated a conversation, not a business.</p></div>
+        <div class="rg now"><div class="gl">Honest status today</div><p>Zero paying users. Zero daily-active users. Two warm endorsements of the concept. The product is built but no one has lived in it for a month. You are at the most dangerous point: enough signal to feel certain, not enough to be certain.</p></div>
+        <div class="rg right"><div class="gl">What getting it right looks like</div><p>By end of beta: at least 3 of 5 pilot agents using FollowRoom <em>weekly without prompting</em>, and at least 2 saying &ldquo;yes&rdquo; to the Founder price unprompted. Instrument activation from day one. A pilot that doesn't measure usage is theatre.</p></div>
+        <div class="rg watch"><div class="gl">Watch this</div><p>Weekly active pilot agents ÷ total pilot agents. Target &gt;60%. If it's &lt;40% at week 4, the product isn't sticky — stop and find out why before spending on growth.</p></div>
+      </div>
+    </div>
+
+    <!-- F2 -->
+    <div class="risk fatal">
+      <div class="risk-top"><span class="risk-id">F-02</span><span class="risk-name">Scott is the ceiling, not the median.</span><span class="lethality fatal">Fatal</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it kills you</div><p>Scott runs lavalier mics and a manual CRM and has an advertising degree. If FollowRoom only delights Scott-tier operators, the addressable market shrinks from 31,500 to a few hundred, and the unit economics that justify the raise evaporate. A product that needs a Scott to love it is a consultancy, not a SaaS.</p></div>
+        <div class="rg now"><div class="gl">Honest status today</div><p>Your entire validation is one outlier and one industry-side observer. You have not watched a normal, busy, non-technical agent try to onboard alone. You don't yet know if the activation works without you in the room.</p></div>
+        <div class="rg right"><div class="gl">What getting it right looks like</div><p>At least 2 of the 5 pilot agents are deliberately <em>median</em> — busy, not tech-forward, no mics. They activate without hand-holding. If they need you to set it up, the onboarding is the product and it isn't done.</p></div>
+        <div class="rg watch"><div class="gl">Watch this</div><p>Time-to-first-room for a median agent, unaided. Target &lt;10 minutes. And: did they get there without you on a call?</p></div>
+      </div>
+    </div>
+
+    <!-- F3 -->
+    <div class="risk fatal">
+      <div class="risk-top"><span class="risk-id">F-03</span><span class="risk-name">You are a builder. The trap is building instead of selling.</span><span class="lethality fatal">Fatal</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it kills you</div><p>The product is ~70% there and building feels productive, safe, and within your control. Selling feels exposed. So the default failure mode is polishing to 100% while zero agents use it. You can ship the most elegant follow-up room in the world and die with no customers. Code is not traction.</p></div>
+        <div class="rg now"><div class="gl">Honest status today</div><p>You've spent recent effort on strategy docs and doctrine — useful, but still not selling. The honest question: how many hours this week went into getting an agent to use the product vs. improving the product or the narrative?</p></div>
+        <div class="rg right"><div class="gl">What getting it right looks like</div><p>The next milestone is <em>usage</em>, not features. Build only what's required to get the 5 pilots live (BV, the room, onboarding). Then stop building and go sit with agents. Ship at &ldquo;good enough to use,&rdquo; not &ldquo;good enough to be proud of.&rdquo;</p></div>
+        <div class="rg watch"><div class="gl">Watch this</div><p>Ratio of build-hours to customer-facing-hours each week. After BV clears, customer-facing should dominate. If you shipped 3 features and onboarded 0 agents this month — red.</p></div>
+      </div>
+    </div>
+
+    <!-- F4 -->
+    <div class="risk fatal">
+      <div class="risk-top"><span class="risk-id">F-04</span><span class="risk-name">Willingness-to-pay is unproven, and the whole model rests on it.</span><span class="lethality fatal">Fatal</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it kills you</div><p>Every number — breakeven, $20K profit, the return scenarios — assumes ~$99&ndash;$149/seat. That's a band from one person (Suresh) and a midpoint you chose. If real WTP is $30&ndash;$50, the math doesn't just shift, it breaks: 250 seats becomes 700+, and the &ldquo;profitable without scale&rdquo; story collapses.</p></div>
+        <div class="rg now"><div class="gl">Honest status today</div><p>Nobody has paid anything. The price is a hypothesis dressed as a plan. Free beta is great for adoption but it <em>delays</em> the only question that matters for the model: will they actually pay, and how much.</p></div>
+        <div class="rg right"><div class="gl">What getting it right looks like</div><p>Before beta ends, get explicit price commitments — not &ldquo;I'd pay,&rdquo; but &ldquo;here's my card at $X.&rdquo; Test $149 and $99 deliberately. If they balk below $79, the model needs rework before you raise on it.</p></div>
+        <div class="rg watch"><div class="gl">Watch this</div><p>% of activated pilot agents who commit to a paid price before beta ends, and the price they accept. Target: 50%+ at ≥$99.</p></div>
+      </div>
+    </div>
+
+    <!-- F5 -->
+    <div class="risk fatal">
+      <div class="risk-top"><span class="risk-id">F-05</span><span class="risk-name">The wedge depends on Meta, and Meta doesn't care about you.</span><span class="lethality fatal">Fatal</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it kills you</div><p>Silent WhatsApp ingestion is the activation magic. It runs on Meta's Cloud API and needs Business Verification. If BV stalls, or Meta changes policy / rate limits / pricing, your lowest-friction onboarding path breaks — and the entire &ldquo;forward it, we do the rest&rdquo; pitch with it.</p></div>
+        <div class="rg now"><div class="gl">Honest status today</div><p>BV not yet submitted. The live end-to-end flow has never run against a real consumer WhatsApp. You are one external approval away from the pilot, and that approval is outside your control.</p></div>
+        <div class="rg right"><div class="gl">What getting it right looks like</div><p>Submit BV this week. Have the manual-upload fallback ready so a BV delay doesn't freeze the pilot. Treat Telegram + email-forwarding parity as a real near-term option, not a someday — so you're never single-threaded on Meta.</p></div>
+        <div class="rg watch"><div class="gl">Watch this</div><p>BV status (submitted? cleared?) and days-since-submission. If &gt;3 weeks with no resolution, activate the fallback path rather than waiting.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 SERIOUS -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Serious, survivable, still real.</h2><span class="section-tag">Don't ignore these</span></div>
+
+    <div class="risk serious">
+      <div class="risk-top"><span class="risk-id">S-01</span><span class="risk-name">You're split with Decades. Divided founders are the #1 pre-seed killer.</span><span class="lethality serious">Serious</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it hurts</div><p>FollowRoom is &ldquo;the commercial spear&rdquo; but it competes for your hours with Decades. Pilots need responsiveness; a half-present founder loses design partners. Investors will probe this hard.</p></div>
+        <div class="rg right"><div class="gl">Get it right</div><p>Be honest about weekly hours to FollowRoom. Protect a fixed block. First revenue funds the first hire so you're not the bottleneck forever.</p></div>
+        <div class="rg watch full"><div class="gl">Watch this</div><p>Hours/week on FollowRoom, and pilot-agent response time. If an agent waits &gt;24h for you during beta, you're under-resourcing the thing that matters most.</p></div>
+      </div>
+    </div>
+
+    <div class="risk serious">
+      <div class="risk-top"><span class="risk-id">S-02</span><span class="risk-name">The &ldquo;wave&rdquo; through agencies is a theory, not a mechanism.</span><span class="lethality serious">Serious</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it hurts</div><p>Suresh's &ldquo;kingpin adoption creates a wave&rdquo; is plausible but unproven for <em>your</em> product. If referrals don't propagate inside KW, growth stalls at the pilot cluster and CAC balloons.</p></div>
+        <div class="rg right"><div class="gl">Get it right</div><p>Prove referral mechanics inside KW before assuming the wave. Ask every happy pilot agent for one named colleague. Measure whether it actually moves.</p></div>
+        <div class="rg watch full"><div class="gl">Watch this</div><p>Referrals generated per active pilot agent. If &lt;1 by end of beta, the wave is a hope, not a channel — rethink distribution.</p></div>
+      </div>
+    </div>
+
+    <div class="risk serious">
+      <div class="risk-top"><span class="risk-id">S-03</span><span class="risk-name">You're holding other people's private conversations.</span><span class="lethality serious">Serious</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it hurts</div><p>Ingesting client conversations = processing third-party PII under PDPA. One breach, or one sensitive inference leaking into a client room, is reputationally fatal for a <em>trust</em> product. The transcripts in your own repo already contain sensitive third-party content — proof the risk is live.</p></div>
+        <div class="rg right"><div class="gl">Get it right</div><p>The trust architecture (receipts, approval gates, Tier-3 filter) must actually hold under real data. Real PDPA disclosure in onboarding. Operator-responsibility framing airtight. Don't commit raw client data anywhere casually.</p></div>
+        <div class="rg watch full"><div class="gl">Watch this</div><p>Has a sensitive inference ever reached a client-facing surface in testing? Must be zero. Any single occurrence is a stop-the-line event.</p></div>
+      </div>
+    </div>
+
+    <div class="risk serious">
+      <div class="risk-top"><span class="risk-id">S-04</span><span class="risk-name">Extraction quality IS the product. If it hallucinates, trust dies.</span><span class="lethality serious">Serious</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it hurts</div><p>If the AI misattributes who said what, invents a fact, or garbles a name, the agent stops trusting it — and a memory tool you can't trust is worse than no tool. Margin also assumes ~$10/seat; quality and cost pull against each other.</p></div>
+        <div class="rg right"><div class="gl">Get it right</div><p>Treat extraction accuracy as the core metric, not a backend detail. Watch the accept/reject rate on FactCards — it's your live trust gauge. Evidence receipts must always resolve.</p></div>
+        <div class="rg watch full"><div class="gl">Watch this</div><p>Fact accept-rate in the dashboard. If agents reject &gt;30% of extracted facts, trust is leaking — fix accuracy before anything else.</p></div>
+      </div>
+    </div>
+
+    <div class="risk serious">
+      <div class="risk-top"><span class="risk-id">S-05</span><span class="risk-name">The whole thing leans on two relationships.</span><span class="lethality serious">Serious</span></div>
+      <div class="risk-grid">
+        <div class="rg why"><div class="gl">Why it hurts</div><p>Scott (beta) and Suresh (advisor, GTM, network) carry enormous weight. If either cools — Scott gets busy, Suresh's advisory doesn't formalise — both your validation and your distribution wobble at once. Single-threading the company on two goodwill relationships is fragile.</p></div>
+        <div class="rg right"><div class="gl">Get it right</div><p>Broaden early. More pilot agents beyond Scott's referrals; more than one industry relationship. Formalise Suresh's advisory (or don't claim it). Don't let two people be load-bearing walls.</p></div>
+        <div class="rg watch full"><div class="gl">Watch this</div><p>Number of independent, warm agent relationships outside the Scott chain. If it's still ~1 at month 3, you're concentrated.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 PSYCH TRAPS -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">03</span><h2 class="section-title">The traps in your own head.</h2><span class="section-tag">Founder psychology</span></div>
+    <p class="lead">The risks above are external. These are internal &mdash; the ways a capable, motivated founder talks themselves into the ditch. <em>You are the most dangerous variable.</em></p>
+    <div class="traps">
+      <div class="trap"><div class="tell">Tell: &ldquo;Everyone I show it to loves it&rdquo;</div><h4>Confirmation bias</h4><p>Scott, Suresh, your network — a warm room. Warm rooms always clap. Go find people who'll say no. Collect 10 qualified rejections deliberately; a real &ldquo;no&rdquo; is worth more than ten polite yeses.</p></div>
+      <div class="trap"><div class="tell">Tell: &ldquo;Look how many signups / how much interest&rdquo;</div><h4>Vanity metrics</h4><p>Signups, demo requests, LinkedIn likes — none of them pay rent. The only metrics that count: weekly active use, retention past week 2, and money committed. Don't let the flattering number distract from the true one.</p></div>
+      <div class="trap"><div class="tell">Tell: &ldquo;Once I add X, they'll really use it&rdquo;</div><h4>The one-more-feature loop</h4><p>There is always one more feature that feels like the unlock. It almost never is. If they won't use the core today, more features won't fix it. Usage problems are rarely feature problems.</p></div>
+      <div class="trap"><div class="tell">Tell: &ldquo;This is obviously valuable&rdquo;</div><h4>Mistaking your conviction for market pull</h4><p>Your certainty is not evidence. The market doesn't care how obvious it is to you. Pull looks like people chasing <em>you</em> to use it, not you convincing them it's good.</p></div>
+      <div class="trap"><div class="tell">Tell: &ldquo;We've come too far to change course&rdquo;</div><h4>Sunk cost / it's-built-so-ship-it</h4><p>The product being built is a reason to test it, not a reason to be right about it. If the beta signal says the wedge is wrong, the built product is sunk cost, not a mandate. Be willing to pivot the use-case even with working code.</p></div>
+      <div class="trap"><div class="tell">Tell: &ldquo;The strategy doc proves it works&rdquo;</div><h4>Narrative over evidence</h4><p>You now have beautiful briefs. Beautiful briefs are seductive and prove nothing. A polished deck can make a dead idea feel alive. Weight one real paying user above a hundred pages of coherent argument — including these.</p></div>
+    </div>
+  </section>
+
+  <!-- 04 DASHBOARD -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">04</span><h2 class="section-title">The dashboard you actually watch.</h2><span class="section-tag">Leading indicators</span></div>
+    <p class="lead">Forget MRR for now &mdash; it's a lagging indicator. These are the leading numbers that tell you the truth weeks before revenue does. Report them to yourself monthly, honestly.</p>
+    <table class="dash">
+      <thead><tr><th>Metric</th><th>Healthy</th><th>Red flag</th><th>What it really tells you</th></tr></thead>
+      <tbody>
+        <tr><td><span class="metric">Weekly active pilots</span></td><td class="good">&gt;60%</td><td class="bad">&lt;40% @ wk4</td><td><span class="desc">Is the product sticky, or just interesting once?</span></td></tr>
+        <tr><td><span class="metric">Time-to-first-room (unaided)</span></td><td class="good">&lt;10 min</td><td class="bad">needs you</td><td><span class="desc">Does onboarding work without you in the room?</span></td></tr>
+        <tr><td><span class="metric">Week-2+ retention</span></td><td class="good">most return</td><td class="bad">drop after wk1</td><td><span class="desc">Novelty or habit? Habit is the business.</span></td></tr>
+        <tr><td><span class="metric">Paid-price commitments</span></td><td class="good">50%+ @ ≥$99</td><td class="bad">balk &lt;$79</td><td><span class="desc">Is the entire financial model real?</span></td></tr>
+        <tr><td><span class="metric">Referrals per active agent</span></td><td class="good">≥1</td><td class="bad">~0</td><td><span class="desc">Is the &ldquo;wave&rdquo; a channel or a wish?</span></td></tr>
+        <tr><td><span class="metric">Fact accept-rate</span></td><td class="good">&gt;70%</td><td class="bad">&lt;70%</td><td><span class="desc">Do they trust the AI's memory?</span></td></tr>
+        <tr><td><span class="metric">Build vs. customer hours</span></td><td class="good">customer-led</td><td class="bad">build-led</td><td><span class="desc">Are you selling, or hiding in the code?</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="killswitch">
+      <h4>The kill-switch</h4>
+      <p>Enter it in the decision ledger now, before you're emotionally invested in being right: <strong>if 10+ qualified agents reject the memory-layer concept itself</strong> (not the implementation, not the price, not a missing feature — the actual idea that they want their conversations remembered this way), <strong>pause and re-spec.</strong> A rejection of execution is a fix. A rejection of the concept is a signal you must not rationalise away. Pre-committing to this protects you from the sunk-cost trap when it counts.</p>
+    </div>
+  </section>
+
+  <!-- 05 SUMMARY -->
+  <section class="wrap">
+    <div class="section-head"><span class="section-num">05</span><h2 class="section-title">The whole thing in five sentences.</h2><span class="section-tag">If you read nothing else</span></div>
+    <div class="summary">
+      <p><strong>1.</strong> The product is built and two qualified people endorsed the <em>idea</em> — which is the most over-trusted signal there is, so your only real job now is to convert endorsement into weekly active use and committed money.</p>
+      <p><strong>2.</strong> Your one validator is an outlier; if the median, non-technical agent can't onboard alone in ten minutes, you have a consultancy, not a SaaS.</p>
+      <p><strong>3.</strong> You are a builder, and the seductive failure mode is polishing the product to 100% while zero people use it — the next milestone is usage, not features.</p>
+      <p><strong>4.</strong> Pricing and the &ldquo;wave&rdquo; are both hypotheses the beta exists to test; don't raise or scale on numbers a customer hasn't confirmed with a card.</p>
+      <p><strong>5.</strong> The biggest risk in this company is your own conviction outrunning the evidence — so watch the seven leading metrics, honour the kill-switch, and weight one paying user above every beautiful document you've made, this one included.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-row"><span>FollowRoom · Internal Risk Register · Founder Only</span><span>khaniff@gmail.com · 2026-05-20</span></div>
+      <p>This is a candid internal document, intentionally harsher than the investor-facing risk sections in <em>followroom-business-plan.html</em> and <em>followroom-investment-package.html</em>. It is the &ldquo;deeper internal risk register&rdquo; those documents reference. Do not circulate to investors as-is — though offering it on request signals exactly the kind of self-awareness investors trust. Review monthly. Update the metrics with real numbers once the pilot is live; an un-updated risk doc is a comfort blanket, not a tool.</p>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>
